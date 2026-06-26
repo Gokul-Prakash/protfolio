@@ -1,0 +1,112 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.things {
+  background: #fff;
+  padding: 2rem clamp(1.25rem, 5vw, 4rem);
+  max-width: 1440px;
+  margin: 0 auto;
+
+  // ── Intro ─────────────────────────────────────────────────
+  &__intro {
+    margin-bottom: clamp($spacing-2xl, 5vw, 5rem);
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #000;
+    margin-bottom: $spacing-md;
+  }
+
+  &__subtitle {
+    font-family: $font-mono;
+    font-size: clamp($font-size-xs, 1.1vw, $font-size-sm);
+    line-height: $line-height-relaxed;
+    color: rgba(0, 0, 0, 0.45);
+
+    @include mobile {
+      br {
+        display: none;
+      }
+    }
+  }
+
+  // ── Grid ──────────────────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp($spacing-lg, 2.5vw, $spacing-2xl);
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // ── Card ──────────────────────────────────────────────────
+  &__card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: $radius-2xl;
+    padding: 0 clamp($spacing-lg, 3vw, $spacing-2xl) clamp($spacing-lg, 3vw, $spacing-2xl);
+    // No overflow:hidden — lets rotated images breathe without clipping
+    cursor: pointer;
+    transition:
+      box-shadow $transition-base $easing-out,
+      border-color $transition-base $easing-out;
+
+    &:hover {
+      box-shadow: $shadow-xl;
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  // ── Single image ──────────────────────────────────────────
+  &__image-wrap {
+    width: 100%;
+    border-radius: $radius-xl;
+    overflow: hidden;
+    // margin-bottom: $spacing-xl;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      transition: transform 0.5s $easing-out;
+      pointer-events: none;
+    }
+
+    .things__card:hover & img {
+      transform: scale(1.03);
+    }
+  }
+
+  // ── Info ──────────────────────────────────────────────────
+  &__info {
+    display: flex;
+    align-items: baseline;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+    padding-top: $spacing-sm;
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-weight: 700;
+    font-size: clamp($font-size-lg, 1.8vw, $font-size-2xl);
+    color: #000;
+    letter-spacing: -0.01em;
+  }
+
+  &__tags {
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    color: rgba(0, 0, 0, 0.4);
+    font-style: italic;
+  }
+}

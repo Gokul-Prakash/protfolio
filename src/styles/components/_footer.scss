@@ -1,0 +1,155 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.footer {
+  background: #fff;
+  padding: clamp($spacing-lg, 3vw, $spacing-xl) clamp(1.25rem, 4vw, 3rem)
+    clamp($spacing-lg, 3vw, $spacing-xl);
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: stretch;
+    gap: clamp($spacing-lg, 3vw, $spacing-2xl);
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  // ── Card with video background ─────────────────────────────
+  &__card {
+    flex: 1.65;
+    border-radius: $radius-2xl;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    padding: clamp($spacing-lg, 3vw, 2.5rem) clamp($spacing-lg, 3vw, 2.5rem);
+    min-height: 200px;
+  }
+
+  // Video fills the card
+  &__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+
+  // Text content sits above video
+  &__card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    max-width: 300px;
+    flex-shrink: 0;
+
+    @include mobile {
+      max-width: 100%;
+    }
+  }
+
+  &__heading {
+    font-family: $font-display;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #000;
+  }
+
+  &__subtext {
+    font-family: $font-mono;
+    font-size: clamp(0.625rem, 0.85vw, $font-size-xs);
+    line-height: $line-height-relaxed;
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    font-family: $font-mono;
+    font-size: $font-size-sm;
+    padding: 0.7rem 1.4rem;
+    border-radius: $radius-full;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    width: fit-content;
+    transition: box-shadow $transition-base $easing-out;
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  // Character illustration
+  &__illustration {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    width: clamp(110px, 16vw, 200px);
+    align-self: flex-start;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @include mobile {
+      width: 120px;
+    }
+  }
+
+  // ── Right section ─────────────────────────────────────────
+  &__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $spacing-xs 0;
+  }
+
+  &__nav {
+    display: flex;
+    gap: clamp($spacing-xl, 5vw, $spacing-3xl);
+  }
+
+  &__nav-col {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__nav-link {
+    font-family: $font-mono;
+    font-size: clamp($font-size-xs, 1.05vw, $font-size-sm);
+    color: rgba(0, 0, 0, 0.7);
+    text-decoration: none;
+    transition: color $transition-fast $easing-out;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  &__copy {
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    color: rgba(0, 0, 0, 0.3);
+    margin-top: auto;
+    padding-top: $spacing-lg;
+  }
+}

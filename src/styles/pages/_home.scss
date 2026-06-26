@@ -1,0 +1,172 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+// ============================================================
+// HERO
+// ============================================================
+.hero {
+  position: relative;
+  min-height: 100svh;
+
+  @include mobile {
+    min-height: 50vh;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  // Bottom fade to white
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background: linear-gradient(to bottom, transparent, #ffffff);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  // ── Background video ──────────────────────────────────────
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  &__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  // ── Content ───────────────────────────────────────────────
+  &__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1440px;
+    padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+    padding-top: 60px; // clear fixed header
+    will-change: opacity;
+  }
+
+  // ── Greeting ──────────────────────────────────────────────
+  &__greeting {
+    font-family: $font-mono;
+    font-size: clamp($font-size-xs, 1.2vw, $font-size-sm);
+    letter-spacing: 0.08em;
+    color: rgba(0, 0, 0, 0.65);
+    margin-bottom: clamp($spacing-sm, 2vw, $spacing-lg);
+    will-change: opacity, transform;
+  }
+
+  // ── Title block ───────────────────────────────────────────
+  &__title-block {
+    width: fit-content;
+    margin-bottom: clamp($spacing-lg, 3vw, $spacing-2xl);
+    will-change: transform;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 8.5vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: #000;
+    will-change: opacity, transform;
+
+    @include mobile {
+      font-size: clamp(2rem, 12vw, 2.5rem);
+    }
+  }
+
+  &__location {
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-family: $font-mono;
+    font-size: clamp($font-size-xs, 1.1vw, $font-size-sm);
+    letter-spacing: 0.12em;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: clamp($spacing-xs, 1vw, $spacing-sm);
+    will-change: opacity, transform;
+  }
+
+  // ── Description ───────────────────────────────────────────
+  &__description {
+    font-family: $font-mono;
+    font-size: clamp($font-size-xs, 1.1vw, 0.9375rem);
+    line-height: $line-height-relaxed;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.55);
+    max-width: 580px;
+    margin: 0 auto clamp($spacing-lg, 3vw, $spacing-2xl);
+    will-change: opacity, transform;
+
+    @include mobile {
+      br {
+        display: none;
+      }
+    }
+  }
+
+  // ── CTA buttons ───────────────────────────────────────────
+  &__cta {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: center;
+    flex-wrap: wrap;
+    will-change: opacity, transform;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+    font-family: $font-mono;
+    font-size: $font-size-sm;
+    font-weight: 400;
+    padding: 0.875rem 1.75rem;
+    border-radius: $radius-full;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow $transition-base $easing-out;
+    will-change: transform;
+
+    svg {
+      flex-shrink: 0;
+    }
+
+    &--dark {
+      background: #000;
+      color: #fff;
+
+      &:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    &--light {
+      background: rgba(255, 255, 255, 0.82);
+      color: #000;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    @include mobile {
+      font-size: $font-size-xs;
+      padding: 0.75rem 1.25rem;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.nav {
+  &__list {
+    display: flex;
+    gap: $spacing-xl;
+    align-items: center;
+  }
+
+  &__link {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $dark;
+    transition: color $transition-base $easing-out;
+
+    &:hover,
+    &.active {
+      color: $primary;
+    }
+  }
+}

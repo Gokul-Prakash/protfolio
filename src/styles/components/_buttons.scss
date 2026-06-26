@@ -1,0 +1,32 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.btn {
+  @include btn-base;
+
+  &--primary {
+    @include btn-primary;
+  }
+
+  &--secondary {
+    @include btn-base;
+    background-color: transparent;
+    border: 2px solid $primary;
+    color: $primary;
+
+    &:hover:not(:disabled) {
+      background-color: $primary;
+      color: $light;
+    }
+  }
+
+  &--ghost {
+    @include btn-base;
+    background-color: transparent;
+    color: $dark;
+
+    &:hover:not(:disabled) {
+      background-color: $light-dark;
+    }
+  }
+}

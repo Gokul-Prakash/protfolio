@@ -1,0 +1,140 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-xl;
+  transition:
+    background $transition-base $easing-out,
+    border-color $transition-base $easing-out,
+    backdrop-filter $transition-base $easing-out;
+  border-bottom: 1px solid transparent;
+  overflow: hidden;
+
+  &--scrolled {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  // ── Left — logo + marquee + timer ─────────
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    width: 42%;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    img {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+  }
+
+  // Marquee
+  &__marquee {
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+  }
+
+  &__marquee-track {
+    display: flex;
+    width: max-content;
+    animation: header-marquee 20s linear infinite;
+
+    span {
+      font-family: $font-mono;
+      font-size: $font-size-xs;
+      color: rgba(0, 0, 0, 0.45);
+      white-space: nowrap;
+      padding-right: $spacing-sm;
+    }
+  }
+
+  // Timer — sits at end of left section
+  &__time {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    color: rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+      opacity: 0.55;
+    }
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  // ── Right — nav only ──────────────────────
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    flex-shrink: 0;
+
+    @include mobile {
+      gap: $spacing-sm;
+    }
+  }
+
+  &__nav-link {
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    transition: color $transition-fast $easing-out;
+    letter-spacing: 0.02em;
+
+    &:hover,
+    &.active {
+      color: #000;
+    }
+
+    @include mobile {
+      font-size: 0.65rem;
+    }
+  }
+}
+
+@keyframes header-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

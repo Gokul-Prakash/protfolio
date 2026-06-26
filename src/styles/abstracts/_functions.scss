@@ -1,0 +1,9 @@
+@use 'variables' as *;
+
+@function rem($px) {
+  @return #{$px / 16}rem;
+}
+
+@function spacing($multiplier) {
+  @return #{$multiplier * 0.25}rem;
+}

@@ -1,0 +1,82 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.who-am-i {
+  background: #fff;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem clamp(1.25rem, 5vw, 3.5rem);
+  }
+
+  // ── Header ────────────────────────────────────────────────
+  &__header {
+    margin-bottom: clamp($spacing-2xl, 5vw, 5rem);
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-weight: 700;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #000;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__subtitle {
+    font-family: $font-mono;
+    font-size: clamp($font-size-xs, 1.1vw, $font-size-sm);
+    color: rgba(0, 0, 0, 0.45);
+    line-height: $line-height-normal;
+  }
+
+  // ── Row — two-column alternating layout ───────────────────
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp($spacing-xl, 5vw, $spacing-3xl);
+    align-items: center;
+    margin-bottom: clamp($spacing-2xl, 6vw, 6rem);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // ── Columns ───────────────────────────────────────────────
+  &__col {
+    &--image {
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      // On mobile, image always comes first
+      @include mobile {
+        order: -1;
+      }
+    }
+
+    &--text {
+      p {
+        font-family: $font-mono;
+        font-size: clamp($font-size-xs, 1.1vw, $font-size-sm);
+        line-height: $line-height-relaxed;
+        color: rgba(0, 0, 0, 0.65);
+
+        & + p {
+          margin-top: $spacing-lg;
+        }
+      }
+    }
+  }
+}
