@@ -24,9 +24,7 @@ const Footer = () => {
         </video>
 
         <div className="footer__card-content">
-          <span className="footer__kicker">
-            <span className="footer__kicker-index">04</span> Contact
-          </span>
+          <span className="footer__kicker">Contact</span>
           <h2 className="footer__heading">
             Let's build it.
             <br />
@@ -83,9 +81,6 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="footer__bottom">
         <p className="footer__copy">© {year} Gokul · Terms &amp; Conditions</p>
-        <div className="ribbon footer__ribbon" aria-hidden="true">
-          <span className="ribbon__rule" />
-        </div>
         <button
           type="button"
           className="footer__top"

@@ -76,7 +76,7 @@
   background-size: $cols 100%, 100% calc(100% / #{$rows});
 }
 
-// Diagonal hatching (stripe ribbons, button textures)
+// Diagonal hatching (stripe button texture)
 @mixin hatch($color, $period: 8px, $stroke: 1.5px) {
   background-image: repeating-linear-gradient(
     119deg,

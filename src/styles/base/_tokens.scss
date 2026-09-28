@@ -1,33 +1,65 @@
 // ============================================
 // DESIGN TOKENS (CSS custom properties)
+//
+// Role tokens flip with the theme (data-theme on <html>, or on any
+// element to force a scope — e.g. the always-dark side menu):
+//   --ink     page background        --paper   primary text
+//   --raised  cards / rows           --muted   secondary text
+//   --line    1px rules, grid gaps   --accent  accent for text/lines
+//
+// Fixed tokens never flip:
+//   --field / --field-ink   light hero bands and the dark text on them
+//   --accent-fill           brand blue used as a background
 // ============================================
 :root {
-  color-scheme: dark;
-
-  // Surfaces
-  --ink: oklch(0.145 0.01 148);          // page background
-  --raised: oklch(0.18 0.012 148);       // cards, rows
-  --line: oklch(0.31 0.012 148);         // 1px rules and grid gaps
-  --muted: oklch(0.69 0.012 148);        // secondary text
-  --paper: oklch(0.94 0.008 96);         // primary text / light fields
+  --field: oklch(0.94 0.008 96);
+  --field-ink: oklch(0.145 0.01 148);
+  --accent-fill: #23adff;              // brand blue (from the hero video)
 
   // Accents
-  --accent: oklch(0.88 0.18 96);         // yellow
-  --rind: oklch(0.76 0.15 155);          // green
-  --blueberry: oklch(0.68 0.18 255);
-  --blackcurrant: oklch(0.64 0.18 302);
-  --dragonfruit: oklch(0.72 0.2 345);
+  --rind: oklch(0.76 0.15 155);        // green
   --watermelon: oklch(0.67 0.22 26.43);
 }
 
-// Light field — hero bands keep dark text on the video
-.tone-light {
-  --fg: var(--ink);
-  --fg-muted: color-mix(in oklch, var(--ink) 62%, transparent);
-  --fg-line: color-mix(in oklch, var(--ink) 18%, transparent);
-  color: var(--ink);
+// Dark (default)
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --ink: oklch(0.145 0.01 148);
+  --raised: oklch(0.18 0.012 148);
+  --line: oklch(0.31 0.012 148);
+  --muted: oklch(0.69 0.012 148);
+  --paper: oklch(0.94 0.008 96);
+  --accent: #23adff;
+  --logo-filter: invert(1);            // logo art is dark; flip it on dark bars
+  --shadow-card: 0 30px 60px -20px rgb(0 0 0 / 0.7);
 }
 
+// Light
+[data-theme='light'] {
+  color-scheme: light;
+
+  --ink: oklch(0.975 0.004 96);
+  --raised: #ffffff;
+  --line: oklch(0.89 0.006 96);
+  --muted: oklch(0.5 0.01 148);
+  --paper: oklch(0.18 0.01 148);
+  --accent: #0a86d4;                   // deeper brand blue so text stays readable on white
+  --logo-filter: none;
+  --shadow-card: 0 24px 48px -20px rgb(20 30 40 / 0.28);
+}
+
+// Light field — hero bands keep dark text on the video in both themes
+.tone-light {
+  --fg: var(--field-ink);
+  --fg-muted: color-mix(in oklch, var(--field-ink) 62%, transparent);
+  --fg-line: color-mix(in oklch, var(--field-ink) 18%, transparent);
+  --logo-filter: none;
+  color: var(--field-ink);
+}
+
+// Themed surface — follows the current theme
 .tone-dark {
   --fg: var(--paper);
   --fg-muted: var(--muted);

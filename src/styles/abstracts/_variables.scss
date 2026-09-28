@@ -1,13 +1,18 @@
 // ============================================
 // COLORS — mapped to CSS custom properties in base/_tokens.scss
-// (dark "ink" base, warm "paper" text, yellow accent)
+// (dark "ink" base, warm "paper" text, blue accent)
 // ============================================
 $ink: var(--ink);
 $raised: var(--raised);
 $line: var(--line);
 $muted: var(--muted);
 $paper: var(--paper);
-$accent: var(--accent);
+$accent: var(--accent);             // text, lines, outlines (theme-adjusted)
+$accent-fill: var(--accent-fill);   // backgrounds (always the brand blue)
+
+// Fixed — light hero fields and the dark text on them / on the blue fill
+$field: var(--field);
+$field-ink: var(--field-ink);
 
 $success: var(--rind);
 $danger: var(--watermelon);

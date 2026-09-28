@@ -24,7 +24,6 @@ const ThingsIBuild = () => {
   return (
     <section className="tib">
       <SectionHeading
-        index="02"
         label="Capabilities"
         title="Things I help build."
         description="Designing products, interactions, and experiences that people enjoy using."
@@ -32,7 +31,7 @@ const ThingsIBuild = () => {
 
       {/* Stage — fanned stack of screens */}
       <div className="tib__stage">
-        <span className="tib__stage-fig">Fig. A — Recent screens</span>
+        <span className="tib__stage-fig">Recent screens</span>
         {/* Reveal is triggered by the fan as a whole — the cards start below the
             stage's clipped edge, so they'd never register as "in view" themselves */}
         <motion.div
@@ -82,7 +81,6 @@ const ThingsIBuild = () => {
             variants={fadeUp(0, 24)}
           >
             <div className="tib__cell-head">
-              <span className="tib__cell-index">0{i + 1}</span>
               <span className="tib__cell-icon" aria-hidden="true">{ICONS[i]}</span>
             </div>
             <h3 className="tib__cell-title">{skill.title}</h3>

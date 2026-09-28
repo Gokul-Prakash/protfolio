@@ -22,8 +22,7 @@ const Playground = () => {
 
       <section className="playground__body">
         <SectionHeading
-          index="01"
-          label="Experiments"
+            label="Experiments"
           title="Curiosity over constraints."
           description="Playground is my experimental lab where I break rules and try new tools — where a 3D doodle might become a UI system, and a mistake might become an aesthetic."
         />
@@ -39,7 +38,6 @@ const Playground = () => {
               viewport={{ once: true, amount: 0.2 }}
             >
               <div className={`playground__card-thumb${'tall' in tile && tile.tall ? ' playground__card-thumb--tall' : ''}`}>
-                <span className="playground__card-fig">Exp. {String(i + 1).padStart(2, '0')}</span>
                 <span className="playground__card-soon">Coming soon</span>
               </div>
             </motion.div>

@@ -108,10 +108,10 @@ const Contact = () => {
             <span aria-hidden="true">›_</span>
           </div>
 
-          {FIELDS.map((f, i) => (
+          {FIELDS.map((f) => (
             <div className="contact__field" key={f.id}>
               <label className="contact__field-label" htmlFor={f.id}>
-                <span className="contact__field-index">0{i + 1}</span> {f.label}
+                {f.label}
               </label>
               <input
                 id={f.id}
@@ -126,7 +126,7 @@ const Contact = () => {
 
           <div className="contact__field">
             <label className="contact__field-label" htmlFor="message">
-              <span className="contact__field-index">03</span> Message
+              Message
             </label>
             <textarea
               id="message"

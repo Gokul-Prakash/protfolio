@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { EASE } from '../../utils/animations';
 
 type SectionHeadingProps = {
-  index: string;
   label: string;
   title: ReactNode;
   description?: ReactNode;
@@ -17,8 +16,8 @@ const Arrow = () => (
   </svg>
 );
 
-// "01 / Label" kicker · title + description · optional action link, on a 12-col grid
-const SectionHeading = ({ index, label, title, description, action }: SectionHeadingProps) => (
+// Label kicker · title + description · optional action link, on a 12-col grid
+const SectionHeading = ({ label, title, description, action }: SectionHeadingProps) => (
   <motion.header
     className="section-heading"
     initial={{ opacity: 0, y: 24 }}
@@ -26,10 +25,7 @@ const SectionHeading = ({ index, label, title, description, action }: SectionHea
     viewport={{ once: true, amount: 0.4 }}
     transition={{ duration: 0.7, ease: EASE }}
   >
-    <p className="section-heading__kicker">
-      <span className="section-heading__index">{index}</span>
-      <span>{label}</span>
-    </p>
+    <p className="section-heading__kicker">{label}</p>
 
     <div className="section-heading__body">
       <h2 className="section-heading__title">{title}</h2>

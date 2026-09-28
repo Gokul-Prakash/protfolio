@@ -4,7 +4,7 @@ import { videos } from '@assets/assets';
 import FitText from '../ui/FitText';
 import StripeButton from '../ui/StripeButton';
 import { fadeUp, stagger } from '../../utils/animations';
-import { RESUME_URL, SKILLS } from '../../utils/content';
+import { RESUME_URL } from '../../utils/content';
 
 const ArrowDown = () => (
   <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -41,10 +41,9 @@ const HeroSection = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* Meta divider — greeting · rule · location */}
+        {/* Meta — greeting · location */}
         <motion.div className="hero__meta" variants={fadeUp()}>
           <span>Hi, I'm Gokul</span>
-          <span className="hero__meta-rule" aria-hidden="true" />
           <span>Based in Bangalore, IN</span>
         </motion.div>
 
@@ -71,23 +70,6 @@ const HeroSection = () => {
             </StripeButton>
           </motion.div>
         </div>
-
-        {/* Numbered capability cells */}
-        <motion.ol className="hero__features" variants={fadeUp()}>
-          {SKILLS.map((skill, i) => (
-            <li key={skill.title} className="hero__feature">
-              <span className="hero__feature-index">0{i + 1}</span>
-              <span className="hero__feature-name">{skill.title}</span>
-              <span className="hero__feature-blurb">{skill.items.join(' · ')}</span>
-            </li>
-          ))}
-        </motion.ol>
-
-        <motion.div className="ribbon hero__ribbon" variants={fadeUp()} aria-hidden="true">
-          <span className="ribbon__mark">+</span>
-          <span className="ribbon__rule" />
-          <span className="ribbon__mark">+</span>
-        </motion.div>
       </motion.div>
     </section>
   );

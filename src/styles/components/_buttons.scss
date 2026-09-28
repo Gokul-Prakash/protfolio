@@ -107,8 +107,8 @@
 
   // On light fields (hero)
   .tone-light & {
-    --fg: #{$ink};
-    --bg: #{$paper};
+    --fg: #{$field-ink};
+    --bg: #{$field};
   }
 }
 

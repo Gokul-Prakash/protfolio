@@ -20,7 +20,6 @@ const WhoAmISection = () => {
   return (
     <section className="who-am-i">
       <SectionHeading
-        index="03"
         label="About"
         title="Who I am."
         description="Finally, meet the man behind the action!"
@@ -29,7 +28,7 @@ const WhoAmISection = () => {
       {/* Row 1 — image left, text right */}
       <div className="who-am-i__row">
         <motion.figure className="who-am-i__media" variants={fadeUp(0, 40)} {...reveal}>
-          <span className="who-am-i__fig">Fig. 01 — Personal moments</span>
+          <span className="who-am-i__fig">Personal moments</span>
           <img src={images.whoAmI.container} alt="Gokul, with photos from Gudiyattam and Bangalore" draggable={false} />
         </motion.figure>
 
@@ -75,7 +74,7 @@ const WhoAmISection = () => {
         </motion.div>
 
         <motion.figure className="who-am-i__media" variants={fadeUp(0.1, 40)} {...reveal}>
-          <span className="who-am-i__fig">Fig. 02 — Interests</span>
+          <span className="who-am-i__fig">Interests</span>
           <img src={images.whoAmI.container1} alt="Gokul's interests" draggable={false} />
         </motion.figure>
       </div>

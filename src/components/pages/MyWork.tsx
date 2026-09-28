@@ -13,7 +13,6 @@ const MyWork = () => {
   return (
     <section className="selected-work" id="work">
       <SectionHeading
-        index="01"
         label="Selected work"
         title="A glimpse of my work."
         description="A selection of projects focused on clarity, interaction, and building better experiences."
@@ -31,7 +30,6 @@ const MyWork = () => {
             viewport={{ once: true, amount: 0.2 }}
           >
             <div className="work-card__media">
-              <span className="work-card__fig">Fig. {String(i + 1).padStart(2, '0')}</span>
               <img src={p.img} alt={p.title} loading="lazy" draggable={false} />
             </div>
 

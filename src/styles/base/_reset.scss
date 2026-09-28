@@ -24,11 +24,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition:
+    background-color $transition-base ease,
+    color $transition-base ease;
 }
 
 ::selection {
-  background: $accent;
-  color: $ink;
+  background: $accent-fill;
+  color: $field-ink;
 }
 
 button,

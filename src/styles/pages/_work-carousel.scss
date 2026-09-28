@@ -41,18 +41,21 @@
     overflow: hidden;
     background: $ink;
 
+    // The screenshots have ~36px rounded, transparent corners baked in.
+    // A 10% zoom pushes those corners outside the square card.
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: top left;
       pointer-events: none;
+      transform: scale(1.1);
       transition: transform 0.6s $easing-out;
     }
   }
 
   &__card:hover &__media img {
-    transform: scale(1.04);
+    transform: scale(1.14);
   }
 
   &__caption {

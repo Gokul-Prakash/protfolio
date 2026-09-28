@@ -12,7 +12,7 @@
     border: 1px solid $line;
     border-bottom: 0;
     overflow: hidden;
-    background-color: color-mix(in oklch, var(--accent) 3%, var(--ink));
+    background-color: color-mix(in oklch, var(--accent-fill) 4%, var(--ink));
     @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
   }
 
@@ -41,7 +41,7 @@
       width: 100%;
       height: auto;
       border-radius: $spacing-md;
-      box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.7);
+      box-shadow: var(--shadow-card);
       pointer-events: none;
       user-select: none;
     }
@@ -68,26 +68,25 @@
     background: $raised;
     color: $paper;
 
-    // Highlighted yellow cell
+    // Highlighted accent cell
     &--accent {
-      background: $accent;
-      color: $ink;
+      background: $accent-fill;
+      color: $field-ink;
 
-      .tib__cell-index,
       .tib__cell-icon {
-        color: $ink;
+        color: $field-ink;
       }
 
       .tib__cell-blurb,
       .tib__cell-readout {
-        color: color-mix(in oklch, var(--ink) 72%, transparent);
+        color: color-mix(in oklch, var(--field-ink) 72%, transparent);
       }
 
       .tib__cell-readout {
-        border-color: color-mix(in oklch, var(--ink) 20%, transparent);
+        border-color: color-mix(in oklch, var(--field-ink) 20%, transparent);
 
         li::before {
-          color: $ink;
+          color: $field-ink;
         }
       }
     }
@@ -100,10 +99,6 @@
     margin-bottom: $spacing-lg;
   }
 
-  &__cell-index {
-    @include kicker;
-    color: $accent;
-  }
 
   &__cell-icon {
     color: $muted;

@@ -5,6 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/src/assets/images/g-logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0f1311" />
+    <script>
+      // Apply the saved/system theme before first paint (mirrors ThemeContext)
+      (function () {
+        var t;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
     <meta name="description" content="Gokul — Product Designer based in Bangalore. UX, interaction and AI-assisted design." />
     <title>Gokul — Product Designer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

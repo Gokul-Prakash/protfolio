@@ -20,9 +20,6 @@ const WorkCarousel = () => {
               <figcaption className="work-carousel__caption">
                 <span className="work-carousel__caret">›</span>
                 <span className="work-carousel__label">{item.label}</span>
-                <span className="work-carousel__index">
-                  {String((i % CAROUSEL_WORK.length) + 1).padStart(2, '0')}
-                </span>
               </figcaption>
             </figure>
           ))}

@@ -39,14 +39,6 @@
     }
   }
 
-  &__fig {
-    @include kicker;
-    position: absolute;
-    top: 12px;
-    right: 14px;
-    z-index: 1;
-    color: color-mix(in oklch, var(--paper) 38%, transparent);
-  }
 
   &__row {
     display: flex;
@@ -105,8 +97,8 @@
     }
 
     .work-card__action {
-      background: $accent;
-      color: $ink;
+      background: $accent-fill;
+      color: $field-ink;
 
       svg {
         transform: translate(2px, -2px);

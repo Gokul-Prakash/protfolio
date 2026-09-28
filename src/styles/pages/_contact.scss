@@ -109,7 +109,7 @@
     &:focus-within {
       background: color-mix(in oklch, var(--paper) 3%, transparent);
 
-      .contact__field-index {
+      .contact__field-label {
         color: $accent;
       }
     }
@@ -121,11 +121,6 @@
     margin-bottom: 10px;
   }
 
-  &__field-index {
-    margin-right: 0.5em;
-    color: color-mix(in oklch, var(--paper) 35%, transparent);
-    transition: color $transition-fast ease;
-  }
 
   &__input,
   &__textarea {

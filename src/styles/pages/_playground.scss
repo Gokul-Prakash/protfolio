@@ -58,13 +58,6 @@
     }
   }
 
-  &__card-fig {
-    @include kicker;
-    position: absolute;
-    top: 12px;
-    left: 14px;
-    color: $accent;
-  }
 
   &__card-soon {
     @include kicker;

@@ -8,7 +8,7 @@
   position: relative;
   min-height: 100svh;
   display: flex;
-  background: $paper;
+  background: $field;
   overflow: hidden;
   isolation: isolate;
 
@@ -29,7 +29,7 @@
   &__grid {
     position: absolute;
     inset: 0;
-    @include grid-lines(color-mix(in oklch, var(--ink) 6%, transparent), calc(100% / 12), 10);
+    @include grid-lines(color-mix(in oklch, var(--field-ink) 6%, transparent), calc(100% / 12), 10);
   }
 
   // ── Content ───────────────────────────────────────────────
@@ -37,26 +37,20 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center; // block sits in the vertical middle of the hero
     gap: clamp($spacing-lg, 3vw, $spacing-2xl);
     padding: calc(#{$header-height} + #{$spacing-2xl}) $gutter clamp($spacing-xl, 4vw, $spacing-2xl);
     will-change: opacity;
   }
 
-  // ── Meta divider ──────────────────────────────────────────
+  // ── Meta — greeting · location ────────────────────────────
   &__meta {
     @include kicker;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: $spacing-md;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $spacing-sm $spacing-md;
     color: var(--fg);
-  }
-
-  &__meta-rule {
-    height: 1px;
-    background: currentColor;
-    opacity: 0.6;
   }
 
   // ── Title ─────────────────────────────────────────────────
@@ -68,7 +62,7 @@
       font-weight: 720;
       line-height: 0.88;
       letter-spacing: -0.055em;
-      color: $ink;
+      color: $field-ink;
     }
   }
 
@@ -120,61 +114,5 @@
         width: 100%;
       }
     }
-  }
-
-  // ── Numbered feature cells ────────────────────────────────
-  &__features {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid var(--fg-line);
-    padding-top: $spacing-md;
-
-    @include below-tablet {
-      grid-template-columns: 1fr;
-      padding-top: 0;
-    }
-  }
-
-  &__feature {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 0 $spacing-lg;
-
-    &:first-child {
-      padding-left: 0;
-    }
-
-    & + & {
-      border-left: 1px solid var(--fg-line);
-    }
-
-    @include below-tablet {
-      padding: $spacing-md 0;
-
-      & + & {
-        border-left: 0;
-        border-top: 1px solid var(--fg-line);
-      }
-    }
-  }
-
-  &__feature-index {
-    @include kicker;
-    color: var(--fg-muted);
-    letter-spacing: 0.24em;
-  }
-
-  &__feature-name {
-    @include kicker;
-    font-weight: 700;
-    color: var(--fg);
-  }
-
-  &__feature-blurb {
-    font-family: $font-mono;
-    font-size: $font-size-xs;
-    line-height: 1.55;
-    color: var(--fg-muted);
   }
 }

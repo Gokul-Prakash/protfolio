@@ -18,8 +18,8 @@
   left: $spacing-sm;
   z-index: 200;
   padding: $spacing-sm $spacing-md;
-  background: $accent;
-  color: $ink;
+  background: $accent-fill;
+  color: $field-ink;
   transform: translateY(-200%);
 
   &:focus {

@@ -4,6 +4,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { images } from '@assets/assets';
 import RollingText from '../ui/RollingText';
 import StripeButton from '../ui/StripeButton';
+import ThemeToggle from '../ui/ThemeToggle';
 import { EASE } from '../../utils/animations';
 import { EMAIL, NAV_LINKS } from '../../utils/content';
 
@@ -75,6 +76,8 @@ const Header = () => {
     <>
       <motion.header
         className={headerClass}
+        // Over the always-dark side menu the header must use dark-theme colours
+        data-theme={menuOpen ? 'dark' : undefined}
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: EASE }}
@@ -82,7 +85,7 @@ const Header = () => {
         {/* Left — logo + status */}
         <div className="header__left">
           <NavLink to="/" className="header__logo" aria-label="Gokul — home">
-            <img src={images.logo.gLogo} alt="" width={20} height={26} />
+            <img src={images.logo.gLogo} alt="" width={26} height={26} />
             <span className="header__wordmark">Gokul</span>
           </NavLink>
 
@@ -106,6 +109,7 @@ const Header = () => {
           <span className="header__time" title="Local time in Bangalore">
             BLR {time}
           </span>
+          <ThemeToggle />
           <StripeButton to="/contact" variant="framed" className="header__cta">
             Let's talk
           </StripeButton>
@@ -141,6 +145,7 @@ const Header = () => {
             <motion.aside
               id="side-menu"
               className="side-menu"
+              data-theme="dark"
               aria-label="Mobile navigation"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -156,7 +161,6 @@ const Header = () => {
                     transition={{ duration: 0.5, ease: EASE, delay: 0.12 + i * 0.06 }}
                   >
                     <NavLink to={path} end className="side-menu__link">
-                      <span className="side-menu__index">0{i + 1}</span>
                       {label}
                     </NavLink>
                   </motion.div>

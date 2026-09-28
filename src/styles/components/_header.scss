@@ -54,14 +54,15 @@
     flex-shrink: 0;
 
     img {
-      width: auto;
+      width: 26px;
       height: 26px;
     }
   }
 
-  // Invert the dark logo mark on dark bars
-  &.tone-dark &__logo img {
-    filter: invert(1);
+  // Logo art is dark — --logo-filter flips it on dark bars (see _tokens)
+  &__logo img {
+    filter: var(--logo-filter);
+    transition: filter $transition-base ease;
   }
 
   &__wordmark {
@@ -118,6 +119,17 @@
     align-items: center;
     justify-content: flex-end;
     gap: $spacing-lg;
+
+    @include below-tablet {
+      gap: $spacing-sm;
+    }
+
+    .theme-toggle {
+      @include below-tablet {
+        width: 40px;
+        height: 40px;
+      }
+    }
   }
 
   &__time {
@@ -216,7 +228,7 @@
     position: fixed;
     inset: 0;
     z-index: 98;
-    background: color-mix(in oklch, var(--ink) 55%, transparent);
+    background: color-mix(in oklch, var(--field-ink) 55%, transparent);
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
   }
@@ -247,10 +259,6 @@
     }
   }
 
-  &__index {
-    @include kicker;
-    color: $accent;
-  }
 
   &__footer {
     display: flex;

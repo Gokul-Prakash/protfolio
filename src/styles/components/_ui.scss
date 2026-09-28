@@ -64,8 +64,6 @@
   &__kicker {
     @include kicker;
     grid-column: 1 / 4;
-    display: flex;
-    gap: 0.75em;
     padding-top: 0.6em;
     color: $muted;
 
@@ -75,9 +73,6 @@
     }
   }
 
-  &__index {
-    color: $accent;
-  }
 
   &__body {
     grid-column: 4 / 10;
@@ -158,29 +153,6 @@
   }
 }
 
-// ============================================================
-// STRIPE RIBBON — decorative hatched rule
-// ============================================================
-.ribbon {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: var(--fg, #{$paper});
-
-  &__mark {
-    font-family: $font-mono;
-    font-size: 18px;
-    font-weight: 640;
-    line-height: 1;
-  }
-
-  &__rule {
-    flex: 1;
-    height: 16px;
-    @include hatch(currentColor);
-  }
-}
-
 // Status dot — "open to work"
 .status-dot {
   position: relative;
@@ -216,7 +188,7 @@
   align-items: flex-end;
   min-height: clamp(420px, 60vh, 620px);
   padding: calc(#{$header-height} + #{$section-y}) $gutter clamp($spacing-2xl, 5vw, $spacing-3xl);
-  background: $paper;
+  background: $field;
 
   &__bg {
     position: absolute;
@@ -233,7 +205,7 @@
   &__grid {
     position: absolute;
     inset: 0;
-    @include grid-lines(color-mix(in oklch, var(--ink) 6%, transparent), calc(100% / 12), 8);
+    @include grid-lines(color-mix(in oklch, var(--field-ink) 6%, transparent), calc(100% / 12), 8);
   }
 
   &__content {
@@ -265,7 +237,7 @@
     font-size: clamp(3.5rem, 13vw, 12rem);
     letter-spacing: -0.055em;
     line-height: 0.88;
-    color: $ink;
+    color: $field-ink;
   }
 
   &__subtitle {
@@ -277,4 +249,43 @@
       color: var(--fg-muted);
     }
   }
+}
+
+// ============================================================
+// THEME TOGGLE
+// ============================================================
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid var(--fg-line, #{$line});
+  background: transparent;
+  color: var(--fg, #{$paper});
+  cursor: pointer;
+  transition:
+    border-color $transition-fast ease,
+    background $transition-fast ease;
+
+  &:hover {
+    border-color: var(--fg, #{$paper});
+  }
+
+  &__icon {
+    display: grid;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// Circular theme wipe (ThemeContext) — disable the default cross-fade
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
