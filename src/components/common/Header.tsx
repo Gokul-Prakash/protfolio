@@ -1,19 +1,20 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { NavLink } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { NavLink, useLocation } from 'react-router-dom';
 import { images } from '@assets/assets';
+import RollingText from '../ui/RollingText';
+import StripeButton from '../ui/StripeButton';
+import { EASE } from '../../utils/animations';
+import { EMAIL, NAV_LINKS } from '../../utils/content';
 
-const NAV_LINKS = [
-  { label: '[ Works ]', path: '/works' },
-  { label: '[ Playground ]', path: '/playground' },
-  { label: '[ Contact ]', path: '/contact' },
-];
-
-const MARQUEE_TEXT = '/ Open to opportunities ';
+// Pages whose top section is a light (paper) field — header uses dark text there
+const LIGHT_HERO_ROUTES = ['/', '/contact', '/playground'];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [time, setTime] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     const tick = () => {
@@ -22,6 +23,7 @@ const Header = () => {
           hour: 'numeric',
           minute: '2-digit',
           hour12: true,
+          timeZone: 'Asia/Kolkata',
         })
       );
     };
@@ -32,50 +34,147 @@ const Header = () => {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  return (
-    <motion.header
-      className={`header${scrolled ? ' header--scrolled' : ''}`}
-      initial={{ opacity: 0, y: -16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-    >
-      {/* Left — logo + marquee */}
-      <div className="header__left">
-        <NavLink to="/" className="header__logo" aria-label="Home">
-          <img src={images.logo.gLogo} alt="g" width={32} height={32} />
-        </NavLink>
+  // Close the side menu on navigation
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname, hash]);
 
-        <div className="header__marquee" aria-hidden="true">
-          <div className="header__marquee-track">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <span key={i}>{MARQUEE_TEXT}</span>
-            ))}
-          </div>
+  // While open: lock page scroll, close on Escape, close if resized up to desktop
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenuOpen(false);
+    const desktop = window.matchMedia('(min-width: 768px)');
+    const onResize = () => desktop.matches && setMenuOpen(false);
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    desktop.addEventListener('change', onResize);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+      desktop.removeEventListener('change', onResize);
+    };
+  }, [menuOpen]);
+
+  const light = LIGHT_HERO_ROUTES.includes(pathname) && !scrolled && !menuOpen;
+
+  const headerClass = [
+    'header',
+    light ? 'tone-light' : 'tone-dark',
+    scrolled && 'header--scrolled',
+    menuOpen && 'header--menu-open',
+  ].filter(Boolean).join(' ');
+
+  return (
+    <>
+      <motion.header
+        className={headerClass}
+        initial={{ opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: EASE }}
+      >
+        {/* Left — logo + status */}
+        <div className="header__left">
+          <NavLink to="/" className="header__logo" aria-label="Gokul — home">
+            <img src={images.logo.gLogo} alt="" width={20} height={26} />
+            <span className="header__wordmark">Gokul</span>
+          </NavLink>
+
+          <span className="header__status">
+            <span className="status-dot" aria-hidden="true" />
+            Open to opportunities
+          </span>
         </div>
 
-        {/* Timer at end of left section */}
-        <span className="header__time">
-          {time}
-          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" />
-            <path d="M8 5v3.5l2 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </span>
-      </div>
+        {/* Center — nav (tablet/desktop) */}
+        <nav className="header__nav" aria-label="Main navigation">
+          {NAV_LINKS.map(({ label, path }) => (
+            <NavLink key={path} to={path} end className="header__nav-link">
+              <RollingText text={label} />
+            </NavLink>
+          ))}
+        </nav>
 
-      {/* Right — nav only */}
-      <nav className="header__nav" aria-label="Main navigation">
-        {NAV_LINKS.map(({ label, path }) => (
-          <NavLink key={path} to={path} className="header__nav-link">
-            {label}
-          </NavLink>
-        ))}
-      </nav>
-    </motion.header>
+        {/* Right — local time + CTA */}
+        <div className="header__right">
+          <span className="header__time" title="Local time in Bangalore">
+            BLR {time}
+          </span>
+          <StripeButton to="/contact" variant="framed" className="header__cta">
+            Let's talk
+          </StripeButton>
+
+          {/* Burger (mobile) */}
+          <button
+            type="button"
+            className={`header__burger${menuOpen ? ' header__burger--open' : ''}`}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="side-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+          </button>
+        </div>
+      </motion.header>
+
+      {/* Side menu — rendered outside the header so its transform/backdrop-filter
+          doesn't trap the fixed-position drawer */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            <motion.div
+              className="side-menu__overlay"
+              onClick={() => setMenuOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.aside
+              id="side-menu"
+              className="side-menu"
+              aria-label="Mobile navigation"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.5, ease: EASE }}
+            >
+              <nav className="side-menu__nav">
+                {NAV_LINKS.map(({ label, path }, i) => (
+                  <motion.div
+                    key={path}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, ease: EASE, delay: 0.12 + i * 0.06 }}
+                  >
+                    <NavLink to={path} end className="side-menu__link">
+                      <span className="side-menu__index">0{i + 1}</span>
+                      {label}
+                    </NavLink>
+                  </motion.div>
+                ))}
+              </nav>
+
+              <div className="side-menu__footer">
+                <span className="side-menu__label">Say hello</span>
+                <a href={`mailto:${EMAIL}`} className="side-menu__email">
+                  {EMAIL}
+                </a>
+                <span className="side-menu__label">BLR {time} · Open to opportunities</span>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

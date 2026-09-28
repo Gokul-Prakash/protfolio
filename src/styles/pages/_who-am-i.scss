@@ -2,81 +2,118 @@
 @use '../abstracts/mixins' as *;
 
 .who-am-i {
-  background: #fff;
+  @include section-padding;
+  border-top: 1px solid $line;
 
-  &__inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem clamp(1.25rem, 5vw, 3.5rem);
-  }
-
-  // ── Header ────────────────────────────────────────────────
-  &__header {
-    margin-bottom: clamp($spacing-2xl, 5vw, 5rem);
-  }
-
-  &__title {
-    font-family: $font-display;
-    font-weight: 700;
-    font-size: clamp(2.25rem, 5vw, 4rem);
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    color: #000;
-    margin-bottom: $spacing-sm;
-  }
-
-  &__subtitle {
-    font-family: $font-mono;
-    font-size: clamp($font-size-xs, 1.1vw, $font-size-sm);
-    color: rgba(0, 0, 0, 0.45);
-    line-height: $line-height-normal;
-  }
-
-  // ── Row — two-column alternating layout ───────────────────
+  // ── Row — image + text, alternating ──────────────────────
   &__row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp($spacing-xl, 5vw, $spacing-3xl);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: $grid-gap;
+    row-gap: $spacing-xl;
     align-items: center;
-    margin-bottom: clamp($spacing-2xl, 6vw, 6rem);
 
-    &:last-child {
-      margin-bottom: 0;
+    & + & {
+      margin-top: $section-y;
     }
 
-    @include mobile {
+    @include below-tablet {
       grid-template-columns: 1fr;
     }
   }
 
-  // ── Columns ───────────────────────────────────────────────
-  &__col {
-    &--image {
-      img {
-        display: block;
-        width: 100%;
-        height: auto;
-        pointer-events: none;
-        user-select: none;
-      }
+  &__media {
+    position: relative;
+    grid-column: 1 / 8;
+    padding: $spacing-lg;
+    border: 1px solid $line;
+    background-color: $raised;
+    @include grid-lines(color-mix(in oklch, var(--paper) 4%, transparent));
 
-      // On mobile, image always comes first
-      @include mobile {
-        order: -1;
-      }
+    img {
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  &__text {
+    grid-column: 8 / -1;
+    padding-left: clamp(0px, 2vw, $spacing-xl);
+
+    p + p {
+      margin-top: $spacing-md;
+    }
+  }
+
+  &__row--reverse &__text {
+    grid-column: 1 / 6;
+    grid-row: 1;
+    padding-left: 0;
+    padding-right: clamp(0px, 2vw, $spacing-xl);
+  }
+
+  &__row--reverse &__media {
+    grid-column: 6 / -1;
+  }
+
+  // Narrow: stack, image first
+  @include below-tablet {
+    &__media,
+    &__text,
+    &__row--reverse &__media,
+    &__row--reverse &__text {
+      grid-column: 1;
+      grid-row: auto;
+      padding-left: 0;
+      padding-right: 0;
     }
 
-    &--text {
-      p {
-        font-family: $font-mono;
-        font-size: clamp($font-size-xs, 1.1vw, $font-size-sm);
-        line-height: $line-height-relaxed;
-        color: rgba(0, 0, 0, 0.65);
+    &__media {
+      order: -1;
+    }
+  }
 
-        & + p {
-          margin-top: $spacing-lg;
-        }
-      }
+  &__fig {
+    @include kicker;
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    color: color-mix(in oklch, var(--paper) 38%, transparent);
+  }
+
+  &__lead {
+    font-size: clamp($font-size-lg, 1.6vw, 1.375rem);
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    color: $paper;
+    text-wrap: pretty;
+  }
+
+  // ── Facts — dossier table ────────────────────────────────
+  &__facts {
+    margin-top: $spacing-xl;
+    border-top: 1px solid $line;
+  }
+
+  &__fact {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: $spacing-md;
+    padding: 12px 0;
+    border-bottom: 1px solid $line;
+
+    dt {
+      @include kicker;
+      padding-top: 2px;
+      color: $muted;
+    }
+
+    dd {
+      font-family: $font-mono;
+      font-size: $font-size-sm;
+      color: $paper;
     }
   }
 }

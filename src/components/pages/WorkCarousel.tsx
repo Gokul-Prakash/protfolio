@@ -1,40 +1,30 @@
-import { motion } from "framer-motion";
-import { images } from "@assets/assets";
-
-const ITEMS = [
-  { img: images.workCarousel.zentra, label: "Zentra" },
-  { img: images.workCarousel.magicClub, label: "Magic Club" },
-  { img: images.workCarousel.octech, label: "Octech" },
-  { img: images.workCarousel.analyticsGenie, label: "Analytics Genie" },
-  { img: images.workCarousel.coreArea, label: "Core Area" },
-  { img: images.workCarousel.deMuis, label: "De Muis" },
-];
+import { CAROUSEL_WORK } from '../../utils/content';
 
 // Duplicate so the scroll loop is seamless
-const TRACK_ITEMS = [...ITEMS, ...ITEMS];
+const TRACK_ITEMS = [...CAROUSEL_WORK, ...CAROUSEL_WORK];
 
 const WorkCarousel = () => {
   return (
-    <section className="work-carousel">
-      <motion.div
-        className="work-carousel__header"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      ></motion.div>
-
-      <div className="work-carousel__viewport" aria-label="Work carousel">
+    <section className="work-carousel" aria-label="Recent work">
+      <div className="work-carousel__viewport">
         <div className="work-carousel__track">
           {TRACK_ITEMS.map((item, i) => (
-            <div className="work-carousel__card" key={i}>
-              <img
-                src={item.img}
-                alt={item.label}
-                loading="lazy"
-                draggable={false}
-              />
-            </div>
+            <figure
+              className="work-carousel__card"
+              key={i}
+              aria-hidden={i >= CAROUSEL_WORK.length || undefined}
+            >
+              <div className="work-carousel__media">
+                <img src={item.img} alt={item.label} loading="lazy" draggable={false} />
+              </div>
+              <figcaption className="work-carousel__caption">
+                <span className="work-carousel__caret">›</span>
+                <span className="work-carousel__label">{item.label}</span>
+                <span className="work-carousel__index">
+                  {String((i % CAROUSEL_WORK.length) + 1).padStart(2, '0')}
+                </span>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>

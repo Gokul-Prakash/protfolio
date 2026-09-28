@@ -2,233 +2,166 @@
 @use "../abstracts/mixins" as *;
 
 .contact {
-  // ── Hero ──────────────────────────────────────────────────
-  &__hero {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 50vh;
-    padding: 120px clamp(1.25rem, 4vw, 3.5rem)
-      clamp($spacing-2xl, 5vw, $spacing-3xl);
-    overflow: hidden;
-
-    @include mobile {
-      min-height: 40vh;
-      padding-top: 100px;
-    }
-  }
-
-  &__hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  &__hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  &__hero::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 20%;
-    background: linear-gradient(to bottom, transparent, #ffffff);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  &__hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    max-width: 700px;
-  }
-
-  &__title {
-    font-family: $font-display;
-    font-weight: 800;
-    font-size: clamp(3rem, 10vw, 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    color: #000;
-    margin-bottom: clamp($spacing-md, 2vw, $spacing-xl);
-
-    @include mobile {
-      font-size: clamp(2.5rem, 14vw, 3.5rem);
-    }
-  }
-
-  &__subtitle {
-    font-family: $font-mono;
-    font-size: clamp($font-size-xs, 1.1vw, $font-size-sm);
-    line-height: $line-height-relaxed;
-    color: rgba(0, 0, 0, 0.55);
-
-    @include mobile {
-      br {
-        display: none;
-      }
-    }
-  }
-
-  // ── Body ──────────────────────────────────────────────────
   &__body {
-    padding: clamp($spacing-2xl, 5vw, $spacing-3xl) clamp(1.25rem, 4vw, 3.5rem);
-    background-color: #ffffff;
-  }
-
-  &__body-inner {
-    max-width: 1100px;
-    margin: 0 auto;
+    @include section-padding;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp($spacing-2xl, 5vw, $spacing-3xl);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: $grid-gap;
+    row-gap: $spacing-2xl;
     align-items: start;
 
-    @media (max-width: #{$breakpoint-tablet - 1px}) {
+    @include below-tablet {
       grid-template-columns: 1fr;
     }
   }
 
-  // ── Left info ─────────────────────────────────────────────
+  // ── Left info — dossier rows ──────────────────────────────
   &__info {
+    grid-column: 1 / 6;
+    border-top: 1px solid $line;
+
+    @include below-tablet {
+      grid-column: 1;
+    }
+  }
+
+  &__row {
     display: flex;
     flex-direction: column;
-    gap: clamp($spacing-lg, 3vw, $spacing-2xl);
+    gap: $spacing-sm;
+    padding: $spacing-lg 0;
+    border-bottom: 1px solid $line;
   }
 
   &__label {
-    display: block;
-    font-family: $font-mono;
-    font-size: $font-size-xs;
-    letter-spacing: 0.1em;
-    color: rgba(0, 0, 0, 0.45);
-    margin-bottom: $spacing-sm;
+    @include kicker;
+    color: $muted;
   }
 
   &__email {
-    font-family: $font-display;
-    font-weight: 700;
-    font-size: clamp($font-size-xl, 2.5vw, $font-size-2xl);
-    color: #000;
-    text-decoration: none;
-    transition: opacity $transition-fast $easing-out;
+    font-family: $font-sans;
+    font-weight: 660;
+    font-size: clamp($font-size-xl, 2.6vw, 2.25rem);
+    letter-spacing: -0.03em;
+    color: $paper;
+    overflow-wrap: anywhere;
+    transition: color $transition-fast ease;
 
     &:hover {
-      opacity: 0.7;
+      color: $accent;
     }
   }
 
   &__social-links {
     display: flex;
-    gap: $spacing-lg;
+    gap: $spacing-sm $spacing-lg;
     flex-wrap: wrap;
   }
 
   &__social-link {
-    font-family: $font-mono;
-    font-size: clamp($font-size-sm, 1.1vw, $font-size-base);
-    color: #000;
-    text-decoration: none;
-    transition: opacity $transition-fast $easing-out;
+    @include kicker;
+    color: $paper;
+    transition: color $transition-fast ease;
 
     &:hover {
-      opacity: 0.6;
+      color: $accent;
     }
   }
 
   &__blurb {
-    font-family: $font-mono;
-    font-size: clamp($font-size-xs, 1vw, $font-size-sm);
-    line-height: $line-height-relaxed;
-    color: rgba(0, 0, 0, 0.55);
-    max-width: 420px;
+    font-size: $font-size-sm;
+    max-width: 44ch;
   }
 
-  // ── Form ──────────────────────────────────────────────────
+  // ── Form — raised panel, square fields ────────────────────
   &__form {
-    background: #f5f5f5;
-    border-radius: $radius-2xl;
-    padding: clamp($spacing-xl, 3vw, $spacing-2xl);
+    grid-column: 7 / -1;
     display: flex;
     flex-direction: column;
-    gap: clamp($spacing-md, 2vw, $spacing-lg);
+    border: 1px solid $line;
+    background: $raised;
+
+    @include below-tablet {
+      grid-column: 1;
+    }
+  }
+
+  &__form-head {
+    @include kicker;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid $line;
+    color: $muted;
+
+    span:last-child {
+      color: $accent;
+    }
   }
 
   &__field {
     display: flex;
     flex-direction: column;
+    padding: 18px;
+    border-bottom: 1px solid $line;
+    transition: background $transition-fast ease;
+
+    &:focus-within {
+      background: color-mix(in oklch, var(--paper) 3%, transparent);
+
+      .contact__field-index {
+        color: $accent;
+      }
+    }
   }
 
   &__field-label {
-    font-family: $font-mono;
-    font-size: $font-size-xs;
-    letter-spacing: 0.1em;
-    color: rgba(0, 0, 0, 0.5);
-    margin-bottom: $spacing-sm;
+    @include kicker;
+    color: $muted;
+    margin-bottom: 10px;
+  }
+
+  &__field-index {
+    margin-right: 0.5em;
+    color: color-mix(in oklch, var(--paper) 35%, transparent);
+    transition: color $transition-fast ease;
   }
 
   &__input,
   &__textarea {
-    font-family: $font-mono;
-    font-size: $font-size-sm;
-    color: #000;
+    font-family: $font-sans;
+    font-size: $font-size-lg;
+    color: $paper;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    padding: $spacing-sm 0;
     outline: none;
-    transition: border-color $transition-fast $easing-out;
     resize: none;
+    padding: 0;
+    caret-color: $accent;
 
     &::placeholder {
-      color: rgba(0, 0, 0, 0.3);
-    }
-
-    &:focus {
-      border-bottom-color: #000;
+      color: color-mix(in oklch, var(--paper) 28%, transparent);
     }
   }
 
   &__textarea {
-    min-height: 100px;
+    min-height: 120px;
   }
 
-  &__submit {
-    font-family: $font-mono;
-    font-size: $font-size-sm;
-    font-weight: 500;
-    width: 100%;
-    padding: 1rem 2rem;
-    border-radius: $radius-full;
-    border: none;
-    background: #1a1a1a;
-    color: #fff;
-    cursor: pointer;
-    transition: box-shadow $transition-base $easing-out;
-    margin-top: $spacing-sm;
+  &__submit-row {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    padding: 18px;
 
-    &:hover:not(:disabled) {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .btn-stripe {
+      width: 100%;
     }
   }
 
   &__status {
-    font-family: $font-mono;
-    font-size: $font-size-xs;
-    margin-top: $spacing-xs;
+    @include kicker;
+    min-height: 1.2em;
 
     &--success {
       color: $success;

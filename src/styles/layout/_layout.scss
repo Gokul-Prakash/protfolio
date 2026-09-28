@@ -1,4 +1,5 @@
 @use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
 .layout {
   display: flex;
@@ -8,4 +9,20 @@
 
 .main-content {
   flex: 1;
+}
+
+.skip-link {
+  @include kicker;
+  position: fixed;
+  top: $spacing-sm;
+  left: $spacing-sm;
+  z-index: 200;
+  padding: $spacing-sm $spacing-md;
+  background: $accent;
+  color: $ink;
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+  }
 }

@@ -115,3 +115,20 @@ export const createScrollVariant = (offset = 50): Variants => ({
   offscreen: { y: offset, opacity: 0 },
   onscreen: { y: 0, opacity: 1, transition: { type: 'spring', bounce: 0.4, duration: 0.8 } },
 });
+
+// ── Site-wide motion language ───────────────────────────────────────────────
+
+/** Expo-out curve used for every reveal on the site */
+export const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+/** Fade + rise, optionally delayed — use with initial="hidden" animate/whileInView="visible" */
+export const fadeUp = (delay = 0, y = 28): Variants => ({
+  hidden: { opacity: 0, y },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE, delay } },
+});
+
+/** Parent that staggers its fadeUp children */
+export const stagger = (step = 0.07, delay = 0): Variants => ({
+  hidden: {},
+  visible: { transition: { staggerChildren: step, delayChildren: delay } },
+});

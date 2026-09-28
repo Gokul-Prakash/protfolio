@@ -3,19 +3,25 @@
 
 .container {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 $spacing-md;
-
-  @include desktop {
-    padding: 0 $spacing-xl;
-  }
+  padding: 0 $gutter;
 }
 
 .section {
-  padding: $spacing-3xl 0;
+  @include section-padding;
 }
 
 .visually-hidden {
   @include visually-hidden;
+}
+
+// Respect users who prefer less motion (marquees, carousel, hover zooms)
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

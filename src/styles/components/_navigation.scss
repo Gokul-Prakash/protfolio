@@ -11,12 +11,12 @@
   &__link {
     font-size: $font-size-base;
     font-weight: $font-weight-medium;
-    color: $dark;
+    color: $muted;
     transition: color $transition-base $easing-out;
 
     &:hover,
     &.active {
-      color: $primary;
+      color: $paper;
     }
   }
 }

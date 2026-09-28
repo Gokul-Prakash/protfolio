@@ -1,27 +1,30 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { containerVariants, itemVariants } from '../../utils/animations';
+import StripeButton from '../ui/StripeButton';
+import { fadeUp, stagger } from '../../utils/animations';
 
 const NotFound = () => {
   return (
-    <motion.div
-      style={{ textAlign: 'center', padding: '6rem 2rem' }}
-      variants={containerVariants}
+    <motion.main
+      className="not-found"
+      variants={stagger(0.08)}
       initial="hidden"
       animate="visible"
     >
-      <motion.h1 style={{ fontSize: '6rem', fontWeight: 700 }} variants={itemVariants}>
+      <motion.p className="not-found__kicker" variants={fadeUp()}>
+        Error / Page not found
+      </motion.p>
+      <motion.h1 className="not-found__code" variants={fadeUp(0, 48)}>
         404
       </motion.h1>
-      <motion.p style={{ marginBottom: '2rem' }} variants={itemVariants}>
-        Page not found.
+      <motion.p className="not-found__text" variants={fadeUp()}>
+        This page wandered off. Let's get you back on track.
       </motion.p>
-      <motion.div variants={itemVariants}>
-        <Link to="/" className="btn btn--primary">
-          Back Home
-        </Link>
+      <motion.div variants={fadeUp()}>
+        <StripeButton to="/" variant="primary">
+          Back home
+        </StripeButton>
       </motion.div>
-    </motion.div>
+    </motion.main>
   );
 };
 

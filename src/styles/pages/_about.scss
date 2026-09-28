@@ -2,17 +2,52 @@
 @use '../abstracts/mixins' as *;
 
 .about {
-  padding: $spacing-3xl $spacing-xl;
-  max-width: 800px;
-  margin: 0 auto;
+  @include section-padding;
+  padding-top: calc(#{$header-height} + #{$section-y});
 
   &__title {
-    font-size: $font-size-3xl;
-    margin-bottom: $spacing-lg;
+    @include section-title;
+    font-size: clamp(3rem, 9vw, 7rem);
+    margin-bottom: $section-head-gap;
   }
 
   &__content {
     @include flex-col;
     gap: $spacing-lg;
+    max-width: 62ch;
+
+    p {
+      font-size: clamp($font-size-base, 1.4vw, $font-size-xl);
+    }
+  }
+}
+
+// ── 404 ─────────────────────────────────────────────────────
+.not-found {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $spacing-lg;
+  @include section-padding;
+  padding-top: calc(#{$header-height} + #{$section-y});
+  @include grid-lines(color-mix(in oklch, var(--paper) 4%, transparent), calc(100% / 12), 10);
+
+  &__kicker {
+    @include kicker;
+    color: $accent;
+  }
+
+  &__code {
+    font-size: clamp(6rem, 24vw, 20rem);
+    font-weight: 720;
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+    color: $paper;
+  }
+
+  &__text {
+    max-width: 40ch;
   }
 }

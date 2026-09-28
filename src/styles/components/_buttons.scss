@@ -1,32 +1,122 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
+// ============================================================
+// STRIPE BUTTON
+// Hatched fill, 8px corner brackets that spring outward on hover,
+// and a diagonal fill that sweeps in from the left.
+// `--fg` is the ink colour; `--bg` is the text colour once filled.
+// ============================================================
+.btn-stripe {
+  --fg: #{$paper};
+  --bg: #{$ink};
+  --bracket: 8px;
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--fg);
+  font-family: $font-mono;
+  font-size: $font-size-mono;
+  font-weight: 560;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color $transition-slow $easing-sweep;
+  @include hatch(color-mix(in oklch, var(--fg) 20%, transparent), 5px, 1px);
+
+  // Corner brackets
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    background:
+      linear-gradient(to right, var(--fg) var(--bracket), transparent var(--bracket) calc(100% - var(--bracket)), var(--fg) calc(100% - var(--bracket))) top / 100% 1px no-repeat,
+      linear-gradient(to right, var(--fg) var(--bracket), transparent var(--bracket) calc(100% - var(--bracket)), var(--fg) calc(100% - var(--bracket))) bottom / 100% 1px no-repeat,
+      linear-gradient(to bottom, var(--fg) var(--bracket), transparent var(--bracket) calc(100% - var(--bracket)), var(--fg) calc(100% - var(--bracket))) left / 1px 100% no-repeat,
+      linear-gradient(to bottom, var(--fg) var(--bracket), transparent var(--bracket) calc(100% - var(--bracket)), var(--fg) calc(100% - var(--bracket))) right / 1px 100% no-repeat;
+    transition: inset 0.2s $easing-out;
+  }
+
+  // Diagonal sweep fill
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--fg);
+    clip-path: polygon(-1% 0%, -1% 0%, -100% 100%, -1% 100%);
+    transition: clip-path 0.4s $easing-sweep;
+  }
+
+  &:hover:not(:disabled) {
+    color: var(--bg);
+
+    &::before { inset: -4px; }
+    &::after { clip-path: polygon(0% 0%, 200% 0%, 100% 100%, 0% 100%); }
+  }
+
+  &:active:not(:disabled)::before {
+    inset: 3px;
+    transition-duration: 0.12s;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &__icon {
+    display: inline-flex;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  // Solid: already filled; hover only springs the brackets
+  &--primary {
+    color: var(--bg);
+    background-image: none;
+
+    &::after {
+      clip-path: polygon(0% 0%, 200% 0%, 100% 100%, 0% 100%);
+    }
+
+    &:hover:not(:disabled) {
+      color: var(--bg);
+    }
+  }
+
+  // Plain text + brackets, no hatch
+  &--ghost {
+    background-image: none;
+  }
+
+  // On light fields (hero)
+  .tone-light & {
+    --fg: #{$ink};
+    --bg: #{$paper};
+  }
+}
+
+// Legacy class used by the 404 page
 .btn {
-  @include btn-base;
+  @extend .btn-stripe;
 
   &--primary {
-    @include btn-primary;
-  }
-
-  &--secondary {
-    @include btn-base;
-    background-color: transparent;
-    border: 2px solid $primary;
-    color: $primary;
-
-    &:hover:not(:disabled) {
-      background-color: $primary;
-      color: $light;
-    }
-  }
-
-  &--ghost {
-    @include btn-base;
-    background-color: transparent;
-    color: $dark;
-
-    &:hover:not(:disabled) {
-      background-color: $light-dark;
-    }
+    @extend .btn-stripe--primary;
   }
 }

@@ -9,6 +9,18 @@
   }
 }
 
+@mixin below-tablet {
+  @media (max-width: #{$breakpoint-tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin below-desktop {
+  @media (max-width: #{$breakpoint-desktop - 1px}) {
+    @content;
+  }
+}
+
 @mixin tablet {
   @media (min-width: $breakpoint-tablet) and (max-width: #{$breakpoint-desktop - 1px}) {
     @content;
@@ -21,24 +33,64 @@
   }
 }
 
-@mixin large {
-  @media (min-width: $breakpoint-large) {
-    @content;
-  }
+// ============================================
+// SECTION LAYOUT
+// ============================================
+@mixin section-padding {
+  padding: $section-y $gutter;
+}
+
+@mixin section-title {
+  font-family: $font-sans;
+  font-weight: 660;
+  font-size: $font-size-section-title;
+  letter-spacing: -0.04em;
+  line-height: $line-height-tight;
+  color: $paper;
+  text-wrap: balance;
+}
+
+@mixin section-subtitle {
+  font-family: $font-sans;
+  font-size: clamp($font-size-sm, 1.1vw, $font-size-base);
+  line-height: $line-height-relaxed;
+  color: $muted;
+  text-wrap: pretty;
+}
+
+// Small uppercase mono label — "01 / WORK", field labels, meta
+@mixin kicker {
+  font-family: $font-mono;
+  font-size: $font-size-mono;
+  font-weight: 560;
+  letter-spacing: $tracking-kicker;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+// Faint blueprint grid used behind media stages
+@mixin grid-lines($color: color-mix(in oklch, var(--paper) 5%, transparent), $cols: 6.25%, $rows: 14) {
+  background-image:
+    linear-gradient(to right, $color 1px, transparent 1px),
+    linear-gradient(to bottom, $color 1px, transparent 1px);
+  background-size: $cols 100%, 100% calc(100% / #{$rows});
+}
+
+// Diagonal hatching (stripe ribbons, button textures)
+@mixin hatch($color, $period: 8px, $stroke: 1.5px) {
+  background-image: repeating-linear-gradient(
+    119deg,
+    $color 0 $stroke,
+    transparent $stroke $period
+  );
 }
 
 // ============================================
-// FLEXBOX UTILITIES
+// FLEX / GRID UTILITIES
 // ============================================
 @mixin flex-center {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-@mixin flex-between {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -47,25 +99,10 @@
   flex-direction: column;
 }
 
-@mixin flex-col-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-// ============================================
-// GRID UTILITIES
-// ============================================
-@mixin grid-center {
-  display: grid;
-  place-items: center;
-}
-
 @mixin grid-responsive($cols-mobile, $cols-tablet, $cols-desktop) {
   display: grid;
   grid-template-columns: repeat($cols-mobile, 1fr);
-  gap: $spacing-md;
+  gap: 1px;
 
   @include tablet {
     grid-template-columns: repeat($cols-tablet, 1fr);
@@ -77,133 +114,8 @@
 }
 
 // ============================================
-// TEXT UTILITIES
-// ============================================
-@mixin text-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@mixin text-clamp($lines: 1) {
-  display: -webkit-box;
-  -webkit-line-clamp: $lines;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-@mixin heading($size: 'lg') {
-  font-weight: $font-weight-bold;
-
-  @if $size == 'sm' {
-    font-size: $font-size-xl;
-  } @else if $size == 'md' {
-    font-size: $font-size-2xl;
-  } @else if $size == 'lg' {
-    font-size: $font-size-3xl;
-  } @else if $size == 'xl' {
-    font-size: $font-size-4xl;
-  }
-}
-
-// ============================================
-// BUTTON MIXINS
-// ============================================
-@mixin btn-base {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: $spacing-sm $spacing-lg;
-  border: none;
-  border-radius: $radius-md;
-  font-family: $font-primary;
-  font-size: $font-size-base;
-  font-weight: $font-weight-medium;
-  cursor: pointer;
-  transition: all $transition-base ease-in-out;
-  text-decoration: none;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-@mixin btn-primary {
-  @include btn-base;
-  background-color: $primary;
-  color: $light;
-
-  &:hover:not(:disabled) {
-    background-color: darken($primary, 10%);
-    transform: translateY(-2px);
-  }
-
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-}
-
-// ============================================
-// ANIMATION MIXINS
-// ============================================
-@mixin fade-in($duration: $transition-base) {
-  animation: fadeIn $duration ease-in forwards;
-}
-
-@mixin slide-in-left($duration: $transition-base) {
-  animation: slideInLeft $duration ease-out forwards;
-}
-
-@mixin slide-in-right($duration: $transition-base) {
-  animation: slideInRight $duration ease-out forwards;
-}
-
-@mixin slide-in-up($duration: $transition-base) {
-  animation: slideInUp $duration ease-out forwards;
-}
-
-@mixin scale-in($duration: $transition-base) {
-  animation: scaleIn $duration ease-out forwards;
-}
-
-// ============================================
-// KEYFRAMES
-// ============================================
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-30px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(30px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-// ============================================
 // UTILITY MIXINS
 // ============================================
-@mixin truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 @mixin visually-hidden {
   position: absolute;
   width: 1px;
@@ -217,6 +129,6 @@
 }
 
 @mixin focus-ring {
-  outline: 2px solid $primary;
-  outline-offset: 2px;
+  outline: 1px solid $accent;
+  outline-offset: 4px;
 }

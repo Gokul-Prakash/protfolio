@@ -9,22 +9,26 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: $header-height; // anchors land below the fixed header
   font-size: 16px;
-
-  @include mobile {
-    font-size: 14px;
-  }
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: $font-primary;
+  font-family: $font-sans;
   font-size: $font-size-base;
   font-weight: $font-weight-regular;
   line-height: $line-height-normal;
-  color: $dark;
-  background-color: $light;
+  color: $paper;
+  background-color: $ink;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: $accent;
+  color: $ink;
 }
 
 button,
@@ -33,6 +37,7 @@ textarea,
 select {
   font-family: inherit;
   font-size: inherit;
+  color: inherit;
 }
 
 a {
@@ -60,16 +65,11 @@ h6 {
   overflow-wrap: break-word;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: $font-weight-bold;
-}
-
 ol,
 ul {
   list-style: none;
+}
+
+:focus-visible {
+  @include focus-ring;
 }

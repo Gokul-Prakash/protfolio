@@ -2,37 +2,34 @@
 @use '../abstracts/mixins' as *;
 
 .projects {
-  padding: $spacing-3xl $spacing-xl;
-  max-width: 1200px;
-  margin: 0 auto;
+  @include section-padding;
+  padding-top: calc(#{$header-height} + #{$section-y});
 
   &__title {
-    font-size: $font-size-3xl;
-    margin-bottom: $spacing-2xl;
-    text-align: center;
+    @include section-title;
+    font-size: clamp(3rem, 9vw, 7rem);
+    margin-bottom: $section-head-gap;
   }
 
   &__grid {
     @include grid-responsive(1, 2, 3);
+    background: $line;
+    border: 1px solid $line;
   }
 
   &__card {
-    background-color: $light;
-    border: 1px solid $light-dark;
-    border-radius: $radius-xl;
-    padding: $spacing-lg;
-    box-shadow: $shadow-md;
+    padding: $spacing-xl;
+    background: $raised;
     will-change: transform;
 
     &-title {
       font-size: $font-size-xl;
+      color: $paper;
       margin-bottom: $spacing-sm;
     }
 
     &-description {
-      color: $gray;
       font-size: $font-size-sm;
-      line-height: $line-height-relaxed;
     }
   }
 }

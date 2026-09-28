@@ -1,0 +1,36 @@
+// ============================================
+// DESIGN TOKENS (CSS custom properties)
+// ============================================
+:root {
+  color-scheme: dark;
+
+  // Surfaces
+  --ink: oklch(0.145 0.01 148);          // page background
+  --raised: oklch(0.18 0.012 148);       // cards, rows
+  --line: oklch(0.31 0.012 148);         // 1px rules and grid gaps
+  --muted: oklch(0.69 0.012 148);        // secondary text
+  --paper: oklch(0.94 0.008 96);         // primary text / light fields
+
+  // Accents
+  --accent: oklch(0.88 0.18 96);         // yellow
+  --rind: oklch(0.76 0.15 155);          // green
+  --blueberry: oklch(0.68 0.18 255);
+  --blackcurrant: oklch(0.64 0.18 302);
+  --dragonfruit: oklch(0.72 0.2 345);
+  --watermelon: oklch(0.67 0.22 26.43);
+}
+
+// Light field — hero bands keep dark text on the video
+.tone-light {
+  --fg: var(--ink);
+  --fg-muted: color-mix(in oklch, var(--ink) 62%, transparent);
+  --fg-line: color-mix(in oklch, var(--ink) 18%, transparent);
+  color: var(--ink);
+}
+
+.tone-dark {
+  --fg: var(--paper);
+  --fg-muted: var(--muted);
+  --fg-line: var(--line);
+  color: var(--paper);
+}
