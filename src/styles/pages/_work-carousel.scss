@@ -1,93 +1,143 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
-.work-carousel {
-  padding: $spacing-2xl 0 0;
-  overflow: hidden;
-  border-bottom: 1px solid $line;
+// Recent projects — hover accordion after pamidordesign.co's "Selected Projects".
+// One row open at a time: accent title, details and image revealed; others muted.
+.work-list {
+  @include section-padding;
 
-  &__viewport {
-    overflow: hidden;
-    mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  &__rows {
+    border-top: 1.5px solid $line;
   }
 
-  &__track {
+  &__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(240px, 23vw, 340px);
+    column-gap: clamp($spacing-xl, 4vw, $spacing-3xl);
+    padding: clamp($spacing-lg, 2.4vw, 2.1rem) 0;
+    border-bottom: 1.5px solid $line;
+
+    @include below-tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__main {
+    min-width: 0;
     display: flex;
-    gap: $grid-gap;
-    width: max-content;
-    padding-bottom: $spacing-2xl;
-    animation: work-scroll 40s linear infinite;
-
-    &:hover {
-      animation-play-state: paused;
-    }
+    flex-direction: column;
   }
 
-  // ── Card ──────────────────────────────────────────────────
-  &__card {
-    flex-shrink: 0;
-    width: clamp(260px, 26vw, 420px);
-    border: 1px solid $line;
-    background: $raised;
-    transition: border-color $transition-fast ease;
-
-    &:hover {
-      border-color: color-mix(in oklch, var(--paper) 40%, transparent);
-    }
-  }
-
-  &__media {
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    background: $ink;
-
-    // The screenshots have ~36px rounded, transparent corners baked in.
-    // A 10% zoom pushes those corners outside the square card.
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top left;
-      pointer-events: none;
-      transform: scale(1.1);
-      transition: transform 0.6s $easing-out;
-    }
-  }
-
-  &__card:hover &__media img {
-    transform: scale(1.14);
-  }
-
-  &__caption {
-    @include kicker;
+  &__head {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    height: 36px;
-    padding: 0 14px;
-    border-top: 1px solid $line;
-    color: $muted;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $spacing-lg;
   }
 
-  &__caret {
+  // ── Title ─────────────────────────────────────────────────
+  &__title {
+    font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  &__toggle {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    color: color-mix(in oklch, var(--paper) 42%, transparent);
+    cursor: pointer;
+    transition: color $transition-base ease;
+
+    &:focus-visible {
+      outline-offset: 6px;
+    }
+  }
+
+  &__row--active &__toggle {
     color: $accent;
   }
 
-  &__label {
-    color: $paper;
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  // ── "Jump to project" ─────────────────────────────────────
+  &__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-top: 0.4em;
+    padding: 10px 16px;
+    border: 1px solid $line;
+    font-family: $font-sans;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $muted;
     white-space: nowrap;
-  }
-}
+    transition:
+      color $transition-base ease,
+      border-color $transition-base ease;
 
-@keyframes work-scroll {
-  0% {
-    transform: translateX(0);
+    svg {
+      transition: transform $transition-fast $easing-out;
+    }
+
+    &:hover svg {
+      transform: translateX(3px);
+    }
   }
-  100% {
-    // -50% minus half a gap = exactly one copy of items (track = items × 2)
-    transform: translateX(calc(-50% - #{$grid-gap} / 2));
+
+  &__row--active &__jump {
+    border-color: $paper;
+    color: $paper;
+  }
+
+  // ── Details — Role / Timeline / Year / Team ───────────────
+  &__details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-lg clamp($spacing-xl, 4vw, $spacing-3xl);
+    overflow: hidden;
+  }
+
+  &__detail {
+    padding-top: clamp($spacing-xl, 5vw, 4.5rem);
+
+    dt {
+      @include kicker;
+      color: $muted;
+      margin-bottom: 6px;
+    }
+
+    dd {
+      font-size: $font-size-base;
+      color: $paper;
+    }
+  }
+
+  // ── Image — revealed on the open row ──────────────────────
+  // Screenshots have rounded transparent corners baked in; the img's 1.1 scale
+  // (WorkCarousel.tsx) pushes them past the frame, which clips with a square edge.
+  &__media {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid $line;
+    background: $raised;
+
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 330 / 220;
+      object-fit: cover;
+      object-position: top left;
+      pointer-events: none;
+    }
+
+    @include below-tablet {
+      margin-top: $spacing-lg;
+    }
   }
 }

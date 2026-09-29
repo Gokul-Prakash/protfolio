@@ -49,13 +49,27 @@ export const SELECTED_WORK = [
   { id: 4, title: 'NextEd', tags: ['EdTech', 'Product'], img: images.myWork.nextEd },
 ];
 
-export const CAROUSEL_WORK = [
-  { img: images.workCarousel.zentra, label: 'Zentra' },
-  { img: images.workCarousel.magicClub, label: 'Magic Club' },
-  { img: images.workCarousel.octech, label: 'Octech' },
-  { img: images.workCarousel.analyticsGenie, label: 'Analytics Genie' },
-  { img: images.workCarousel.coreArea, label: 'Core Area' },
-  { img: images.workCarousel.deMuis, label: 'De Muis' },
+// Recent projects list (hover accordion under the hero).
+// Optional fields only render when set.
+// TODO: role / timeline / year / team / href below are PLACEHOLDERS — replace with real details.
+// href: '#' shows the "Jump to project" button without navigating anywhere.
+export type RecentProject = {
+  img: string;
+  label: string;
+  role?: string;
+  timeline?: string;
+  year?: string;
+  team?: string;
+  href?: string;
+};
+
+export const CAROUSEL_WORK: RecentProject[] = [
+  { img: images.workCarousel.zentra, label: 'Zentra', role: 'Product · UX · UI', timeline: '6 Months', year: '2025', team: 'In-House', href: '#' },
+  { img: images.workCarousel.magicClub, label: 'Magic Club', role: 'Product · Gamification', timeline: '4 Months', year: '2025', team: 'Agency', href: '#' },
+  { img: images.workCarousel.octech, label: 'Octech', role: 'Brand · Web · Motion', timeline: '3 Months', year: '2024', team: 'In-House', href: '#' },
+  { img: images.workCarousel.analyticsGenie, label: 'Analytics Genie', role: 'Product · Web · AI', timeline: '5 Months', year: '2024', team: 'Startup', href: '#' },
+  { img: images.workCarousel.coreArea, label: 'Core Area', role: 'Product · Dashboards', timeline: '4 Months', year: '2024', team: 'Client', href: '#' },
+  { img: images.workCarousel.deMuis, label: 'De Muis', role: 'App · UX · UI', timeline: '2 Months', year: '2023', team: 'Freelance', href: '#' },
 ];
 
 export const FAN_IMAGES = [
