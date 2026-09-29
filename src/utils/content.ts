@@ -21,19 +21,24 @@ export const SOCIAL_LINKS = [
 
 export const SKILLS = [
   {
-    title: 'UX & Product',
-    blurb: 'End-to-end product design, from first flow to shipped interface.',
-    items: ['Product Design', 'User Flows', 'Prototyping', 'Web & Apps'],
+    title: 'UX / Product',
+    items: ['Flows', 'Interfaces', 'Dashboards', 'Web / Apps', 'Prototypes'],
+  },
+  {
+    title: 'Visual Design',
+    items: ['Branding', 'Campaigns', 'Typography', 'Art Direction'],
   },
   {
     title: 'Interaction',
-    blurb: 'Motion and micro-interactions that make interfaces feel alive.',
-    items: ['Motion', 'Micro-interactions', 'UI Systems'],
+    items: ['Motion', 'Micro-interactions', 'Gamification'],
   },
   {
-    title: 'Experience + AI',
-    blurb: 'Using AI to explore faster and prototype experimental interfaces.',
-    items: ['AI-assisted Design', 'Rapid Exploration', 'Experimental Interfaces'],
+    title: 'Digital Experiences',
+    items: ['Microsites', 'Interactive Campaigns', 'Loyalty Experiences'],
+  },
+  {
+    title: 'AI',
+    items: ['AI-assisted Exploration', 'Rapid Prototyping', 'Experimental Interfaces'],
   },
 ];
 

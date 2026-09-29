@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useLenis } from 'lenis/react';
 import { Link } from 'react-router-dom';
 import { images, videos } from '@assets/assets';
 import StripeButton from '../ui/StripeButton';
@@ -8,6 +9,9 @@ import { EMAIL, NAV_LINKS, SOCIAL_LINKS } from '../../utils/content';
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const lenis = useLenis();
+
+  const toTop = () => (lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: 'smooth' }));
 
   return (
     <footer className="footer">
@@ -84,7 +88,7 @@ const Footer = () => {
         <button
           type="button"
           className="footer__top"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={toTop}
         >
           <RollingText text="Back to top ↑" />
         </button>

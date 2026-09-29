@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useLenis } from 'lenis/react';
 import { images } from '@assets/assets';
 import RollingText from '../ui/RollingText';
 import StripeButton from '../ui/StripeButton';
@@ -16,6 +17,7 @@ const Header = () => {
   const [time, setTime] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname, hash } = useLocation();
+  const lenis = useLenis();
 
   useEffect(() => {
     const tick = () => {
@@ -53,15 +55,17 @@ const Header = () => {
     const desktop = window.matchMedia('(min-width: 768px)');
     const onResize = () => desktop.matches && setMenuOpen(false);
 
+    lenis?.stop(); // Lenis ignores overflow:hidden, so pause it explicitly
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', onKey);
     desktop.addEventListener('change', onResize);
     return () => {
+      lenis?.start();
       document.body.style.overflow = '';
       window.removeEventListener('keydown', onKey);
       desktop.removeEventListener('change', onResize);
     };
-  }, [menuOpen]);
+  }, [menuOpen, lenis]);
 
   const light = LIGHT_HERO_ROUTES.includes(pathname) && !scrolled && !menuOpen;
 
@@ -146,6 +150,7 @@ const Header = () => {
               id="side-menu"
               className="side-menu"
               data-theme="dark"
+              data-lenis-prevent
               aria-label="Mobile navigation"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}

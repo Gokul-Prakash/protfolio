@@ -7,14 +7,26 @@ import { FAN_IMAGES, SKILLS } from '../../utils/content';
 // Rotation per card — fanned out from the centre
 const ROTATIONS = [-22, -16, -11, -6, -2, 3, 8, 14];
 
+// One icon per SKILLS entry, same order
 const ICONS = [
+  // UX / Product — connected flow
   <svg key="ux" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square">
     <circle cx="6" cy="6" r="2" /><circle cx="18" cy="6" r="2" /><circle cx="12" cy="18" r="2" />
     <path d="M6 8l6 8M18 8l-6 8" />
   </svg>,
+  // Visual Design — pen nib
+  <svg key="vd" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square">
+    <path d="M12 3 5 10l3 9h8l3-9-7-7zM12 3v8" /><circle cx="12" cy="12.5" r="1.5" /><path d="M8 19h8v2H8z" />
+  </svg>,
+  // Interaction — layout grid
   <svg key="ix" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square">
     <path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6M9 3v18M3 15h18" />
   </svg>,
+  // Digital Experiences — browser window with sparkle
+  <svg key="dx" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square">
+    <path d="M3 4h18v16H3zM3 8h18" /><path d="M12 11.5l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" />
+  </svg>,
+  // AI — stacked layers
   <svg key="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square">
     <path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
   </svg>,
@@ -77,14 +89,13 @@ const ThingsIBuild = () => {
         {SKILLS.map((skill, i) => (
           <motion.article
             key={skill.title}
-            className={`tib__cell${i === 1 ? ' tib__cell--accent' : ''}`}
+            className={`tib__cell${skill.title === 'Interaction' ? ' tib__cell--accent' : ''}`}
             variants={fadeUp(0, 24)}
           >
             <div className="tib__cell-head">
               <span className="tib__cell-icon" aria-hidden="true">{ICONS[i]}</span>
             </div>
             <h3 className="tib__cell-title">{skill.title}</h3>
-            <p className="tib__cell-blurb">{skill.blurb}</p>
             <ul className="tib__cell-readout">
               {skill.items.map((item) => (
                 <li key={item}>{item}</li>
