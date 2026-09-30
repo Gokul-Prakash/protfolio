@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ContactCard from '../common/ContactCard';
+import CaseStudyVisual from './CaseStudyVisual';
 import { fadeUp } from '../../utils/animations';
 import { CaseStudy, SHOW_DRAFTS } from '../../content/caseStudies';
 
@@ -73,6 +74,18 @@ const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () =>
         </motion.p>
       </section>
 
+      {/* At a glance — Octech's ecosystem as presented on the site (not results) */}
+      {study.glance && (
+        <motion.dl className="case-study__glance" variants={fadeUp(0, 24)} {...reveal}>
+          {study.glance.map((g) => (
+            <div key={g.label} className="case-study__glance-item">
+              <dt>{g.label}</dt>
+              <dd>{g.value}</dd>
+            </div>
+          ))}
+        </motion.dl>
+      )}
+
       {SHOW_DRAFTS && (
         <p className="case-study__draft-banner">
           Draft view — highlighted items are dev-only and removed from production builds.
@@ -82,14 +95,24 @@ const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () =>
       {/* Sections — title on the left, content on the right */}
       <div className="case-study__sections">
         {study.sections.map((section) => (
-          <motion.section key={section.title} className="case-study__section" variants={fadeUp(0, 32)} {...reveal}>
-            <h3 className="case-study__section-title">{section.title}</h3>
-            <div className="case-study__prose">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-                {section.body}
-              </ReactMarkdown>
+          <section key={section.title} className="case-study__section">
+            {/* Title + prose share a grid so the sticky title stays within the text, never over the visual */}
+            <div className="case-study__section-text">
+              <motion.h3 className="case-study__section-title" variants={fadeUp(0, 24)} {...reveal}>
+                {section.title}
+              </motion.h3>
+              <motion.div className="case-study__prose" variants={fadeUp(0.05, 24)} {...reveal}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
+                  {section.body}
+                </ReactMarkdown>
+              </motion.div>
             </div>
-          </motion.section>
+            {section.visual && (
+              <div className="case-study__visual">
+                <CaseStudyVisual visual={section.visual} />
+              </div>
+            )}
+          </section>
         ))}
       </div>
 

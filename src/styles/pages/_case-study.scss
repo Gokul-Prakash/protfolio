@@ -215,8 +215,7 @@
 
   // ── Cover ─────────────────────────────────────────────────
   &__cover {
-    margin: 0 $gutter;
-    border: 1px solid $line;
+    margin: 0;
     background: $raised;
     overflow: hidden;
 
@@ -241,17 +240,20 @@
   }
 
   &__section {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: $grid-gap;
-    row-gap: $spacing-lg;
-    padding: clamp($spacing-2xl, 5vw, $spacing-3xl) 0;
+    padding: clamp($spacing-3xl, 8vw, 7rem) 0;
     border-top: 1px solid $line;
 
     &:first-child {
       padding-top: 0;
       border-top: 0;
     }
+  }
+
+  &__section-text {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: $grid-gap;
+    row-gap: $spacing-lg;
 
     @include below-tablet {
       grid-template-columns: 1fr;
@@ -264,7 +266,8 @@
     position: sticky;
     top: $spacing-xl;
     @include section-title;
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-size: clamp(2rem, 3.6vw, 3.25rem);
+    line-height: 1;
 
     @include below-tablet {
       grid-column: 1;
@@ -335,11 +338,28 @@
       }
     }
 
+    // Pull quotes — large display type with an accent rule
     blockquote {
-      padding: $spacing-md $spacing-lg;
-      border-left: 2px solid $accent;
-      background: $raised;
+      max-width: 34ch;
+      margin: $spacing-lg 0;
+      padding-left: $spacing-lg;
+      border-left: 3px solid $accent-fill;
+      font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
       color: $paper;
+      text-wrap: balance;
+
+      p {
+        max-width: none;
+      }
+
+      strong,
+      em {
+        color: $accent;
+        font-style: normal;
+      }
     }
 
     // IA tree
@@ -440,6 +460,476 @@
 
     &:hover {
       color: $paper;
+    }
+  }
+}
+
+
+// ============================================================
+// AT A GLANCE — oversized figures under the cover
+// ============================================================
+.case-study__glance {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: $section-y $gutter 0;
+  border-top: 1px solid $line;
+  border-bottom: 1px solid $line;
+
+  @include below-tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.case-study__glance-item {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  gap: $spacing-lg;
+  padding: $spacing-xl $spacing-lg $spacing-lg;
+
+  & + & {
+    border-left: 1px solid $line;
+  }
+
+  @include below-tablet {
+    &:nth-child(3) {
+      border-left: 0;
+    }
+
+    &:nth-child(n + 3) {
+      border-top: 1px solid $line;
+    }
+  }
+
+  dd {
+    font-family: $font-sans;
+    font-weight: 720;
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    color: $paper;
+  }
+
+  dt {
+    @include kicker;
+    color: $accent;
+  }
+}
+
+.case-study__visual {
+  margin-top: clamp($spacing-2xl, 5vw, 4.5rem);
+}
+
+// ============================================================
+// VISUALS — screenshots in frames, pairs, grids, filmstrip, phones
+// ============================================================
+.cs-shot {
+  min-width: 0;
+
+  // Browser-style frame for desktop captures
+  &__frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid $line;
+    background: $raised;
+    padding-top: 26px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 9px;
+      left: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $line;
+      box-shadow: 14px 0 0 $line, 28px 0 0 $line;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-top: 1px solid $line;
+    }
+  }
+
+  &__label {
+    @include kicker;
+    margin-top: 12px;
+    color: $muted;
+  }
+
+  // Phone frame for mobile captures
+  &--phone &__frame {
+    padding: 10px;
+    border: 0;
+    border-radius: 34px;
+    background: #0b0d0c;
+    box-shadow:
+      0 0 0 1px $line,
+      0 40px 80px -30px rgb(0 0 0 / 0.6);
+
+    &::before {
+      display: none;
+    }
+
+    img {
+      border: 0;
+      border-radius: 25px;
+    }
+  }
+
+  &--phone &__label {
+    text-align: center;
+  }
+}
+
+.cs-visual {
+  &__items {
+    display: grid;
+    gap: $grid-gap;
+  }
+
+  &__caption {
+    margin-top: $spacing-lg;
+    max-width: 60ch;
+    font-size: $font-size-sm;
+    color: $muted;
+  }
+
+  &--pair &__items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    @include below-tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--grid &__items {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    @include below-desktop {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  // First state large, the rest as a strip beneath
+  &--filmstrip &__items {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    .cs-shot:first-child {
+      grid-column: 1 / -1;
+    }
+
+    @include below-tablet {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &--filmstrip .cs-shot__label {
+    font-family: $font-sans;
+    font-size: $font-size-base;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: $paper;
+
+    &::before {
+      content: 'We make ';
+      color: $muted;
+      font-weight: 400;
+    }
+  }
+
+  &--stack &__items {
+    grid-template-columns: 1fr;
+  }
+
+  // Five phones in a row; scrolls sideways on small screens
+  &--phones &__items {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp($spacing-md, 2vw, $spacing-xl);
+
+    @include below-desktop {
+      grid-template-columns: repeat(5, minmax(200px, 1fr));
+      overflow-x: auto;
+      padding-bottom: $spacing-md;
+      scroll-snap-type: x mandatory;
+
+      .cs-shot {
+        scroll-snap-align: start;
+      }
+    }
+  }
+
+  // Edge-to-edge inside the sheet
+  &--bleed {
+    margin-inline: calc(#{$gutter} * -1);
+
+    .cs-shot__frame {
+      padding-top: 0;
+      border: 0;
+
+      &::before {
+        display: none;
+      }
+
+      img {
+        border: 0;
+      }
+    }
+  }
+}
+
+// Information architecture as a flow
+.cs-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid $line;
+
+  @include below-desktop {
+    grid-template-columns: 1fr;
+  }
+
+  &__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding: $spacing-xl $spacing-lg;
+    background: $raised;
+
+    & + & {
+      border-left: 1px solid $line;
+
+      @include below-desktop {
+        border-left: 0;
+        border-top: 1px solid $line;
+      }
+    }
+
+    // arrow into the next step
+    &:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -0.6em;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+      padding: 2px 4px;
+      background: $ink;
+      color: $accent;
+      font-family: $font-mono;
+
+      @include below-desktop {
+        content: '↓';
+        right: auto;
+        left: $spacing-lg;
+        top: auto;
+        bottom: -0.8em;
+        transform: none;
+      }
+    }
+  }
+
+  &__title {
+    font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+    font-weight: 660;
+    letter-spacing: -0.03em;
+    color: $paper;
+  }
+
+  &__text {
+    @include kicker;
+    color: $muted;
+  }
+}
+
+// ============================================================
+// OCTECH DESIGN SYSTEM SPECIMEN
+// ============================================================
+.octech-system {
+  --o-red: #f50000;
+  --o-navy: #101828;
+
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1.2fr;
+  gap: 1px;
+  border: 1px solid $line;
+  background: $line;
+  font-family: 'Urbanist', $font-sans;
+
+  @include below-desktop {
+    grid-template-columns: 1fr;
+  }
+
+  > * {
+    background: #f7f7f5;
+    color: var(--o-navy);
+    padding: $spacing-xl;
+  }
+
+  &__swatches {
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1px;
+    padding: 0 !important;
+    background: $line !important;
+  }
+
+  &__swatch {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    min-height: 92px;
+    padding: $spacing-md $spacing-lg;
+  }
+
+  &__swatch-name {
+    font-weight: 700;
+    font-size: $font-size-lg;
+  }
+
+  &__swatch-meta {
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    opacity: 0.75;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5b6170;
+
+    i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--o-red);
+    }
+  }
+
+  &__display {
+    margin: $spacing-lg 0 $spacing-md;
+    font-size: clamp(2.5rem, 4.4vw, 4rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--o-navy);
+
+    em {
+      font-style: normal;
+      color: var(--o-red);
+    }
+  }
+
+  &__body {
+    max-width: 38ch;
+    font-size: $font-size-base;
+    line-height: 1.6;
+    color: #5b6170;
+  }
+
+  &__scale {
+    display: flex;
+    align-items: baseline;
+    gap: $spacing-lg;
+    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    border-top: 1px solid #e3e3df;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__components {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  &__card {
+    padding: $spacing-lg;
+    border: 1px solid #e3e3df;
+    border-radius: 22px;
+    background: #fff;
+
+    h4 {
+      font-family: inherit;
+      font-size: $font-size-xl;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--o-navy);
+    }
+
+    p {
+      margin-top: 6px;
+      font-size: $font-size-sm;
+      color: #5b6170;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: $spacing-md;
+
+    span {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #eef0fb;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--o-navy);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    align-items: center;
+  }
+
+  &__btn {
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: var(--o-red);
+    color: #fff;
+    font-size: $font-size-sm;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__pill {
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: var(--o-navy);
+    color: #fff;
+    font-size: $font-size-sm;
+    white-space: nowrap;
+  }
+
+  &__highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    span {
+      padding: 2px 8px;
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: var(--o-navy);
     }
   }
 }
