@@ -50,6 +50,9 @@ const crop = (base: VisualImage, box: [number, number, number, number], label: s
 
 export const PLAYVERRA_THUMB = img('still-montage');
 
+// Work card: one phone that plays through the core loop
+export const PLAYVERRA_LOOP: VisualImage[] = [screen.home, screen.discover, screen.play, screen.rewards];
+
 // Cover: the three core screens as device mockups
 export const PLAYVERRA_COVER: CaseStudyVisual = {
   kind: 'devices',
@@ -181,10 +184,10 @@ export const PLAYVERRA_VISUALS: Record<string, CaseStudyVisual> = {
     hierarchy: [
       { style: 'Display', weight: '700', use: 'Hero moments, large numbers' },
       { style: 'H1', weight: '700', use: 'Screen titles' },
-      { style: 'H2', weight: '600–700', use: 'Section headings' },
+      { style: 'H2', weight: '600 to 700', use: 'Section headings' },
       { style: 'Card title', weight: '600', use: 'Game & reward titles' },
       { style: 'Body', weight: '400', use: 'Descriptions' },
-      { style: 'UI label', weight: '500–600', use: 'Navigation, filters, metadata' },
+      { style: 'UI label', weight: '500 to 600', use: 'Navigation, filters, metadata' },
       { style: 'CTA', weight: '700', use: 'Primary actions' },
     ],
     components: [

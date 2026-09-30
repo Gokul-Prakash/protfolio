@@ -2,12 +2,16 @@ import { useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import CaseStudySheet from '../case-study/CaseStudySheet';
+import PlayverraThumb from '../case-study/PlayverraThumb';
 import SectionHeading from '../ui/SectionHeading';
 import { fadeUp } from '../../utils/animations';
 import { SELECTED_WORK } from '../../utils/content';
 import { CASE_STUDIES } from '../../content/caseStudies';
 
 const CASE_CARDS = [CASE_STUDIES.octech, CASE_STUDIES.playverra];
+
+// Cards with a live thumbnail instead of a still
+const CARD_MEDIA: Record<string, JSX.Element> = { playverra: <PlayverraThumb /> };
 
 const Arrow = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -54,7 +58,9 @@ const MyWork = () => {
             viewport={{ once: true, amount: 0.2 }}
           >
             <div className="work-card__media">
-              <img src={study.thumb ?? study.cover} alt={study.title} loading="lazy" draggable={false} />
+              {CARD_MEDIA[study.slug] ?? (
+                <img src={study.thumb ?? study.cover} alt={study.title} loading="lazy" draggable={false} />
+              )}
             </div>
 
             <div className="work-card__row">

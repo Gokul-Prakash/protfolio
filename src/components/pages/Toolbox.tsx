@@ -346,7 +346,7 @@ const Toolbox = () => {
       <SectionHeading
         label="Toolbox"
         title="The tools behind the work."
-        description="Design, motion, 3D, web and AI — the tools I use to turn ideas into experiences."
+        description="Design, motion, 3D, web and AI: the tools I use to turn ideas into experiences."
       />
 
       <div className="toolbox__stage" ref={stageRef} role="group" aria-label="Tools I use">
@@ -374,7 +374,7 @@ const Toolbox = () => {
 
       <footer className="toolbox__rail">
         <p className="toolbox__rail-quote">
-          These aren't just tools I know — they're the tools I use to make things.
+          These aren't just tools I know. They're the tools I use to make things.
         </p>
         <span className="toolbox__rail-label">{TOOLS.length} tools in rotation</span>
       </footer>

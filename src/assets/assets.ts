@@ -33,6 +33,7 @@ import workZentra from "./images/Work-Auto-Carousel/Zentra.png";
 
 // Case Studies
 import caseOctech from "./images/Case-Studies/octech-devices.webp";
+import caseOctechThumb from "./images/Case-Studies/octech-thumb.webp";
 
 // Toolbox
 import toolFigma from "./images/Toolbox/Figma-logo.svg";
@@ -60,6 +61,7 @@ import videoG5 from "./videos/G5.webm";
 export const images = {
   caseStudies: {
     octech: caseOctech,
+    octechThumb: caseOctechThumb,
   },
   logo: {
     gLogo,

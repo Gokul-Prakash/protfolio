@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
@@ -43,7 +44,6 @@
       transition: transform 0.6s $easing-out;
     }
   }
-
 
   &__row {
     display: flex;
@@ -128,3 +128,205 @@
   }
 }
 
+// ── Playverra card — one static phone, the screen plays the core loop ──
+// Each screen holds for $pv-hold, then slides up over $pv-move. The track
+// repeats Home at the end, so the last slide lands on it and the loop wraps.
+$pv-hold: 1.8s;
+$pv-move: 0.6s;
+$pv-screens: 4;
+$pv-cycle: ($pv-hold + $pv-move) * $pv-screens;
+$pv-hold-pct: math.div($pv-hold, $pv-cycle) * 100%;
+$pv-step-pct: math.div(100%, $pv-screens);
+$pv-lime: #7cff00;
+
+@keyframes pv-thumb-scroll {
+  @for $i from 0 through $pv-screens - 1 {
+    #{$i * $pv-step-pct},
+    #{$i * $pv-step-pct + $pv-hold-pct} {
+      transform: translateY(-100% * $i);
+    }
+  }
+
+  100% {
+    transform: translateY(-100% * $pv-screens);
+  }
+}
+
+// Label is lit while its screen is on, switching halfway through the slide
+@keyframes pv-thumb-step {
+  0%,
+  #{$pv-hold-pct + math.div($pv-step-pct - $pv-hold-pct, 2)} {
+    color: #fff;
+  }
+
+  #{$pv-step-pct},
+  100% {
+    color: rgb(255 255 255 / 0.36);
+  }
+}
+
+// Thin progress line under the active label, filling through the hold
+@keyframes pv-thumb-progress {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+
+  #{$pv-hold-pct} {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  #{$pv-step-pct},
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+.pv-thumb {
+  position: absolute;
+  inset: 0;
+  // sizes below are in card heights (cqh), so the thumb scales as one image
+  container-type: size;
+
+  &__stage {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 5cqh;
+    padding: 7cqh 6cqh;
+    // Always dark: the product is dark-first, whatever the site theme
+    background:
+      radial-gradient(
+        42cqh 48cqh at 50% 58%,
+        rgb(124 255 0 / 0.2),
+        transparent 70%
+      ),
+      radial-gradient(
+        70cqh 30cqh at 50% 110%,
+        rgb(25 200 102 / 0.18),
+        transparent 70%
+      ),
+      #04060c;
+    color: #fff;
+  }
+
+  // the card's hover zoom is for stills; here the phone lifts instead
+  img {
+    transform: none !important;
+  }
+
+  &__brand {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  &__logo {
+    width: min(100%, 13cqh) !important;
+    height: auto !important;
+  }
+
+  &__tagline {
+    @include kicker;
+    font-size: max(9px, 2.4cqh);
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  &__phone {
+    height: 86cqh;
+    aspect-ratio: 0.485;
+    padding: 1.3cqh;
+    border-radius: 6.4cqh;
+    background: #0b0d12;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.14),
+      0 0 0 0.5cqh #16191f,
+      0 0 0 calc(0.5cqh + 1px) rgb(255 255 255 / 0.08),
+      0 5cqh 10cqh -3cqh rgb(0 0 0 / 0.8);
+    transition: transform 0.6s $easing-out;
+  }
+
+  &__screen {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 5.2cqh;
+    background: #04060c;
+    // keep the corner clip on Safari while the track moves
+    isolation: isolate;
+  }
+
+  &__track {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    animation: pv-thumb-scroll $pv-cycle infinite;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform;
+
+    img {
+      flex: 0 0 100%;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: top;
+    }
+  }
+
+  &__steps {
+    justify-self: end;
+    display: flex;
+    flex-direction: column;
+    gap: 2.6cqh;
+    list-style: none;
+
+    li {
+      @include kicker;
+      position: relative;
+      padding-bottom: 0.9cqh;
+      font-size: max(9px, 2.4cqh);
+      text-align: right;
+      color: rgb(255 255 255 / 0.36);
+      animation: pv-thumb-step $pv-cycle infinite;
+      // start each label's cycle when its screen comes on
+      animation-delay: calc(#{$pv-cycle} * (var(--i) / #{$pv-screens} - 1));
+
+      &:first-child {
+        color: #fff;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background: $pv-lime;
+        transform: scaleX(0);
+        transform-origin: left;
+        opacity: 0;
+        animation: pv-thumb-progress $pv-cycle linear infinite;
+        animation-delay: inherit;
+      }
+    }
+  }
+}
+
+.work-card:hover .pv-thumb__phone {
+  transform: translateY(-1.5cqh);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pv-thumb__track,
+  .pv-thumb__steps li,
+  .pv-thumb__steps li::after {
+    animation: none;
+  }
+}

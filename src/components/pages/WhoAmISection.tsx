@@ -42,7 +42,7 @@ const WhoAmISection = () => {
             I've built brands, interfaces, and systems for founders across SaaS, EdTech
             and AI. That same drive to communicate clearly and explore new perspectives
             shows up in how I work, and how I live. I speak English, Tamil, Kannada, and
-            Hindi — and I'm learning Telugu, slowly but surely, one tea at a time&nbsp;;)
+            Hindi, and I'm learning Telugu, slowly but surely, one tea at a time&nbsp;;)
           </p>
 
           <dl className="who-am-i__facts">
@@ -60,7 +60,7 @@ const WhoAmISection = () => {
       <div className="who-am-i__row who-am-i__row--reverse">
         <motion.div className="who-am-i__text" variants={fadeUp(0, 40)} {...reveal}>
           <p className="who-am-i__lead">
-            Creativity has always been something I'm drawn to — from exploring ideas and
+            Creativity has always been something I'm drawn to, from exploring ideas and
             building interfaces to designing systems that just make sense.
           </p>
           <p>

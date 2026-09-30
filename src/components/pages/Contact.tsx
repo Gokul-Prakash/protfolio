@@ -86,7 +86,7 @@ const Contact = () => {
           <div className="contact__row">
             <span className="contact__label">Location</span>
             <p className="contact__blurb">
-              Based in Bangalore, India—working with teams worldwide. Whether you're a
+              Based in Bangalore, India, working with teams worldwide. Whether you're a
               startup looking for a founding designer or an established brand needing a
               fresh perspective, let's create something meaningful.
             </p>

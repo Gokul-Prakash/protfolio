@@ -40,7 +40,7 @@ const Footer = () => {
           <h3 className="footer__col-title">Say hello</h3>
           <a href={`mailto:${EMAIL}`} className="footer__email">{EMAIL}</a>
           <p className="footer__note">
-            Based in Bangalore, India — working with teams worldwide.
+            Based in Bangalore, India, working with teams worldwide.
           </p>
         </div>
       </nav>

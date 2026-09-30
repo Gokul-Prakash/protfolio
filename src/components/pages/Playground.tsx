@@ -24,7 +24,7 @@ const Playground = () => {
         <SectionHeading
             label="Experiments"
           title="Curiosity over constraints."
-          description="Playground is my experimental lab where I break rules and try new tools — where a 3D doodle might become a UI system, and a mistake might become an aesthetic."
+          description="Playground is my experimental lab where I break rules and try new tools, where a 3D doodle might become a UI system, and a mistake might become an aesthetic."
         />
 
         <div className="playground__grid">

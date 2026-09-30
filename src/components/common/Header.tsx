@@ -88,7 +88,7 @@ const Header = () => {
       >
         {/* Left — logo + status */}
         <div className="header__left">
-          <NavLink to="/" className="header__logo" aria-label="Gokul — home">
+          <NavLink to="/" className="header__logo" aria-label="Gokul, home">
             <img src={images.logo.gLogo} alt="" width={26} height={26} />
             <span className="header__wordmark">Gokul</span>
           </NavLink>

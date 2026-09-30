@@ -127,7 +127,8 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     tagline: 'Making consumer engagement feel tangible.',
     intro:
       'A complete digital experience for a consumer engagement technology company, bringing its capabilities, products, industries and campaign work into one coherent story.',
-    cover: images.caseStudies.octech,
+    cover: images.caseStudies.octechThumb,
+    thumb: images.caseStudies.octechThumb,
     glance: OCTECH_GLANCE,
     meta: [
       { label: 'Project', value: 'Octech corporate website' },
