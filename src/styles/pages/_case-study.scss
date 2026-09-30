@@ -198,7 +198,8 @@
     background: $raised;
     overflow: hidden;
 
-    img {
+    // plain image covers only — visuals (device mockups) size themselves
+    > img {
       width: 100%;
       aspect-ratio: 3 / 2;
       object-fit: cover;
@@ -1236,5 +1237,706 @@
       font-size: $font-size-sm;
       color: $muted;
     }
+  }
+}
+
+// ============================================================
+// PER-STUDY HERO EXTRAS — motto line, reel cover, closing
+// ============================================================
+.case-study__motto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3em;
+  margin-top: $spacing-xl;
+  font-family: $font-sans;
+  font-weight: 720;
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: $paper;
+}
+
+.case-study__motto-arrow {
+  margin-right: 0.3em;
+  color: $accent;
+  font-weight: 400;
+}
+
+.case-study__closing {
+  padding: $section-y $gutter;
+  border-top: 1px solid $line;
+  text-align: center;
+}
+
+.case-study__closing-title {
+  font-family: $font-sans;
+  font-weight: 720;
+  font-size: clamp(2.75rem, 9vw, 8rem);
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: $paper;
+}
+
+.case-study__closing-text {
+  margin-top: $spacing-lg;
+  font-size: clamp($font-size-base, 1.4vw, $font-size-xl);
+  color: $muted;
+}
+
+
+// ============================================================
+// DEVICE MOCKUPS
+// ============================================================
+.cs-device {
+  position: relative;
+  width: 100%;
+  padding: 3.2%;
+  border-radius: 13% / 6%;
+  background: #0b0d12;
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--paper) 14%, transparent),
+    0 40px 80px -30px rgb(0 0 0 / 0.7);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10.5% / 4.9%;
+  }
+}
+
+// Row of phones on a blueprint stage; `--journey` links them with arrows
+.cs-devices {
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+  gap: clamp($spacing-md, 3vw, $spacing-2xl);
+  align-items: end;
+  padding: clamp($spacing-xl, 4vw, $spacing-3xl);
+  border: 1px solid $line;
+  background-color: color-mix(in oklch, var(--accent-fill) 4%, var(--ink));
+  @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
+
+  &__item {
+    position: relative;
+    min-width: 0;
+  }
+
+  // As a cover: full-bleed, no outer frame, phones capped so the trio stays in view
+  .case-study__cover & {
+    border: 0;
+    padding-inline: max(#{$gutter}, calc((100% - 1100px) / 2));
+  }
+
+  // Three-up: lift the middle phone for depth
+  &:not(.cs-devices--journey) .cs-devices__item:nth-child(2) {
+    transform: translateY(-6%) scale(1.06);
+    z-index: 1;
+  }
+
+  &__label {
+    @include kicker;
+    margin-top: $spacing-md;
+    text-align: center;
+    color: $muted;
+  }
+
+  &__link {
+    position: absolute;
+    top: 45%;
+    right: calc(clamp(#{$spacing-md}, 3vw, #{$spacing-2xl}) / -2);
+    transform: translate(50%, -50%);
+    font-family: $font-mono;
+    font-size: $font-size-lg;
+    color: $accent;
+  }
+
+  @include below-tablet {
+    &:not(.cs-devices--journey) .cs-devices__item:nth-child(2) {
+      transform: none;
+    }
+
+    &--journey {
+      grid-template-columns: repeat(var(--count), minmax(180px, 1fr));
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+
+      .cs-devices__item {
+        scroll-snap-align: start;
+      }
+    }
+  }
+}
+
+// ============================================================
+// ANNOTATED SCREEN — phone + callouts
+// ============================================================
+.cs-annotated {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  border: 1px solid $line;
+
+  &--flip {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+
+    .cs-annotated__stage {
+      order: 2;
+      border-right: 0;
+      border-left: 1px solid $line;
+    }
+  }
+
+  @include below-tablet {
+    &,
+    &--flip {
+      grid-template-columns: 1fr;
+    }
+
+    &--flip .cs-annotated__stage {
+      order: 0;
+      border-left: 0;
+    }
+  }
+
+  &__stage {
+    display: grid;
+    place-items: center;
+    padding: clamp($spacing-xl, 4vw, $spacing-3xl);
+    border-right: 1px solid $line;
+    background-color: color-mix(in oklch, var(--accent-fill) 4%, var(--ink));
+    @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
+
+    .cs-device {
+      max-width: 340px;
+    }
+
+    @include below-tablet {
+      border-right: 0;
+      border-bottom: 1px solid $line;
+    }
+  }
+
+  &__notes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    counter-reset: note;
+  }
+
+  &__note {
+    display: grid;
+    grid-template-columns: 1.6em 1fr;
+    column-gap: $spacing-sm;
+    row-gap: 4px;
+    padding: $spacing-lg clamp($spacing-lg, 3vw, $spacing-2xl);
+    counter-increment: note;
+
+    & + & {
+      border-top: 1px solid $line;
+    }
+
+    &::before {
+      content: '›';
+      grid-row: 1 / 3;
+      font-family: $font-mono;
+      color: $accent;
+    }
+
+    strong {
+      font-size: clamp($font-size-base, 1.4vw, $font-size-lg);
+      font-weight: 620;
+      letter-spacing: -0.02em;
+      color: $paper;
+    }
+
+    span {
+      font-size: $font-size-sm;
+      color: $muted;
+    }
+  }
+}
+
+// ============================================================
+// UI CROPS — zoomed fragments of the real screens
+// ============================================================
+.cs-crop__frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    max-width: none;
+    height: auto;
+  }
+}
+
+.cs-crops {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  background: $line;
+  border: 1px solid $line;
+
+  // 3 on top, 2 wider below
+  &__item {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    background: $raised;
+
+    &:nth-child(n + 4) {
+      grid-column: span 3;
+    }
+
+    @include below-desktop {
+      &,
+      &:nth-child(n + 4) {
+        grid-column: span 3;
+      }
+
+      &:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @include mobile {
+      &,
+      &:nth-child(n + 4),
+      &:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  &__stage {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 200px;
+    padding: clamp($spacing-lg, 2.5vw, $spacing-2xl);
+    background-color: color-mix(in oklch, var(--accent-fill) 4%, var(--ink));
+    @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
+
+    .cs-crop__frame {
+      border-radius: 12px;
+      box-shadow:
+        0 0 0 1px color-mix(in oklch, var(--paper) 12%, transparent),
+        0 24px 50px -24px rgb(0 0 0 / 0.7);
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: $spacing-lg;
+    border-top: 1px solid $line;
+
+    strong {
+      @include kicker;
+      color: $accent;
+    }
+
+    span {
+      font-size: $font-size-sm;
+      color: $muted;
+    }
+  }
+}
+
+// ============================================================
+// PALETTE — colour, type, real components
+// ============================================================
+.cs-palette {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1px;
+  background: $line;
+  border: 1px solid $line;
+
+  @include below-desktop {
+    grid-template-columns: 1fr;
+  }
+
+  &__swatches {
+    display: grid;
+    grid-template-rows: repeat(4, minmax(88px, 1fr));
+    gap: 1px;
+    background: $line;
+  }
+
+  &__swatch {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    padding: $spacing-md $spacing-lg;
+  }
+
+  &__swatch-name {
+    font-size: $font-size-lg;
+    font-weight: 660;
+    letter-spacing: -0.02em;
+  }
+
+  &__swatch-meta {
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    opacity: 0.75;
+  }
+
+  &__type {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding: clamp($spacing-lg, 3vw, $spacing-2xl);
+    background: $raised;
+  }
+
+  &__label {
+    @include kicker;
+    color: $accent;
+  }
+
+  &__typeface {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 660;
+    letter-spacing: -0.03em;
+    color: $paper;
+  }
+
+  &__sample {
+    margin-top: auto;
+    font-size: clamp(2.25rem, 5vw, 4.5rem);
+    font-weight: 720;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: $paper;
+  }
+
+  &__components {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: $line;
+
+    @include below-tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__component {
+    display: flex;
+    flex-direction: column;
+    background: $raised;
+  }
+
+  &__component-stage {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 180px;
+    padding: $spacing-lg;
+    background-color: color-mix(in oklch, var(--accent-fill) 4%, var(--ink));
+    @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
+
+    .cs-crop__frame {
+      border-radius: 10px;
+    }
+  }
+
+  &__component-bar {
+    @include kicker;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 14px;
+    border-top: 1px solid $line;
+    color: $paper;
+  }
+}
+
+// Brand mark above the case study title
+.case-study__logo {
+  width: clamp(56px, 6vw, 84px);
+  height: auto;
+  margin-bottom: $spacing-lg;
+}
+
+// ============================================================
+// BEFORE / AFTER
+// ============================================================
+.cs-compare {
+  border: 1px solid $line;
+
+  &__head,
+  &__row {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr) 48px minmax(0, 1fr);
+    align-items: center;
+
+    @include below-tablet {
+      grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+    }
+  }
+
+  &__head {
+    @include kicker;
+    border-bottom: 1px solid $line;
+    color: $muted;
+
+    span {
+      padding: 12px $spacing-lg;
+      text-align: center;
+    }
+
+    span:first-child {
+      grid-column: 2;
+
+      @include below-tablet {
+        grid-column: 1;
+      }
+    }
+
+    span:last-child {
+      grid-column: 4;
+      color: $accent;
+
+      @include below-tablet {
+        grid-column: 3;
+      }
+    }
+  }
+
+  &__row {
+    background-color: color-mix(in oklch, var(--accent-fill) 3%, var(--ink));
+    @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
+
+    & + & {
+      border-top: 1px solid $line;
+    }
+  }
+
+  &__label {
+    @include kicker;
+    align-self: start;
+    padding: $spacing-lg;
+    color: $paper;
+
+    @include below-tablet {
+      grid-column: 1 / -1;
+      padding-bottom: 0;
+    }
+  }
+
+  &__cell {
+    display: grid;
+    place-items: center;
+    padding: clamp($spacing-lg, 3vw, $spacing-2xl) $spacing-md;
+
+    .cs-device {
+      max-width: 200px;
+    }
+
+    // older version reads as the past
+    &--before .cs-device {
+      opacity: 0.72;
+      filter: saturate(0.85);
+    }
+  }
+
+  &__arrow {
+    text-align: center;
+    font-family: $font-mono;
+    color: $accent;
+  }
+}
+
+// ============================================================
+// LOGO REDESIGN
+// ============================================================
+.cs-logo {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1px;
+  background: $line;
+  border: 1px solid $line;
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    background: $raised;
+
+    &--before { grid-column: span 4; }
+    &--mark { grid-column: span 8; }
+    &--lockup { grid-column: span 7; }
+    &--use { grid-column: span 5; }
+
+    @include below-tablet {
+      &--before,
+      &--mark,
+      &--lockup,
+      &--use {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  &__stage {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 260px;
+    padding: clamp($spacing-xl, 4vw, $spacing-3xl);
+    background-color: #04060c;
+    @include grid-lines(rgb(255 255 255 / 0.04));
+
+    .cs-crop__frame {
+      border-radius: 10px;
+    }
+
+    .cs-device {
+      max-width: 230px;
+    }
+  }
+
+  // Stage colours match each crop's background, and the crop's edges fade out,
+  // so the logo sits directly on the stage with no visible box
+  &__cell--before &__stage {
+    background-color: #2c1241;
+    background-image: none;
+  }
+
+  &__cell--lockup &__stage {
+    background-color: #04050c;
+    background-image: none;
+  }
+
+  &__cell--before .cs-crop__frame,
+  &__cell--lockup .cs-crop__frame {
+    border-radius: 0;
+    // fade only a thin outer band (the crops leave room around each logo)
+    --fade: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+      linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+    -webkit-mask-image: var(--fade);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--fade);
+    mask-composite: intersect;
+  }
+
+  &__mark {
+    width: min(100%, 320px);
+    height: auto;
+  }
+}
+
+// Palette extras: action gradient + supporting colours + type hierarchy
+.cs-palette {
+  &__scale {
+    display: flex;
+    flex-direction: column;
+    margin-top: $spacing-md;
+    border-top: 1px solid $line;
+  }
+
+  &__scale-row {
+    display: grid;
+    grid-template-columns: 7.5rem 5rem 1fr;
+    gap: $spacing-md;
+    padding: 9px 0;
+    border-bottom: 1px solid $line;
+    font-size: $font-size-sm;
+
+    dt {
+      color: $paper;
+      font-weight: 600;
+    }
+
+    dd {
+      color: $muted;
+    }
+
+    dd:nth-of-type(1) {
+      font-family: $font-mono;
+      font-size: $font-size-xs;
+      padding-top: 2px;
+    }
+
+    @include mobile {
+      grid-template-columns: 6rem 4rem 1fr;
+      gap: $spacing-sm;
+    }
+  }
+
+  &__extras {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: $line;
+  }
+
+  &__gradient {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: $spacing-md;
+    min-height: 88px;
+    padding: $spacing-md $spacing-lg;
+    color: #04060c;
+    font-weight: 660;
+
+    span:last-child {
+      font-family: $font-mono;
+      font-size: $font-size-xs;
+      font-weight: 500;
+    }
+  }
+
+  &__accents {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: $line;
+
+    @include below-tablet {
+      grid-template-columns: 1fr;
+    }
+
+    li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      column-gap: $spacing-sm;
+      align-items: center;
+      padding: 12px $spacing-lg;
+      background: $raised;
+
+      strong {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: $paper;
+      }
+
+      span:last-child {
+        grid-column: 2;
+        font-family: $font-mono;
+        font-size: $font-size-xs;
+        color: $muted;
+      }
+    }
+  }
+
+  &__chip {
+    grid-row: 1 / 3;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12);
   }
 }

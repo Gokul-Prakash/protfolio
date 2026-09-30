@@ -74,6 +74,14 @@ const CaseStudySheet = ({ study, onClose }: CaseStudySheetProps) => {
             aria-modal="true"
             aria-labelledby="case-study-title"
             tabIndex={-1}
+            // A study can carry its own accent (e.g. Playverra Lime) — the whole sheet
+            // takes it, including the progress bar, and is always dark
+            {...(study.theme
+              ? {
+                  'data-theme': 'dark',
+                  style: { '--accent': study.theme.accent, '--accent-fill': study.theme.fill } as React.CSSProperties,
+                }
+              : {})}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}

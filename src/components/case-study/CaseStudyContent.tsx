@@ -67,9 +67,19 @@ const CaseStudyContent = ({ study, onClose, scrollRoot }: CaseStudyContentProps)
   };
 
   return (
-    <article className="case-study">
+    <article className={`case-study case-study--${study.slug}`}>
       {/* Opening — title, details, cover, at a glance */}
       <header className="case-study__header">
+        {study.logo && (
+          <motion.img
+            className="case-study__logo"
+            src={study.logo}
+            alt=""
+            variants={fadeUp()}
+            initial="hidden"
+            animate="visible"
+          />
+        )}
         <motion.p className="case-study__kicker" variants={fadeUp()} initial="hidden" animate="visible">
           Case study
         </motion.p>
@@ -82,6 +92,17 @@ const CaseStudyContent = ({ study, onClose, scrollRoot }: CaseStudyContentProps)
         <motion.p className="case-study__lead" variants={fadeUp(0.15)} initial="hidden" animate="visible">
           {study.intro}
         </motion.p>
+
+        {study.motto && (
+          <motion.p className="case-study__motto" variants={fadeUp(0.18)} initial="hidden" animate="visible">
+            {study.motto.map((word, i) => (
+              <span key={word}>
+                {i > 0 && <span className="case-study__motto-arrow" aria-hidden="true">→</span>}
+                {word}
+              </span>
+            ))}
+          </motion.p>
+        )}
 
         <motion.dl className="case-study__meta" variants={fadeUp(0.2)} initial="hidden" animate="visible">
           {study.meta.map((m) => (
@@ -100,7 +121,11 @@ const CaseStudyContent = ({ study, onClose, scrollRoot }: CaseStudyContentProps)
       </header>
 
       <motion.figure className="case-study__cover" variants={fadeUp(0.25, 32)} initial="hidden" animate="visible">
-        <img src={study.cover} alt={`${study.name} website on laptop, tablet and phone`} draggable={false} />
+        {study.coverVisual ? (
+          <CaseStudyVisual visual={study.coverVisual} />
+        ) : (
+          <img src={study.cover} alt={`${study.name} website on laptop, tablet and phone`} draggable={false} />
+        )}
       </motion.figure>
 
       {/* At a glance — Octech's ecosystem as presented on the site (not results) */}
@@ -168,6 +193,13 @@ const CaseStudyContent = ({ study, onClose, scrollRoot }: CaseStudyContentProps)
           ))}
         </div>
       </div>
+
+      {study.closing && (
+        <motion.section className="case-study__closing" variants={fadeUp(0, 32)} {...reveal}>
+          <p className="case-study__closing-title">{study.closing.title}</p>
+          <p className="case-study__closing-text">{study.closing.text}</p>
+        </motion.section>
+      )}
 
       {/* Same contact card as the site footer */}
       <section className="case-study__contact">

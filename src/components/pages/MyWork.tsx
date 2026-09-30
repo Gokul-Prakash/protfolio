@@ -7,7 +7,7 @@ import { fadeUp } from '../../utils/animations';
 import { SELECTED_WORK } from '../../utils/content';
 import { CASE_STUDIES } from '../../content/caseStudies';
 
-const FEATURED = CASE_STUDIES.octech;
+const CASE_CARDS = [CASE_STUDIES.octech, CASE_STUDIES.playverra];
 
 const Arrow = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -40,37 +40,40 @@ const MyWork = () => {
       />
 
       <div className="selected-work__grid">
-        {/* Case study — first cell of the grid, opens the bottom sheet */}
-        <motion.button
-          type="button"
-          onClick={() => open(FEATURED.slug)}
-          aria-haspopup="dialog"
-          className="work-card work-card--case-study"
-          variants={fadeUp(0, 40)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          <div className="work-card__media">
-            <img src={FEATURED.cover} alt={FEATURED.name} loading="lazy" draggable={false} />
-          </div>
-
-          <div className="work-card__row">
-            <div className="work-card__text">
-              <h3 className="work-card__title">{FEATURED.name}</h3>
-              <p className="work-card__tags">Website / Product / UX/UI</p>
+        {/* Case studies — first cells of the grid, each opens the bottom sheet */}
+        {CASE_CARDS.map((study, i) => (
+          <motion.button
+            key={study.slug}
+            type="button"
+            onClick={() => open(study.slug)}
+            aria-haspopup="dialog"
+            className="work-card work-card--case-study"
+            variants={fadeUp(i * 0.1, 40)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <div className="work-card__media">
+              <img src={study.thumb ?? study.cover} alt={study.title} loading="lazy" draggable={false} />
             </div>
-            <span className="work-card__action" aria-hidden="true">
-              <Arrow />
-            </span>
-          </div>
-        </motion.button>
+
+            <div className="work-card__row">
+              <div className="work-card__text">
+                <h3 className="work-card__title">{study.title}</h3>
+                <p className="work-card__tags">{study.tags}</p>
+              </div>
+              <span className="work-card__action" aria-hidden="true">
+                <Arrow />
+              </span>
+            </div>
+          </motion.button>
+        ))}
 
         {SELECTED_WORK.map((p, i) => (
           <motion.article
             key={p.id}
             className="work-card"
-            variants={fadeUp(((i + 1) % 3) * 0.1, 40)}
+            variants={fadeUp(((i + CASE_CARDS.length) % 3) * 0.1, 40)}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
