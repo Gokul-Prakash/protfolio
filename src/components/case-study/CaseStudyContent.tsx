@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import ContactCard from '../common/ContactCard';
 import CaseStudyVisual from './CaseStudyVisual';
 import { fadeUp } from '../../utils/animations';
-import { CaseStudy, SHOW_DRAFTS } from '../../content/caseStudies';
+import { CaseStudy } from '../../content/caseStudies';
 
 const reveal = { initial: 'hidden', whileInView: 'visible', viewport: { once: true, amount: 0.15 } } as const;
 
@@ -15,11 +15,6 @@ const mdComponents = {
       {children}
     </a>
   ),
-  // Draft markers arrive as inline code starting "NEEDS INPUT" / "NOTE" (dev only)
-  code: ({ children }: { children?: React.ReactNode }) => {
-    const text = String(children ?? '');
-    return /^(NEEDS INPUT|NOTE)\b/.test(text) ? <mark className="draft-chip">{text}</mark> : <code>{children}</code>;
-  },
   table: ({ children }: { children?: React.ReactNode }) => (
     <div className="case-study__table">
       <table>{children}</table>
@@ -30,7 +25,7 @@ const mdComponents = {
 // Full case study body — rendered inside the bottom sheet (lazy-loaded with the
 // Markdown renderer so it stays out of the home page bundle).
 const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () => void }) => {
-  const meta = study.meta.filter((m) => SHOW_DRAFTS || !m.draft);
+  const meta = study.meta;
 
   return (
     <article className="case-study">
@@ -56,9 +51,7 @@ const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () =>
             <div key={m.label} className="case-study__meta-item">
               <dt>{m.label}</dt>
               <dd>
-                {m.draft ? (
-                  <mark className="draft-chip">{m.value}</mark>
-                ) : m.href ? (
+                {m.href ? (
                   <a href={m.href} target="_blank" rel="noreferrer">{m.value} ↗</a>
                 ) : (
                   m.value
@@ -70,7 +63,6 @@ const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () =>
 
         <motion.p className="case-study__contribution" variants={fadeUp(0.15)} {...reveal}>
           <strong>My contribution</strong> {study.contribution.text}
-          {SHOW_DRAFTS && study.contribution.draft && <mark className="draft-chip">NEEDS INPUT — confirm wording</mark>}
         </motion.p>
       </section>
 
@@ -86,21 +78,26 @@ const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () =>
         </motion.dl>
       )}
 
-      {SHOW_DRAFTS && (
-        <p className="case-study__draft-banner">
-          Draft view — highlighted items are dev-only and removed from production builds.
-        </p>
-      )}
 
       {/* Sections — title on the left, content on the right */}
       <div className="case-study__sections">
         {study.sections.map((section) => (
           <section key={section.title} className="case-study__section">
-            {/* Title + prose share a grid so the sticky title stays within the text, never over the visual */}
+            {/* Same pattern as the home page's section headings: mono kicker · big statement */}
+            <motion.header className="case-study__section-head" variants={fadeUp(0, 24)} {...reveal}>
+              <p className="case-study__section-kicker">{section.title}</p>
+              <h3 className="case-study__section-title">
+                {section.statement ? (
+                  <ReactMarkdown components={{ ...mdComponents, p: ({ children }) => <>{children}</> }}>
+                    {section.statement}
+                  </ReactMarkdown>
+                ) : (
+                  section.title
+                )}
+              </h3>
+            </motion.header>
+
             <div className="case-study__section-text">
-              <motion.h3 className="case-study__section-title" variants={fadeUp(0, 24)} {...reveal}>
-                {section.title}
-              </motion.h3>
               <motion.div className="case-study__prose" variants={fadeUp(0.05, 24)} {...reveal}>
                 <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
                   {section.body}

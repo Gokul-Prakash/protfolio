@@ -5,15 +5,22 @@ import OctechSystem from './OctechSystem';
 
 const reveal = { initial: 'hidden', whileInView: 'visible', viewport: { once: true, amount: 0.15 } } as const;
 
+// Screen on a blueprint stage, with a "› label" caption bar (like the work cards)
 const Shot = ({ image, className = '' }: { image: VisualImage; className?: string }) => (
   <motion.figure className={`cs-shot ${className}`.trim()} variants={fadeUp(0, 28)}>
-    <div className="cs-shot__frame">
+    <div className="cs-shot__stage">
       <img src={image.src} alt={image.alt} loading="lazy" draggable={false} />
     </div>
-    {image.label && <figcaption className="cs-shot__label">{image.label}</figcaption>}
+    {image.label && (
+      <figcaption className="cs-shot__bar">
+        <span className="cs-shot__caret" aria-hidden="true">›</span>
+        {image.label}
+      </figcaption>
+    )}
   </motion.figure>
 );
 
+// Caption rail under a visual (like the capabilities rail on the home page)
 const Caption = ({ text }: { text?: string }) =>
   text ? <p className="cs-visual__caption">{text}</p> : null;
 

@@ -167,6 +167,12 @@
     will-change: transform;
   }
 
+  // Smaller trailing full stop, sitting on the baseline
+  &__suffix {
+    font-size: 0.55em;
+    margin-left: 0.04em;
+  }
+
   &__probes {
     position: absolute;
     top: 0;

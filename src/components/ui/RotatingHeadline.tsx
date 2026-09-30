@@ -6,6 +6,8 @@ type RotatingHeadlineProps = {
   lead: string;
   /** Words that rotate at the end of the line */
   words: string[];
+  /** Trailing mark after each word (e.g. "."), set smaller than the headline */
+  suffix?: string;
   /** How long each word stays, in ms */
   interval?: number;
   className?: string;
@@ -16,7 +18,7 @@ const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 // One-line headline: a static lead ("I design for") and a final word that swaps
 // with a masked vertical slide. Font-size is solved so the longest full line
 // (lead + widest word) spans the full width — so the size never jumps.
-const RotatingHeadline = ({ lead, words, interval = 2800, className = '' }: RotatingHeadlineProps) => {
+const RotatingHeadline = ({ lead, words, suffix, interval = 2800, className = '' }: RotatingHeadlineProps) => {
   const ref = useRef<HTMLHeadingElement>(null);
   const [index, setIndex] = useState(0);
   const reduceMotion = useReducedMotion();
@@ -75,6 +77,7 @@ const RotatingHeadline = ({ lead, words, interval = 2800, className = '' }: Rota
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span key={words[index]} className="rotating-headline__word" {...slide}>
               {words[index]}
+              {suffix && <span className="rotating-headline__suffix">{suffix}</span>}
             </motion.span>
           </AnimatePresence>
         </span>
@@ -83,7 +86,10 @@ const RotatingHeadline = ({ lead, words, interval = 2800, className = '' }: Rota
       {/* Invisible probes (every full line) used only for measuring */}
       <span className="rotating-headline__probes" aria-hidden="true">
         {words.map((word) => (
-          <span key={word} data-fit-probe>{lead}&nbsp;{word}</span>
+          <span key={word} data-fit-probe>
+            {lead}&nbsp;{word}
+            {suffix && <span className="rotating-headline__suffix">{suffix}</span>}
+          </span>
         ))}
       </span>
     </h1>

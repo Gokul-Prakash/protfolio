@@ -6,8 +6,8 @@ import StripeButton from '../ui/StripeButton';
 import { fadeUp, stagger } from '../../utils/animations';
 import { RESUME_URL } from '../../utils/content';
 
-// People → products → brands → makers, then loops
-const HEADLINE_WORDS = ['people', 'products', 'brands', 'makers'];
+// People → products → brands, then loops
+const HEADLINE_WORDS = ['people', 'products', 'brands'];
 
 const ArrowDown = () => (
   <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -53,7 +53,7 @@ const HeroSection = () => {
         {/* Headline — "I design for" + rotating word, sized to fill the full width */}
         <motion.div className="hero__title" style={{ y: titleY }}>
           <motion.div variants={fadeUp(0, 48)}>
-            <RotatingHeadline lead="I design for" words={HEADLINE_WORDS} />
+            <RotatingHeadline lead="I design for" words={HEADLINE_WORDS} suffix="." />
           </motion.div>
         </motion.div>
 

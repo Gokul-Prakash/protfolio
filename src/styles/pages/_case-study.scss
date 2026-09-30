@@ -226,13 +226,6 @@
     }
   }
 
-  &__draft-banner {
-    @include kicker;
-    margin: $section-head-gap $gutter 0;
-    padding: 10px 14px;
-    border: 1px dashed $accent;
-    color: $accent;
-  }
 
   // ── Sections ──────────────────────────────────────────────
   &__sections {
@@ -249,6 +242,8 @@
     }
   }
 
+  // Heading — same grid as the home page's .section-heading
+  &__section-head,
   &__section-text {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -260,24 +255,48 @@
     }
   }
 
-  &__section-title {
-    grid-column: 1 / 5;
-    align-self: start;
-    position: sticky;
-    top: $spacing-xl;
-    @include section-title;
-    font-size: clamp(2rem, 3.6vw, 3.25rem);
-    line-height: 1;
+  &__section-head {
+    margin-bottom: clamp($spacing-xl, 4vw, $spacing-2xl);
+  }
+
+  &__section-kicker {
+    @include kicker;
+    grid-column: 1 / 4;
+    padding-top: 0.7em;
+    color: $accent;
 
     @include below-tablet {
       grid-column: 1;
-      position: static;
+      padding-top: 0;
+    }
+  }
+
+  &__section-title {
+    grid-column: 4 / 12;
+    @include section-title;
+    font-size: clamp(1.9rem, 3.8vw, 3.4rem);
+    line-height: 1.04;
+    text-wrap: balance;
+
+    strong,
+    em {
+      color: $accent;
+      font-style: normal;
+      font-weight: inherit;
+    }
+
+    @include below-desktop {
+      grid-column: 4 / -1;
+    }
+
+    @include below-tablet {
+      grid-column: 1;
     }
   }
 
   // ── Prose (rendered Markdown) ─────────────────────────────
   &__prose {
-    grid-column: 5 / -1;
+    grid-column: 4 / 11;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -285,6 +304,10 @@
     font-size: clamp($font-size-base, 1.1vw, 1.0625rem);
     line-height: $line-height-relaxed;
     color: $muted;
+
+    @include below-desktop {
+      grid-column: 4 / -1;
+    }
 
     @include below-tablet {
       grid-column: 1;
@@ -338,18 +361,28 @@
       }
     }
 
-    // Pull quotes — large display type with an accent rule
+    // In-body pull quotes — a statement between hairlines, led by a mono caret
     blockquote {
-      max-width: 34ch;
-      margin: $spacing-lg 0;
-      padding-left: $spacing-lg;
-      border-left: 3px solid $accent-fill;
-      font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+      position: relative;
+      margin: $spacing-md 0;
+      padding: $spacing-lg 0 $spacing-lg 1.6em;
+      border-top: 1px solid $line;
+      border-bottom: 1px solid $line;
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
       font-weight: 600;
-      line-height: 1.2;
+      line-height: 1.25;
       letter-spacing: -0.025em;
       color: $paper;
       text-wrap: balance;
+
+      &::before {
+        content: '›';
+        position: absolute;
+        left: 0;
+        top: $spacing-lg;
+        font-family: $font-mono;
+        color: $accent;
+      }
 
       p {
         max-width: none;
@@ -425,21 +458,7 @@
     font-size: 0.85em;
   }
 
-  // Draft markers — dev only (production builds strip them)
-  .draft-chip {
-    display: inline;
-    padding: 2px 6px;
-    border: 1px dashed $accent;
-    background: color-mix(in oklch, var(--accent-fill) 12%, transparent);
-    color: $accent;
-    font-family: $font-mono;
-    font-size: 0.8em;
-    line-height: 1.8;
-  }
 
-  &__contribution .draft-chip {
-    margin-left: 0.5em;
-  }
 
   // ── Contact card (shared with the footer) + back link ─────
   &__contact {
@@ -521,81 +540,84 @@
 }
 
 // ============================================================
-// VISUALS — screenshots in frames, pairs, grids, filmstrip, phones
+// VISUALS — screens on blueprint stages with caption bars,
+// joined by 1px lines (same language as the work cards and atlas)
 // ============================================================
 .cs-shot {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: $raised;
 
-  // Browser-style frame for desktop captures
-  &__frame {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid $line;
-    background: $raised;
-    padding-top: 26px;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 9px;
-      left: 12px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: $line;
-      box-shadow: 14px 0 0 $line, 28px 0 0 $line;
-    }
+  // Blueprint stage the screen sits on
+  &__stage {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: clamp(14px, 2.4vw, 36px);
+    background-color: color-mix(in oklch, var(--accent-fill) 3%, var(--ink));
+    @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
 
     img {
       display: block;
       width: 100%;
       height: auto;
-      border-top: 1px solid $line;
+      border: 1px solid $line;
+      box-shadow: 0 24px 60px -30px rgb(0 0 0 / 0.55);
     }
   }
 
-  &__label {
+  // "› Label" bar, like .work-carousel__caption
+  &__bar {
     @include kicker;
-    margin-top: 12px;
-    color: $muted;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 14px;
+    border-top: 1px solid $line;
+    color: $paper;
   }
 
-  // Phone frame for mobile captures
-  &--phone &__frame {
-    padding: 10px;
-    border: 0;
-    border-radius: 34px;
-    background: #0b0d0c;
-    box-shadow:
-      0 0 0 1px $line,
-      0 40px 80px -30px rgb(0 0 0 / 0.6);
-
-    &::before {
-      display: none;
-    }
-
-    img {
-      border: 0;
-      border-radius: 25px;
-    }
+  &__caret {
+    color: $accent;
   }
 
-  &--phone &__label {
-    text-align: center;
+  // Mobile captures — square hairline frame, capped height
+  &--phone &__stage img {
+    width: auto;
+    max-width: 100%;
+    max-height: 560px;
   }
 }
 
 .cs-visual {
+  // Cells joined by 1px lines on a line-coloured field
   &__items {
     display: grid;
-    gap: $grid-gap;
+    gap: 1px;
+    background: $line;
+    border: 1px solid $line;
   }
 
+  // Caption rail under the cells
   &__caption {
-    margin-top: $spacing-lg;
-    max-width: 60ch;
-    font-size: $font-size-sm;
+    @include kicker;
+    padding: 14px;
+    border: 1px solid $line;
+    border-top: 0;
+    background: $raised;
     color: $muted;
+    line-height: 1.6;
+  }
+
+  // Single image: frame the one cell the same way
+  &:not([class*='cs-visual--']) > .cs-shot {
+    border: 1px solid $line;
+  }
+
+  &:not([class*='cs-visual--']) > .cs-visual__caption {
+    border-top: 0;
   }
 
   &--pair &__items {
@@ -627,19 +649,23 @@
     }
   }
 
-  &--filmstrip .cs-shot__label {
+  // "We make ___" in the caption bars
+  &--filmstrip .cs-shot__bar {
     font-family: $font-sans;
-    font-size: $font-size-base;
+    font-size: $font-size-sm;
     font-weight: 600;
     letter-spacing: -0.01em;
     text-transform: none;
-    color: $paper;
 
-    &::before {
-      content: 'We make ';
-      color: $muted;
-      font-weight: 400;
+    &::after {
+      content: none;
     }
+  }
+
+  &--filmstrip .cs-shot__caret::after {
+    content: ' We make';
+    font-weight: 400;
+    color: $muted;
   }
 
   &--stack &__items {
@@ -649,12 +675,10 @@
   // Five phones in a row; scrolls sideways on small screens
   &--phones &__items {
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: clamp($spacing-md, 2vw, $spacing-xl);
 
     @include below-desktop {
-      grid-template-columns: repeat(5, minmax(200px, 1fr));
+      grid-template-columns: repeat(5, minmax(220px, 1fr));
       overflow-x: auto;
-      padding-bottom: $spacing-md;
       scroll-snap-type: x mandatory;
 
       .cs-shot {
@@ -663,21 +687,26 @@
     }
   }
 
-  // Edge-to-edge inside the sheet
+  // Edge-to-edge closing image — no stage
   &--bleed {
     margin-inline: calc(#{$gutter} * -1);
 
-    .cs-shot__frame {
-      padding-top: 0;
-      border: 0;
+    > .cs-shot {
+      border: 0 !important;
+    }
 
-      &::before {
-        display: none;
-      }
+    .cs-shot__stage {
+      padding: 0;
+      background: none;
 
       img {
         border: 0;
+        box-shadow: none;
       }
+    }
+
+    .cs-shot__bar {
+      display: none;
     }
   }
 }

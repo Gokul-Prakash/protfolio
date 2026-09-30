@@ -33,7 +33,7 @@ const OctechSystem = () => (
     {/* Type */}
     <motion.div className="octech-system__type" variants={fadeUp(0, 20)}>
       <span className="octech-system__label">
-        <i aria-hidden="true" /> Typography — Urbanist
+        <i aria-hidden="true" /> Typography · Urbanist
       </span>
       <p className="octech-system__display">
         We make <em>brands playable.</em>
