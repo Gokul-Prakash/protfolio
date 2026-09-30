@@ -1940,3 +1940,11 @@
     box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12);
   }
 }
+
+// Light theme: the mark has a white "P", so it sits on a dark app-icon tile
+[data-theme='light'] .case-study__logo {
+  box-sizing: content-box;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #04060c;
+}

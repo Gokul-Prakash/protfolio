@@ -81,8 +81,8 @@ export type CaseStudy = {
   motto?: string[];
   /** Closing statement before the contact card */
   closing?: { title: string; text: string };
-  /** Per-study accent (text/lines) and fill; forces the dark theme */
-  theme?: { accent: string; fill: string };
+  /** Per-study accent for text/lines (dark theme), a darker one for the light theme, and a fill */
+  theme?: { accent: string; accentLight?: string; fill: string };
   glance?: { value: string; label: string }[];
   meta: { label: string; value: string; href?: string; draft?: boolean }[];
   sections: CaseStudySection[];
@@ -157,7 +157,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       title: 'Play. Discover. Earn.',
       text: 'A gaming experience designed to give users more reasons to come back.',
     },
-    theme: { accent: '#7CFF00', fill: '#7CFF00' },
+    theme: { accent: '#7CFF00', accentLight: '#2E8A00', fill: '#7CFF00' },
     meta: [
       { label: 'Project', value: 'Playverra mobile app' },
       { label: 'Role', value: 'Senior UI/UX Designer' },

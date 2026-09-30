@@ -66,3 +66,13 @@
   --fg-line: var(--line);
   color: var(--paper);
 }
+
+// Per-study accent (set on the case-study sheet): lime in dark, deeper green in light
+[data-accent] {
+  --accent: var(--study-accent);
+}
+
+[data-theme='light'] [data-accent],
+[data-theme='light'][data-accent] {
+  --accent: var(--study-accent-light);
+}
