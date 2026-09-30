@@ -268,18 +268,7 @@
 
   &__kicker {
     @include kicker;
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
     color: var(--fg);
-
-    &::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: currentColor;
-      opacity: 0.6;
-    }
   }
 
   &__title {

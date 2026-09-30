@@ -50,7 +50,7 @@ import toolChatGPT from "./images/Toolbox/ChatGPT-Logo.svg";
 import toolFirefly from "./images/Toolbox/Adobe_Firefly_Logo.svg";
 
 // Footer
-import FooterImg from "./images/footer-img.png";
+import FooterImg from "./images/footer-img.webp";
 
 // ── Videos ──────────────────────────────────────────────────────────────────
 
