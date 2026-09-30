@@ -72,7 +72,7 @@ const parseSections = (md: string, visuals: Record<string, CaseStudyVisual> = {}
 export const CASE_STUDIES: Record<string, CaseStudy> = {
   octech: {
     slug: 'octech',
-    name: 'Octech',
+    name: 'OCTECH', // brand name is set in capitals, as in the logo
     tagline: 'Making consumer engagement feel tangible.',
     intro:
       'A complete digital experience for a consumer engagement technology company, bringing its capabilities, products, industries and campaign work into one coherent story.',
