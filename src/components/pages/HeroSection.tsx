@@ -1,10 +1,13 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { videos } from '@assets/assets';
-import FitText from '../ui/FitText';
+import RotatingHeadline from '../ui/RotatingHeadline';
 import StripeButton from '../ui/StripeButton';
 import { fadeUp, stagger } from '../../utils/animations';
 import { RESUME_URL } from '../../utils/content';
+
+// People → products → brands → makers, then loops
+const HEADLINE_WORDS = ['people', 'products', 'brands', 'makers'];
 
 const ArrowDown = () => (
   <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -47,18 +50,18 @@ const HeroSection = () => {
           <span>Based in Bangalore, IN</span>
         </motion.div>
 
-        {/* Title — fills the full width; two lines on phones */}
+        {/* Headline — "I design for" + rotating word, sized to fill the full width */}
         <motion.div className="hero__title" style={{ y: titleY }}>
           <motion.div variants={fadeUp(0, 48)}>
-            <FitText lines={['Product Designer']} mobileLines={['Product', 'Designer']} />
+            <RotatingHeadline lead="I design for" words={HEADLINE_WORDS} />
           </motion.div>
         </motion.div>
 
         {/* Description + actions */}
         <div className="hero__bottom">
           <motion.p className="hero__description" variants={fadeUp()}>
-            I'm an experienced web and UX/UI designer, creating memorable digital
-            experiences for brands of all sizes.
+            Product designer creating digital products and experiences across UX, UI,
+            interaction, and visual design.
           </motion.p>
 
           <motion.div className="hero__actions" variants={fadeUp()}>
