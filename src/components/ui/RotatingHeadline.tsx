@@ -63,6 +63,21 @@ const RotatingHeadline = ({ lead, words, suffix, interval = 2800, className = ''
         transition: { duration: 0.55, ease: EASE_OUT },
       };
 
+  // First letter flips on its own when it changes (p → b is a vertical flip of the
+  // same glyph); when it stays the same (p → p) it doesn't move at all.
+  const word = words[index];
+  const initial = word.charAt(0);
+  const rest = word.slice(1);
+
+  const flip = reduceMotion
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.15 } }
+    : {
+        initial: { rotateX: -90 },
+        animate: { rotateX: 0 },
+        exit: { rotateX: 90 },
+        transition: { duration: 0.16, ease: 'easeInOut' },
+      };
+
   return (
     <h1
       ref={ref}
@@ -74,9 +89,16 @@ const RotatingHeadline = ({ lead, words, suffix, interval = 2800, className = ''
 
         {/* Masked word — only this moves */}
         <span className="rotating-headline__mask">
+          <span className="rotating-headline__initial">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span key={initial} className="rotating-headline__initial-letter" {...flip}>
+                {initial}
+              </motion.span>
+            </AnimatePresence>
+          </span>
           <AnimatePresence mode="popLayout" initial={false}>
-            <motion.span key={words[index]} className="rotating-headline__word" {...slide}>
-              {words[index]}
+            <motion.span key={word} className="rotating-headline__word" {...slide}>
+              {rest}
               {suffix && <span className="rotating-headline__suffix">{suffix}</span>}
             </motion.span>
           </AnimatePresence>

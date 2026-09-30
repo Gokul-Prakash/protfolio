@@ -6,8 +6,9 @@ import StripeButton from '../ui/StripeButton';
 import { fadeUp, stagger } from '../../utils/animations';
 import { RESUME_URL } from '../../utils/content';
 
-// People → products → brands, then loops
-const HEADLINE_WORDS = ['people', 'products', 'brands'];
+// Human → brand → product → business, then loops. First letters alternate p/b,
+// so the initial flips on every change (see RotatingHeadline).
+const HEADLINE_WORDS = ['people', 'brands', 'products', 'business'];
 
 const ArrowDown = () => (
   <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">

@@ -167,10 +167,25 @@
     will-change: transform;
   }
 
-  // Smaller trailing full stop, sitting on the baseline
+  // First letter — flips in place (rotateX) when it changes, e.g. p → b.
+  // The pivot sits at the middle of the x-height so the bowl stays put and
+  // only the stem swings from descender to ascender.
+  &__initial {
+    display: inline-block;
+    perspective: 600px;
+  }
+
+  &__initial-letter {
+    display: inline-block;
+    transform-origin: 50% 64%;
+    backface-visibility: hidden;
+  }
+
+  // Smaller trailing full stop, sitting on the baseline. The margin offsets the
+  // headline's tight negative tracking, which would otherwise tuck it into the last letter.
   &__suffix {
     font-size: 0.55em;
-    margin-left: 0.04em;
+    margin-left: 0.14em;
   }
 
   &__probes {
@@ -180,7 +195,8 @@
     visibility: hidden;
     pointer-events: none;
 
-    span {
+    // one probe per line (direct children only, so the inline suffix stays inline)
+    > span {
       display: block;
       width: fit-content;
       white-space: nowrap;
