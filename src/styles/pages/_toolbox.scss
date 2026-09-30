@@ -1,0 +1,203 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.toolbox {
+  @include section-padding;
+  border-top: 1px solid $line;
+
+  // Bubble surface — also used as the cut-out colour inside logos (Firefly)
+  --toolbox-bubble: color-mix(in oklch, var(--paper) 4%, var(--raised));
+
+  // ── Stage — physics playground on a faint blueprint grid ─
+  &__stage {
+    position: relative;
+    height: clamp(360px, 34vw, 500px);
+    border: 1px solid $line;
+    border-bottom: 0;
+    overflow: hidden;
+    background-color: color-mix(in oklch, var(--accent-fill) 3%, var(--ink));
+    @include grid-lines(color-mix(in oklch, var(--paper) 4%, transparent));
+    user-select: none;
+    -webkit-user-select: none;
+
+    // Soft floor shade so the pile feels grounded
+    &::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 0;
+      height: 40%;
+      background: linear-gradient(to top, color-mix(in oklch, var(--ink) 55%, transparent), transparent);
+      pointer-events: none;
+    }
+  }
+
+  &__stage-fig {
+    @include kicker;
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    color: color-mix(in oklch, var(--paper) 38%, transparent);
+  }
+
+  // ── Bubble — position/scale set per frame from the physics body
+  &__bubble {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: $paper;
+    cursor: grab;
+    touch-action: none; // let the finger drag the bubble instead of scrolling
+    will-change: transform;
+    -webkit-tap-highlight-color: transparent;
+
+    &.is-active {
+      z-index: 3;
+    }
+
+    &.is-dragging {
+      z-index: 4;
+      cursor: grabbing;
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      .toolbox__face {
+        box-shadow:
+          0 0 0 2px var(--ink),
+          0 0 0 4px $accent,
+          var(--toolbox-shadow);
+      }
+    }
+
+    // Click — a ring that expands and fades
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1.5px solid color-mix(in oklch, var(--paper) 50%, transparent);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &.is-popped::after {
+      animation: toolbox-ring 600ms cubic-bezier(0.2, 0.7, 0.3, 1);
+    }
+  }
+
+  &__face {
+    --toolbox-shadow:
+      inset 0 1px 0 color-mix(in oklch, var(--paper) 10%, transparent),
+      inset 0 -8px 16px -8px rgb(0 0 0 / 0.25),
+      0 14px 28px -12px rgb(0 0 0 / 0.55);
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 32% 26%, color-mix(in oklch, var(--paper) 7%, transparent), transparent 62%),
+      var(--toolbox-bubble);
+    border: 1px solid color-mix(in oklch, var(--paper) 8%, transparent);
+    box-shadow: var(--toolbox-shadow);
+    transition: box-shadow 200ms ease;
+
+    svg {
+      width: 44%;
+      height: 44%;
+      pointer-events: none;
+    }
+
+    .is-active > & {
+      --toolbox-shadow:
+        inset 0 1px 0 color-mix(in oklch, var(--paper) 14%, transparent),
+        inset 0 -8px 16px -8px rgb(0 0 0 / 0.2),
+        0 22px 36px -14px rgb(0 0 0 / 0.6);
+    }
+  }
+
+  // ── Name label — revealed on hover / focus / drag
+  &__label {
+    @include kicker;
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: $paper;
+    color: $ink;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, 4px);
+    transition: opacity 180ms ease, transform 180ms ease;
+    pointer-events: none;
+
+    .label-below > & {
+      top: calc(100% + 10px);
+      bottom: auto;
+    }
+
+    .is-active > & {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  // ── Rail — closing line under the stage
+  &__rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+    min-height: 64px;
+    padding: 14px clamp($spacing-lg, 2vw, $spacing-xl);
+    border: 1px solid $line;
+    background: $raised;
+  }
+
+  &__rail-quote {
+    font-size: clamp($font-size-sm, 1.1vw, $font-size-base);
+    color: $paper;
+    text-wrap: balance;
+  }
+
+  &__rail-label {
+    @include kicker;
+    color: $muted;
+  }
+}
+
+[data-theme='light'] .toolbox {
+  --toolbox-bubble: var(--raised);
+
+  .toolbox__face {
+    --toolbox-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      inset 0 -8px 16px -8px rgb(20 30 40 / 0.08),
+      0 14px 26px -14px rgb(20 30 40 / 0.35);
+    border-color: color-mix(in oklch, var(--paper) 10%, transparent);
+  }
+
+  .toolbox__stage::after {
+    background: linear-gradient(to top, color-mix(in oklch, var(--paper) 4%, transparent), transparent);
+  }
+}
+
+@keyframes toolbox-ring {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
