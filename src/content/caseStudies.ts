@@ -137,6 +137,8 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       { label: 'Live site', value: 'octech.in', href: 'https://octech.in/' },
     ],
     tags: 'Website / Product / UX/UI',
+    // Octech Red — slightly lifted for text on dark, the true brand red on light
+    theme: { accent: '#FF4D4D', accentLight: '#F50000', fill: '#F50000' },
     sections: parseSections(octechMd, OCTECH_VISUALS),
   },
 
