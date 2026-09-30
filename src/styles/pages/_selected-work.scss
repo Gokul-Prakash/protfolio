@@ -128,13 +128,3 @@
   }
 }
 
-.work-card__badge {
-  @include kicker;
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 1;
-  padding: 6px 10px;
-  background: $accent-fill;
-  color: $field-ink;
-}

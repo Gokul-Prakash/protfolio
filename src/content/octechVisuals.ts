@@ -22,11 +22,28 @@ export const OCTECH_GLANCE = [
 
 // Visual shown after each section, keyed by section title in octech.md
 export const OCTECH_VISUALS: Record<string, CaseStudyVisual> = {
+  // Everything the site had to hold together, as presented on octech.in
   'The Challenge': {
-    kind: 'pair',
-    items: [
-      { src: img('solutions'), alt: 'Solutions page: outcome-led programmes, not one-off campaigns', label: 'Solutions' },
-      { src: img('intelligence'), alt: 'Intelligence page: “Your campaign is live. Do you actually know what’s happening inside it?”', label: 'Intelligence' },
+    kind: 'chips',
+    groups: [
+      { label: 'Programmes', items: ['Consumer & Trade Promotions', 'Brand Activations', 'Loyalty & Repeat Purchase'] },
+      { label: 'Platforms', items: ['Playverra', 'PromoGenie'] },
+      { label: 'Intelligence', items: ['Analytics & Measurement', 'Fraud Detection', 'Personalisation', 'Agentic Integrations'] },
+      {
+        label: 'AI modules',
+        items: [
+          'AI Experience Studio',
+          'AI Engagement Engine',
+          'AI Conversion & Rewards Engine',
+          'AI Intelligence Layer',
+          'Personal Creative Generator',
+          'User Content Creator',
+          'AI Gamification Layer',
+          'Fraud & Safety Shield',
+          'Smart Reward Picker',
+        ],
+      },
+      { label: 'Trust', items: ['ISO 27001:2022', 'DPDP Act 2023', 'MACH-ready', 'SLA-backed operations'] },
     ],
   },
   'Information Architecture': {
@@ -41,7 +58,8 @@ export const OCTECH_VISUALS: Record<string, CaseStudyVisual> = {
   },
   'Visual Direction': { kind: 'system' },
   'The Hero Experience': {
-    kind: 'filmstrip',
+    kind: 'hero',
+    lead: 'We make',
     items: [
       { src: img('hero-playable'), alt: 'We make brands playable: cricket stadium, team-select screen', label: 'brands playable.' },
       { src: img('hero-rewarding'), alt: 'We make loyalty rewarding: loyalty app on a violet field', label: 'loyalty rewarding.' },
@@ -51,16 +69,16 @@ export const OCTECH_VISUALS: Record<string, CaseStudyVisual> = {
     ],
   },
   'Making Complex Products Understandable': {
-    kind: 'grid',
+    kind: 'tabs',
     items: [
-      { src: img('products-promogenie'), alt: 'PromoGenie', label: 'PromoGenie' },
-      { src: img('products-analyticsgenie'), alt: 'AnalyticsGenie', label: 'AnalyticsGenie' },
-      { src: img('products-academygenie'), alt: 'AcademyGenie', label: 'AcademyGenie' },
-      { src: img('products-playverra'), alt: 'Playverra', label: 'Playverra' },
-      { src: img('products-genstudio'), alt: 'GenStudio AI', label: 'GenStudio AI' },
-      { src: img('products-smartclaim'), alt: 'SmartClaim AI', label: 'SmartClaim AI' },
-      { src: img('products-shelfvision'), alt: 'ShelfVision AI', label: 'ShelfVision AI' },
-      { src: img('products-xqr'), alt: 'XQR', label: 'XQR' },
+      { src: img('products-promogenie'), alt: 'PromoGenie product page', label: 'PromoGenie', text: 'A no-code platform to create, run and scale promotional journeys.' },
+      { src: img('products-analyticsgenie'), alt: 'AnalyticsGenie product page', label: 'AnalyticsGenie', text: 'One live dashboard for media spend and promotion performance.' },
+      { src: img('products-academygenie'), alt: 'AcademyGenie product page', label: 'AcademyGenie', text: 'Engagement mechanics applied to learning, so people finish the course.' },
+      { src: img('products-playverra'), alt: 'Playverra product page', label: 'Playverra', text: 'The platform that runs campaigns, games, loyalty and rewards.' },
+      { src: img('products-genstudio'), alt: 'GenStudio AI product page', label: 'GenStudio AI', text: 'Consumer co-creation with moderation, compliance and rewards built in.' },
+      { src: img('products-smartclaim'), alt: 'SmartClaim AI product page', label: 'SmartClaim AI', text: 'From submitted claim to approved reward, with fraud checks at every step.' },
+      { src: img('products-shelfvision'), alt: 'ShelfVision AI product page', label: 'ShelfVision AI', text: 'Computer vision that reads a shelf for stock, placement and compliance.' },
+      { src: img('products-xqr'), alt: 'XQR product page', label: 'XQR', text: 'Printed QR codes that stay measurable and editable after print.' },
     ],
   },
   'Campaigns & Industries': {
@@ -68,6 +86,26 @@ export const OCTECH_VISUALS: Record<string, CaseStudyVisual> = {
     items: [
       { src: img('home-capabilities'), alt: 'Horizontally scrolling campaign cards', label: 'Capabilities · horizontal scroll' },
       { src: img('home-industries'), alt: 'Industries as image columns that open on hover', label: 'Industries · hover to open' },
+    ],
+  },
+  'Motion & Interaction': {
+    kind: 'chips',
+    groups: [
+      {
+        label: 'Interactions',
+        items: [
+          '3D smartphone hero',
+          'Typed transitions',
+          'Environment changes',
+          'Custom cursor',
+          'Feathered navigation',
+          'Horizontal capability scroll',
+          'Hover-to-open industries',
+          'Scroll-filled method timeline',
+          'In-place product tabs',
+          'Smooth scrolling',
+        ],
+      },
     ],
   },
   'Responsive Experience': {
@@ -81,9 +119,12 @@ export const OCTECH_VISUALS: Record<string, CaseStudyVisual> = {
     ],
   },
   Outcome: {
-    kind: 'image',
-    src: img('hero-engaging'),
-    alt: 'The Octech hero: We make campaigns engaging',
-    bleed: true,
+    kind: 'cells',
+    items: [
+      { title: 'A clearer ecosystem', text: 'Programmes, platforms, intelligence, industries and proof each have a place, and the pages connect.' },
+      { title: 'Stronger product stories', text: 'Every product answers the same two questions: what is the problem, and how does it work.' },
+      { title: 'One visual language', text: 'One typeface, one red and a consistent label system across 50+ pages.' },
+      { title: 'A livelier brand', text: 'Visitors experience the work through the hero, scroll and hover, not just read about it.' },
+    ],
   },
 };

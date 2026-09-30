@@ -74,7 +74,7 @@ Instead of listing mechanics, a horizontal scroll shows them as campaigns people
 
 > Motion here is explanation, not decoration. Every moving thing is showing how something works.
 
-The 3D hero, typed transitions, a custom cursor, hover-to-open industries, horizontal capability scrolling and a feathered navigation all make the technology feel alive rather than described.
+Every interaction has a job: to make technology that's normally invisible feel alive rather than described.
 
 ---
 
@@ -90,9 +90,4 @@ On mobile the phone becomes the hero's centrepiece, the menu opens as a single r
 
 > The result is a site that behaves like the product it describes: interactive, structured and built to keep people engaged.
 
-These are design outcomes, not measured business results:
-
-- A clearer picture of Octech's ecosystem
-- Stronger, consistent product storytelling
-- One cohesive visual language across 50+ pages
-- A more engaging, technology-led brand presence
+These are design outcomes, evident in the finished site, not measured business results.

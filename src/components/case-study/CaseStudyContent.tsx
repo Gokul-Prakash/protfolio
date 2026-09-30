@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -22,32 +23,68 @@ const mdComponents = {
   ),
 };
 
+const slug = (title: string) => title.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+// Highlights the section currently in view inside the sheet's scroll area
+const useActiveSection = (ids: string[], root: HTMLElement | null) => {
+  const [active, setActive] = useState(ids[0]);
+
+  useEffect(() => {
+    if (!root) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (hit) setActive(hit.target.id);
+      },
+      { root, rootMargin: '-25% 0px -65% 0px' }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, [ids, root]);
+
+  return active;
+};
+
+type CaseStudyContentProps = {
+  study: CaseStudy;
+  onClose: () => void;
+  /** The sheet's scroll container — used for the chapter nav */
+  scrollRoot: HTMLElement | null;
+};
+
 // Full case study body — rendered inside the bottom sheet (lazy-loaded with the
 // Markdown renderer so it stays out of the home page bundle).
-const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () => void }) => {
-  const meta = study.meta;
+const CaseStudyContent = ({ study, onClose, scrollRoot }: CaseStudyContentProps) => {
+  const ids = useMemo(() => study.sections.map((s) => `cs-${slug(s.title)}`), [study.sections]);
+  const active = useActiveSection(ids, scrollRoot);
+
+  const jumpTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el && scrollRoot) scrollRoot.scrollTo({ top: el.offsetTop - 24, behavior: 'smooth' });
+  };
 
   return (
     <article className="case-study">
-      {/* Title */}
+      {/* Opening — title, details, cover, at a glance */}
       <header className="case-study__header">
-        <p className="case-study__kicker">Case study</p>
-        <h2 className="case-study__title" id="case-study-title">{study.name}</h2>
-        <p className="case-study__tagline">{study.tagline}</p>
-      </header>
-
-      <motion.figure className="case-study__cover" variants={fadeUp(0, 32)} initial="hidden" animate="visible">
-        <img src={study.cover} alt={`${study.name} website on laptop, tablet and phone`} draggable={false} />
-      </motion.figure>
-
-      {/* Intro + meta */}
-      <section className="case-study__intro">
-        <motion.p className="case-study__lead" variants={fadeUp()} {...reveal}>
+        <motion.p className="case-study__kicker" variants={fadeUp()} initial="hidden" animate="visible">
+          Case study
+        </motion.p>
+        <motion.h2 className="case-study__title" id="case-study-title" variants={fadeUp(0.05, 40)} initial="hidden" animate="visible">
+          {study.name}
+        </motion.h2>
+        <motion.p className="case-study__tagline" variants={fadeUp(0.1)} initial="hidden" animate="visible">
+          {study.tagline}
+        </motion.p>
+        <motion.p className="case-study__lead" variants={fadeUp(0.15)} initial="hidden" animate="visible">
           {study.intro}
         </motion.p>
 
-        <motion.dl className="case-study__meta" variants={fadeUp(0.1)} {...reveal}>
-          {meta.map((m) => (
+        <motion.dl className="case-study__meta" variants={fadeUp(0.2)} initial="hidden" animate="visible">
+          {study.meta.map((m) => (
             <div key={m.label} className="case-study__meta-item">
               <dt>{m.label}</dt>
               <dd>
@@ -60,11 +97,11 @@ const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () =>
             </div>
           ))}
         </motion.dl>
+      </header>
 
-        <motion.p className="case-study__contribution" variants={fadeUp(0.15)} {...reveal}>
-          <strong>My contribution</strong> {study.contribution.text}
-        </motion.p>
-      </section>
+      <motion.figure className="case-study__cover" variants={fadeUp(0.25, 32)} initial="hidden" animate="visible">
+        <img src={study.cover} alt={`${study.name} website on laptop, tablet and phone`} draggable={false} />
+      </motion.figure>
 
       {/* At a glance — Octech's ecosystem as presented on the site (not results) */}
       {study.glance && (
@@ -78,39 +115,58 @@ const CaseStudyContent = ({ study, onClose }: { study: CaseStudy; onClose: () =>
         </motion.dl>
       )}
 
+      {/* Body — pinned chapter nav + sections */}
+      <div className="case-study__body">
+        <nav className="case-study__toc" aria-label="Case study sections">
+          <p className="case-study__toc-label">Contents</p>
+          <ol>
+            {study.sections.map((section, i) => (
+              <li key={section.title}>
+                <button
+                  type="button"
+                  className={`case-study__toc-link${active === ids[i] ? ' is-active' : ''}`}
+                  aria-current={active === ids[i] ? 'true' : undefined}
+                  onClick={() => jumpTo(ids[i])}
+                >
+                  {section.title}
+                </button>
+              </li>
+            ))}
+          </ol>
+        </nav>
 
-      {/* Sections — title on the left, content on the right */}
-      <div className="case-study__sections">
-        {study.sections.map((section) => (
-          <section key={section.title} className="case-study__section">
-            {/* Same pattern as the home page's section headings: mono kicker · big statement */}
-            <motion.header className="case-study__section-head" variants={fadeUp(0, 24)} {...reveal}>
-              <p className="case-study__section-kicker">{section.title}</p>
-              <h3 className="case-study__section-title">
-                {section.statement ? (
-                  <ReactMarkdown components={{ ...mdComponents, p: ({ children }) => <>{children}</> }}>
-                    {section.statement}
+        <div className="case-study__sections">
+          {study.sections.map((section, i) => (
+            <section key={section.title} id={ids[i]} className="case-study__section">
+              <motion.header className="case-study__section-head" variants={fadeUp(0, 24)} {...reveal}>
+                <p className="case-study__section-kicker">{section.title}</p>
+                <h3 className="case-study__section-title">
+                  {section.statement ? (
+                    <ReactMarkdown components={{ ...mdComponents, p: ({ children }) => <>{children}</> }}>
+                      {section.statement}
+                    </ReactMarkdown>
+                  ) : (
+                    section.title
+                  )}
+                </h3>
+              </motion.header>
+
+              {section.body && (
+                <motion.div className="case-study__prose" variants={fadeUp(0.05, 24)} {...reveal}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
+                    {section.body}
                   </ReactMarkdown>
-                ) : (
-                  section.title
-                )}
-              </h3>
-            </motion.header>
+                </motion.div>
+              )}
 
-            <div className="case-study__section-text">
-              <motion.div className="case-study__prose" variants={fadeUp(0.05, 24)} {...reveal}>
-                <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-                  {section.body}
-                </ReactMarkdown>
-              </motion.div>
-            </div>
-            {section.visual && (
-              <div className="case-study__visual">
-                <CaseStudyVisual visual={section.visual} />
-              </div>
-            )}
-          </section>
-        ))}
+              {section.visual && (
+                <div className="case-study__visual">
+                  <CaseStudyVisual visual={section.visual} />
+                </div>
+              )}
+            </section>
+          ))}
+        </div>
       </div>
 
       {/* Same contact card as the site footer */}

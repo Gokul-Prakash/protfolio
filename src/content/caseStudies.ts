@@ -7,11 +7,15 @@ import { OCTECH_GLANCE, OCTECH_VISUALS } from './octechVisuals';
 // the `case-study-drafts` plugin strips them at build time, and they're stripped
 // again here so dev and production render the same clean page.
 
-export type VisualImage = { src: string; alt: string; label?: string };
+export type VisualImage = { src: string; alt: string; label?: string; text?: string };
 
 export type CaseStudyVisual =
   | ({ kind: 'image'; caption?: string; bleed?: boolean } & VisualImage)
   | { kind: 'pair' | 'grid' | 'filmstrip' | 'phones' | 'stack'; items: VisualImage[]; caption?: string }
+  | { kind: 'hero'; lead: string; items: VisualImage[] } // interactive replica of a rotating hero
+  | { kind: 'tabs'; items: VisualImage[] } // tabbed viewer: label → screen + one-liner
+  | { kind: 'chips'; groups: { label: string; items: string[] }[] }
+  | { kind: 'cells'; items: { title: string; text: string }[] }
   | { kind: 'flow'; steps: { title: string; text: string }[] }
   | { kind: 'system' };
 
@@ -31,7 +35,6 @@ export type CaseStudy = {
   cover: string;
   glance?: { value: string; label: string }[];
   meta: { label: string; value: string; href?: string; draft?: boolean }[];
-  contribution: { text: string; draft?: boolean };
   sections: CaseStudySection[];
 };
 
@@ -82,9 +85,6 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       { label: 'Platform', value: 'Responsive website, desktop to mobile' },
       { label: 'Live site', value: 'octech.in', href: 'https://octech.in/' },
     ],
-    contribution: {
-      text: 'I designed the website from the ground up: structure, visual language, components, page templates and the interaction layer, working alongside the engineering team who built it.',
-    },
     sections: parseSections(octechMd, OCTECH_VISUALS),
   },
 };

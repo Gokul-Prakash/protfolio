@@ -101,6 +101,7 @@
 // then sections with the title on the left and prose on the right.
 // ============================================================
 .case-study {
+  // ── Opening ────────────────────────────────────────────────
   &__header {
     padding: clamp($spacing-2xl, 6vw, 5rem) $gutter $section-head-gap;
   }
@@ -114,56 +115,38 @@
   &__title {
     font-family: $font-sans;
     font-weight: 720;
-    font-size: clamp(3.5rem, 12vw, 11rem);
+    font-size: clamp(3rem, 8vw, 7.5rem);
     letter-spacing: -0.055em;
-    line-height: 0.88;
+    line-height: 0.9;
     color: $paper;
   }
 
   &__tagline {
     margin-top: $spacing-lg;
-    font-size: clamp($font-size-lg, 2vw, 1.6rem);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: $muted;
-  }
-
-  // ── Intro + meta ──────────────────────────────────────────
-  &__intro {
-    @include section-padding;
-    padding-bottom: 0;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: $grid-gap;
-    row-gap: $spacing-2xl;
-
-    @include below-tablet {
-      grid-template-columns: 1fr;
-    }
+    font-size: clamp($font-size-xl, 2.6vw, 2.25rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: $paper;
   }
 
   &__lead {
-    grid-column: 1 / 8;
-    font-size: clamp($font-size-xl, 2.2vw, 1.9rem);
-    line-height: 1.35;
-    letter-spacing: -0.02em;
-    color: $paper;
-    text-wrap: pretty;
-
-    @include below-tablet {
-      grid-column: 1;
-    }
+    max-width: 52ch;
+    margin-top: $spacing-md;
+    font-size: clamp($font-size-base, 1.3vw, $font-size-lg);
+    line-height: $line-height-normal;
+    color: $muted;
   }
 
+  // Details as hairline cells (like the hero feature cells)
   &__meta {
-    grid-column: 9 / -1;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-top: $section-head-gap;
     border-top: 1px solid $line;
 
     @include below-desktop {
-      grid-column: 1 / -1;
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: $grid-gap;
     }
 
     @include mobile {
@@ -174,9 +157,26 @@
   &__meta-item {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 12px 0;
+    gap: 6px;
+    padding: $spacing-md $spacing-lg $spacing-md 0;
     border-bottom: 1px solid $line;
+
+    & + & {
+      padding-left: $spacing-lg;
+      border-left: 1px solid $line;
+
+      @include below-desktop {
+        &:nth-child(odd) {
+          padding-left: 0;
+          border-left: 0;
+        }
+      }
+
+      @include mobile {
+        padding-left: 0;
+        border-left: 0;
+      }
+    }
 
     dt {
       @include kicker;
@@ -193,27 +193,6 @@
     }
   }
 
-  &__contribution {
-    grid-column: 1 / 8;
-    padding: $spacing-lg;
-    border: 1px solid $line;
-    background: $raised;
-    font-size: $font-size-base;
-    color: $muted;
-
-    strong {
-      @include kicker;
-      display: block;
-      margin-bottom: $spacing-sm;
-      color: $accent;
-    }
-
-    @include below-tablet {
-      grid-column: 1;
-    }
-  }
-
-  // ── Cover ─────────────────────────────────────────────────
   &__cover {
     margin: 0;
     background: $raised;
@@ -221,20 +200,99 @@
 
     img {
       width: 100%;
-      aspect-ratio: 3 / 2; // matches the device mockup
+      aspect-ratio: 3 / 2;
       object-fit: cover;
+
+      @include desktop {
+        aspect-ratio: 21 / 10;
+      }
     }
   }
 
-
-  // ── Sections ──────────────────────────────────────────────
-  &__sections {
+  // ── Body: pinned contents + sections ───────────────────────
+  &__body {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: $grid-gap;
     @include section-padding;
+
+    @include below-desktop {
+      display: block;
+    }
+  }
+
+  &__toc {
+    grid-column: 1 / 3;
+    align-self: start;
+    position: sticky;
+    top: $spacing-xl;
+
+    @include below-desktop {
+      display: none;
+    }
+
+    ol {
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid $line;
+    }
+  }
+
+  &__toc-label {
+    @include kicker;
+    margin-bottom: $spacing-md;
+    color: $muted;
+  }
+
+  &__toc-link {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 7px 0 7px $spacing-md;
+    border: 0;
+    background: none;
+    font-family: $font-sans;
+    font-size: $font-size-sm;
+    text-align: left;
+    color: $muted;
+    cursor: pointer;
+    transition: color $transition-fast ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: $accent;
+      transform: scaleY(0);
+      transition: transform $transition-base $easing-out;
+    }
+
+    &:hover {
+      color: $paper;
+    }
+
+    &.is-active {
+      color: $paper;
+
+      &::before {
+        transform: scaleY(1);
+      }
+    }
+  }
+
+  &__sections {
+    grid-column: 3 / -1;
+    min-width: 0;
+    padding-left: clamp(0px, 3vw, $spacing-3xl);
   }
 
   &__section {
-    padding: clamp($spacing-3xl, 8vw, 7rem) 0;
+    padding: clamp($spacing-3xl, 7vw, 6rem) 0;
     border-top: 1px solid $line;
+    scroll-margin-top: $spacing-lg;
 
     &:first-child {
       padding-top: 0;
@@ -242,39 +300,20 @@
     }
   }
 
-  // Heading — same grid as the home page's .section-heading
-  &__section-head,
-  &__section-text {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: $grid-gap;
-    row-gap: $spacing-lg;
-
-    @include below-tablet {
-      grid-template-columns: 1fr;
-    }
-  }
-
   &__section-head {
-    margin-bottom: clamp($spacing-xl, 4vw, $spacing-2xl);
+    margin-bottom: $spacing-lg;
   }
 
   &__section-kicker {
     @include kicker;
-    grid-column: 1 / 4;
-    padding-top: 0.7em;
+    margin-bottom: $spacing-md;
     color: $accent;
-
-    @include below-tablet {
-      grid-column: 1;
-      padding-top: 0;
-    }
   }
 
   &__section-title {
-    grid-column: 4 / 12;
+    max-width: 22ch;
     @include section-title;
-    font-size: clamp(1.9rem, 3.8vw, 3.4rem);
+    font-size: clamp(1.9rem, 3.6vw, 3.25rem);
     line-height: 1.04;
     text-wrap: balance;
 
@@ -284,19 +323,11 @@
       font-style: normal;
       font-weight: inherit;
     }
-
-    @include below-desktop {
-      grid-column: 4 / -1;
-    }
-
-    @include below-tablet {
-      grid-column: 1;
-    }
   }
 
   // ── Prose (rendered Markdown) ─────────────────────────────
   &__prose {
-    grid-column: 4 / 11;
+    max-width: 64ch;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -304,14 +335,6 @@
     font-size: clamp($font-size-base, 1.1vw, 1.0625rem);
     line-height: $line-height-relaxed;
     color: $muted;
-
-    @include below-desktop {
-      grid-column: 4 / -1;
-    }
-
-    @include below-tablet {
-      grid-column: 1;
-    }
 
     p,
     ul,
@@ -787,7 +810,7 @@
   gap: 1px;
   border: 1px solid $line;
   background: $line;
-  font-family: 'Urbanist', $font-sans;
+  font-family: $font-sans;
 
   @include below-desktop {
     grid-template-columns: 1fr;
@@ -959,6 +982,259 @@
       font-size: $font-size-lg;
       font-weight: 700;
       color: var(--o-navy);
+    }
+  }
+}
+
+
+// Reading progress — fills under the sheet's grab bar
+.sheet__progress {
+  height: 2px;
+  flex-shrink: 0;
+  margin-top: -1px;
+  background: $accent-fill;
+  transform-origin: 0 50%;
+}
+
+// ============================================================
+// INTERACTIVE VISUALS
+// ============================================================
+
+// Crossfading screen on a blueprint stage
+.cs-screen {
+  position: relative;
+  display: grid;
+  padding: clamp(14px, 2.4vw, 36px);
+  background-color: color-mix(in oklch, var(--accent-fill) 3%, var(--ink));
+  @include grid-lines(color-mix(in oklch, var(--paper) 5%, transparent));
+
+  img {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: auto;
+    border: 1px solid $line;
+    box-shadow: 0 24px 60px -30px rgb(0 0 0 / 0.55);
+  }
+}
+
+// Hero replica — screen + phrase list
+.cs-hero {
+  border: 1px solid $line;
+  background: $raised;
+
+  &__phrases {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border-top: 1px solid $line;
+
+    @include below-tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__phrase {
+    position: relative;
+    padding: 14px;
+    border: 0;
+    background: none;
+    font-family: $font-sans;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-align: left;
+    color: $muted;
+    cursor: pointer;
+    transition: color $transition-fast ease, background $transition-fast ease;
+
+    & + & {
+      border-left: 1px solid $line;
+
+      @include below-tablet {
+        border-left: 0;
+        border-top: 1px solid $line;
+      }
+    }
+
+    &:hover {
+      color: $paper;
+    }
+
+    &.is-active {
+      color: $paper;
+      background: color-mix(in oklch, var(--accent-fill) 8%, transparent);
+    }
+  }
+
+  &__lead {
+    font-weight: 400;
+    color: $muted;
+  }
+
+  // 2.8s fill — matches the hero's rhythm
+  &__timer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: $accent-fill;
+    transform-origin: 0 50%;
+    animation: cs-timer 2.8s linear forwards;
+  }
+}
+
+@keyframes cs-timer {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+// Product tabs — mirrors Octech's own product tab bar
+.cs-tabs {
+  border: 1px solid $line;
+  background: $raised;
+
+  &__bar {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid $line;
+    scrollbar-width: none;
+  }
+
+  &__tab {
+    @include kicker;
+    position: relative;
+    flex-shrink: 0;
+    padding: 14px 16px;
+    border: 0;
+    background: none;
+    color: $muted;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color $transition-fast ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: -1px;
+      height: 2px;
+      background: $accent-fill;
+      transform: scaleX(0);
+      transition: transform $transition-base $easing-out;
+    }
+
+    &:hover {
+      color: $paper;
+    }
+
+    &.is-active {
+      color: $paper;
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
+    padding: 14px;
+    border-top: 1px solid $line;
+    font-size: $font-size-sm;
+    color: $muted;
+
+    strong {
+      color: $paper;
+      font-weight: 600;
+    }
+  }
+}
+
+// Chips — grouped terms (the breadth of the offer, the interactions)
+.cs-chips {
+  border: 1px solid $line;
+
+  &__group {
+    display: grid;
+    grid-template-columns: minmax(120px, 180px) 1fr;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+
+    & + & {
+      border-top: 1px solid $line;
+    }
+
+    @include below-tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__label {
+    @include kicker;
+    padding-top: 8px;
+    color: $accent;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    li {
+      padding: 7px 12px;
+      border: 1px solid $line;
+      background: $raised;
+      font-size: $font-size-sm;
+      color: $paper;
+      transition: border-color $transition-fast ease;
+
+      &:hover {
+        border-color: color-mix(in oklch, var(--paper) 40%, transparent);
+      }
+    }
+  }
+}
+
+// Cells — outcome grid joined by hairlines
+.cs-cells {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: $line;
+  border: 1px solid $line;
+
+  @include below-desktop {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    min-height: 190px;
+    padding: $spacing-lg;
+    background: $raised;
+
+    strong {
+      font-size: clamp($font-size-lg, 1.6vw, 1.35rem);
+      font-weight: 660;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      color: $paper;
+    }
+
+    span {
+      margin-top: auto;
+      font-size: $font-size-sm;
+      color: $muted;
     }
   }
 }

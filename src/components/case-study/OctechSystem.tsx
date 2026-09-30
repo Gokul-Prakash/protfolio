@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import { fadeUp, stagger } from '../../utils/animations';
 
 // A live specimen of the Octech visual system — colour, type, labels, actions, cards.
-// Values taken from octech.in (Urbanist; Octech Red #F50000; navy #101828; neutrals).
+// Colour values taken from octech.in (Octech Red #F50000; navy #101828; neutrals).
+// Set in the portfolio's own fonts so the case study reads as one piece.
 const SWATCHES = [
   { name: 'Octech Red', hex: '#F50000', role: 'Brand & next action', ink: '#fff' },
   { name: 'Deep Navy', hex: '#101828', role: 'Weight & emphasis', ink: '#fff' },
@@ -33,7 +34,7 @@ const OctechSystem = () => (
     {/* Type */}
     <motion.div className="octech-system__type" variants={fadeUp(0, 20)}>
       <span className="octech-system__label">
-        <i aria-hidden="true" /> Typography · Urbanist
+        <i aria-hidden="true" /> Typography
       </span>
       <p className="octech-system__display">
         We make <em>brands playable.</em>

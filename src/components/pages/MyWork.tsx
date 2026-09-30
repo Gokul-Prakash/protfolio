@@ -52,7 +52,6 @@ const MyWork = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="work-card__media">
-            <span className="work-card__badge">Case study</span>
             <img src={FEATURED.cover} alt={FEATURED.name} loading="lazy" draggable={false} />
           </div>
 

@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect, useRef } from 'react';
-import { AnimatePresence, motion, PanInfo, useDragControls } from 'framer-motion';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, PanInfo, useDragControls, useScroll } from 'framer-motion';
 import { useLenis } from 'lenis/react';
 import { EASE } from '../../utils/animations';
 import { CaseStudy } from '../../content/caseStudies';
@@ -15,12 +15,19 @@ type CaseStudySheetProps = {
 const CLOSE_OFFSET = 140;
 const CLOSE_VELOCITY = 600;
 
+// Thin bar under the grab bar that fills as you read
+const ReadingProgress = ({ container }: { container: HTMLElement }) => {
+  const { scrollYProgress } = useScroll({ container: { current: container } });
+  return <motion.div className="sheet__progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />;
+};
+
 // Bottom sheet that slides a case study up over the page.
 // Closes on: handle drag down, Escape, backdrop click, close button.
 const CaseStudySheet = ({ study, onClose }: CaseStudySheetProps) => {
   const dragControls = useDragControls();
   const lenis = useLenis();
   const sheetRef = useRef<HTMLDivElement>(null);
+  const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   const open = Boolean(study);
 
   // While open: pause page scroll (Lenis ignores overflow:hidden), Escape closes,
@@ -88,9 +95,11 @@ const CaseStudySheet = ({ study, onClose }: CaseStudySheetProps) => {
               </button>
             </div>
 
-            <div className="sheet__scroll" data-lenis-prevent>
+            {scrollEl && <ReadingProgress container={scrollEl} />}
+
+            <div className="sheet__scroll" data-lenis-prevent ref={setScrollEl}>
               <Suspense fallback={<div className="sheet__loading" aria-busy="true" />}>
-                <CaseStudyContent study={study} onClose={onClose} />
+                <CaseStudyContent study={study} onClose={onClose} scrollRoot={scrollEl} />
               </Suspense>
             </div>
           </motion.div>
