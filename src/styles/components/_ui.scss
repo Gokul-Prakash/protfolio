@@ -152,6 +152,18 @@
     white-space: nowrap;
   }
 
+  // Mobile: the rotating word breaks onto its own line (probes follow suit,
+  // so the fit sizes to the wider of the lead and the longest word)
+  @include below-tablet {
+    &__lead {
+      display: block;
+    }
+
+    &__gap {
+      display: none;
+    }
+  }
+
   // Clips the word top and bottom only as it slides (clip-path, not overflow,
   // so a wider outgoing word isn't cut off on the right). The inset leaves
   // room for ascenders/descenders (the "b" in "brands", "p" in "people").

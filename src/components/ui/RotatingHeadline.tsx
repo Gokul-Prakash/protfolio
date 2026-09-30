@@ -15,9 +15,10 @@ type RotatingHeadlineProps = {
 
 const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-// One-line headline: a static lead ("I design for") and a final word that swaps
-// with a masked vertical slide. Font-size is solved so the longest full line
-// (lead + widest word) spans the full width — so the size never jumps.
+// Headline with a static lead ("I design for") and a final word that swaps with a
+// masked vertical slide. One line on desktop; on mobile the word drops to its own
+// line. Font-size is solved so the widest line spans the full width — so the size
+// never jumps.
 const RotatingHeadline = ({ lead, words, suffix, interval = 2800, className = '' }: RotatingHeadlineProps) => {
   const ref = useRef<HTMLHeadingElement>(null);
   const [index, setIndex] = useState(0);
@@ -85,7 +86,10 @@ const RotatingHeadline = ({ lead, words, suffix, interval = 2800, className = ''
       aria-label={`${lead} ${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}`}
     >
       <span className="rotating-headline__line" aria-hidden="true">
-        <span className="rotating-headline__lead">{lead}&nbsp;</span>
+        <span className="rotating-headline__lead">
+          {lead}
+          <span className="rotating-headline__gap">&nbsp;</span>
+        </span>
 
         {/* Masked word — only this moves */}
         <span className="rotating-headline__mask">
@@ -109,7 +113,11 @@ const RotatingHeadline = ({ lead, words, suffix, interval = 2800, className = ''
       <span className="rotating-headline__probes" aria-hidden="true">
         {words.map((word) => (
           <span key={word} data-fit-probe>
-            {lead}&nbsp;{word}
+            <span className="rotating-headline__lead">
+              {lead}
+              <span className="rotating-headline__gap">&nbsp;</span>
+            </span>
+            {word}
             {suffix && <span className="rotating-headline__suffix">{suffix}</span>}
           </span>
         ))}
