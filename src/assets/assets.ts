@@ -34,6 +34,20 @@ import workZentra from "./images/Work-Auto-Carousel/Zentra.png";
 // Case Studies
 import caseOctech from "./images/Case-Studies/octech-devices.webp";
 
+// Toolbox
+import toolFigma from "./images/Toolbox/Figma-logo.svg";
+import toolPhotoshop from "./images/Toolbox/Adobe_Photoshop_CC_icon.svg";
+import toolIllustrator from "./images/Toolbox/Adobe_Illustrator_CC_icon.svg";
+import toolAnimate from "./images/Toolbox/Adobe_Animate_CC_icon_(2020).svg";
+import toolAfterEffects from "./images/Toolbox/Adobe_After_Effects_CC_icon.svg";
+import toolBlender from "./images/Toolbox/Blender_logo_no_text.svg";
+import toolMaya from "./images/Toolbox/autodesk-maya-icon.svg";
+import toolLottie from "./images/Toolbox/LottieFiles_logo 1.svg";
+import toolHtml from "./images/Toolbox/HTML5_logo_and_wordmark.svg";
+import toolCss from "./images/Toolbox/Official_CSS_Logo.svg";
+import toolChatGPT from "./images/Toolbox/ChatGPT-Logo.svg";
+import toolFirefly from "./images/Toolbox/Adobe_Firefly_Logo.svg";
+
 // Footer
 import FooterImg from "./images/footer-img.png";
 
@@ -77,6 +91,20 @@ export const images = {
     magicClub: workMagicClub,
     octech: workOctech,
     zentra: workZentra,
+  },
+  toolbox: {
+    figma: toolFigma,
+    photoshop: toolPhotoshop,
+    illustrator: toolIllustrator,
+    animate: toolAnimate,
+    afterEffects: toolAfterEffects,
+    blender: toolBlender,
+    maya: toolMaya,
+    lottie: toolLottie,
+    html: toolHtml,
+    css: toolCss,
+    chatGPT: toolChatGPT,
+    firefly: toolFirefly,
   },
   footer: {
     footerImg: FooterImg,

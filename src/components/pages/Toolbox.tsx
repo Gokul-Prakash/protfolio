@@ -359,7 +359,14 @@ const Toolbox = () => {
             aria-label={tool.name}
             ref={(el) => { bubbleRefs.current[i] = el; }}
           >
-            <span className="toolbox__face">{tool.logo}</span>
+            <span className="toolbox__face">
+              <img
+                src={tool.logo}
+                alt=""
+                draggable={false}
+                className={tool.themed ? 'is-themed' : undefined}
+              />
+            </span>
             <span className="toolbox__label" aria-hidden="true">{tool.name}</span>
           </button>
         ))}
