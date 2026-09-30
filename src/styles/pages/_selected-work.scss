@@ -4,10 +4,15 @@
 .selected-work {
   @include section-padding;
 
+  // 3 across on desktop, 2 on tablet, 1 on phones
   &__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: $grid-gap;
+
+    @include below-desktop {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
     @include below-tablet {
       grid-template-columns: 1fr;
@@ -105,4 +110,31 @@
       }
     }
   }
+}
+
+// ── Case study card — a button that opens the bottom sheet; same size as the others
+.work-card--case-study {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+
+  // the mockup is a photo, so fill the frame
+  .work-card__media img {
+    object-fit: cover;
+  }
+}
+
+.work-card__badge {
+  @include kicker;
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 1;
+  padding: 6px 10px;
+  background: $accent-fill;
+  color: $field-ink;
 }

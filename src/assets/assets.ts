@@ -31,6 +31,9 @@ import workMagicClub from "./images/Work-Auto-Carousel/Magic Club.png";
 import workOctech from "./images/Work-Auto-Carousel/Octech.png";
 import workZentra from "./images/Work-Auto-Carousel/Zentra.png";
 
+// Case Studies
+import caseOctech from "./images/Case-Studies/octech-devices.webp";
+
 // Footer
 import FooterImg from "./images/footer-img.png";
 
@@ -41,6 +44,9 @@ import videoG5 from "./videos/G5.webm";
 // ── Exports ─────────────────────────────────────────────────────────────────
 
 export const images = {
+  caseStudies: {
+    octech: caseOctech,
+  },
   logo: {
     gLogo,
   },
