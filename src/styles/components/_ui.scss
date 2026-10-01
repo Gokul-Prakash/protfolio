@@ -179,18 +179,80 @@
     will-change: transform;
   }
 
-  // First letter — flips in place (rotateX) when it changes, e.g. p → b.
-  // The pivot sits at the middle of the x-height so the bowl stays put and
-  // only the stem swings from descender to ascender.
+  // First letter — at rest a plain letter. While it changes (p ↔ b) the glyph is
+  // cut along the right side of its stem: everything but the stem's ends stays
+  // fixed, and the ends (ascender / descender) slide vertically in their own masks
+  // (RotatingHeadline.tsx), so only the stem moves — no rotation, no fade.
   &__initial {
+    position: relative;
     display: inline-block;
-    perspective: 600px;
   }
 
   &__initial-letter {
     display: inline-block;
-    transform-origin: 50% 64%;
-    backface-visibility: hidden;
+  }
+
+  &__baseline {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: baseline;
+  }
+
+  // Windows meet on the x-height line, the baseline and the stem's right side,
+  // overlapping a hair so no seam shows. Outer edges are open so nothing is cut.
+  // A moving glyph carries the same clip as its window, so it only ever shows its
+  // own stem end, never the bowl.
+  &__band {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    // Bowl + the stem between x-height and baseline: the full letter minus the
+    // two stem ends
+    &--fixed {
+      clip-path: polygon(
+        calc(var(--rh-stem) - 0.005em) -0.6em,
+        calc(100% + 0.3em) -0.6em,
+        calc(100% + 0.3em) calc(100% + 0.6em),
+        calc(var(--rh-stem) - 0.005em) calc(100% + 0.6em),
+        calc(var(--rh-stem) - 0.005em) calc(var(--rh-base) + 0.005em),
+        -0.3em calc(var(--rh-base) + 0.005em),
+        -0.3em calc(var(--rh-x-top) - 0.005em),
+        calc(var(--rh-stem) - 0.005em) calc(var(--rh-x-top) - 0.005em)
+      );
+    }
+
+    &--asc {
+      clip-path: inset(-0.6em calc(100% - var(--rh-stem)) calc(100% - var(--rh-x-top)) -0.3em);
+
+      > * {
+        clip-path: inset(-0.6em calc(100% - var(--rh-stem)) calc(100% - var(--rh-x-top)) -0.3em);
+      }
+    }
+
+    &--desc {
+      clip-path: inset(var(--rh-base) calc(100% - var(--rh-stem)) -0.6em -0.3em);
+
+      > * {
+        clip-path: inset(var(--rh-base) calc(100% - var(--rh-stem)) -0.6em -0.3em);
+      }
+    }
+  }
+
+  // The fixed part hands over from the old glyph to the new one at the midpoint
+  &__glyph--out {
+    animation: rotating-headline-hide var(--rh-half) step-end forwards;
+  }
+
+  &__glyph--in {
+    animation: rotating-headline-show var(--rh-half) step-end;
+  }
+
+  &__glyph {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
   }
 
   // Smaller trailing full stop, sitting on the baseline. The margin offsets the
@@ -214,6 +276,14 @@
       white-space: nowrap;
     }
   }
+}
+
+@keyframes rotating-headline-hide {
+  to { visibility: hidden; }
+}
+
+@keyframes rotating-headline-show {
+  from, to { visibility: hidden; }
 }
 
 // Status dot — "open to work"
