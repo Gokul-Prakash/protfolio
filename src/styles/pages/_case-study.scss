@@ -738,8 +738,17 @@
 // Information architecture as a flow
 .cs-flow {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--columns, 5), minmax(0, 1fr));
   border: 1px solid $line;
+
+  // More steps than fit at the default size: tighter cells, smaller titles
+  &--dense &__step {
+    padding: $spacing-lg $spacing-md;
+  }
+
+  &--dense &__title {
+    font-size: clamp(1rem, 1.3vw, 1.25rem);
+  }
 
   @include below-desktop {
     grid-template-columns: 1fr;
@@ -1385,6 +1394,45 @@
       order: 2;
       border-right: 0;
       border-left: 1px solid $line;
+    }
+  }
+
+  // Desktop screen across the top, callouts in a row beneath
+  &--wide {
+    grid-template-columns: 1fr;
+
+    .cs-annotated__stage {
+      padding: clamp(14px, 2.4vw, 36px);
+      border-right: 0;
+      border-bottom: 1px solid $line;
+    }
+
+    .cs-annotated__screen {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid $line;
+      box-shadow: 0 24px 60px -30px rgb(0 0 0 / 0.55);
+    }
+
+    .cs-annotated__notes {
+      display: grid;
+      grid-template-columns: repeat(var(--note-cols, 2), minmax(0, 1fr));
+
+      @include below-tablet {
+        grid-template-columns: 1fr;
+      }
+      gap: 1px;
+      background: $line;
+    }
+
+    .cs-annotated__note {
+      align-content: start;
+      background: $raised;
+
+      & + & {
+        border-top: 0;
+      }
     }
   }
 

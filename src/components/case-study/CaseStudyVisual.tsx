@@ -166,11 +166,23 @@ const CaseStudyVisual = ({ visual }: { visual: Visual }) => {
 
     case 'annotated':
       return (
-        <motion.div className={`cs-annotated${visual.flip ? ' cs-annotated--flip' : ''}`} variants={stagger(0.07)} {...reveal}>
+        <motion.div
+          className={`cs-annotated${visual.flip ? ' cs-annotated--flip' : ''}${visual.wide ? ' cs-annotated--wide' : ''}`}
+          variants={stagger(0.07)}
+          {...reveal}
+        >
           <motion.div className="cs-annotated__stage" variants={fadeUp(0, 32)}>
-            <Device image={visual.image} />
+            {visual.wide ? (
+              <img className="cs-annotated__screen" src={visual.image.src} alt={visual.image.alt} loading="lazy" draggable={false} />
+            ) : (
+              <Device image={visual.image} />
+            )}
           </motion.div>
-          <ol className="cs-annotated__notes">
+          <ol
+            className="cs-annotated__notes"
+            // Wide layout: callouts fill whole rows (3 across for multiples of three, else 2)
+            style={visual.wide ? ({ '--note-cols': visual.notes.length % 3 === 0 ? 3 : 2 } as React.CSSProperties) : undefined}
+          >
             {visual.notes.map((note) => (
               <motion.li key={note.title} className="cs-annotated__note" variants={fadeUp(0, 16)}>
                 <strong>{note.title}</strong>
@@ -285,7 +297,7 @@ const CaseStudyVisual = ({ visual }: { visual: Visual }) => {
                 ))}
               </dl>
             ) : (
-              <span className="cs-palette__sample">Play. Discover. Earn.</span>
+              <span className="cs-palette__sample">{visual.sample ?? 'Play. Discover. Earn.'}</span>
             )}
           </motion.div>
 
@@ -369,7 +381,12 @@ const CaseStudyVisual = ({ visual }: { visual: Visual }) => {
 
     case 'flow':
       return (
-        <motion.ol className="cs-flow" variants={stagger(0.08)} {...reveal}>
+        <motion.ol
+          className={`cs-flow${(visual.columns ?? 5) > 5 ? ' cs-flow--dense' : ''}`}
+          style={visual.columns ? ({ '--columns': visual.columns } as React.CSSProperties) : undefined}
+          variants={stagger(0.08)}
+          {...reveal}
+        >
           {visual.steps.map((step) => (
             <motion.li key={step.title} className="cs-flow__step" variants={fadeUp(0, 20)}>
               <span className="cs-flow__title">{step.title}</span>

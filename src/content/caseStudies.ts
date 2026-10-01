@@ -1,9 +1,11 @@
 import octechMd from '../../content/case-studies/octech.md?raw';
 import playverraMd from '../../content/case-studies/playverra.md?raw';
+import quantMastersMd from '../../content/case-studies/quant-masters.md?raw';
 import { images } from '@assets/assets';
 import { cutAuthorOnly, dropDraftSections, stripMarkers } from './draftMarkers';
 import { OCTECH_GLANCE, OCTECH_VISUALS } from './octechVisuals';
 import { PLAYVERRA_COVER, PLAYVERRA_LOGO, PLAYVERRA_THUMB, PLAYVERRA_VISUALS } from './playverraVisuals';
+import { QM_COVER, QM_GLANCE, QM_THUMB, QM_VISUALS } from './quantMastersVisuals';
 
 // Internal notes in the Markdown ([NOTE — …], [NEEDS INPUT — …]) are never shown:
 // the `case-study-drafts` plugin strips them at build time, and they're stripped
@@ -29,12 +31,13 @@ export type CaseStudyVisual =
   | { kind: 'tabs'; items: VisualImage[] } // tabbed viewer: label → screen + one-liner
   | { kind: 'chips'; groups: { label: string; items: string[] }[] }
   | { kind: 'cells'; items: { title: string; text: string }[] }
-  | { kind: 'flow'; steps: { title: string; text: string }[] }
+  // `columns` overrides the default five across on desktop
+  | { kind: 'flow'; steps: { title: string; text: string }[]; columns?: number }
   | { kind: 'system' }
   // Device mockups; `journey` draws connectors between them
   | { kind: 'devices'; items: VisualImage[]; journey?: boolean }
-  // One screen with callouts beside it
-  | { kind: 'annotated'; image: VisualImage; notes: { title: string; text: string }[]; flip?: boolean }
+  // One screen with callouts beside it; `wide` puts a desktop screen above its callouts
+  | { kind: 'annotated'; image: VisualImage; notes: { title: string; text: string }[]; flip?: boolean; wide?: boolean }
   // Zoomed-in UI fragments with a title and line each
   | { kind: 'crops'; items: VisualImage[] }
   // Colour, type and real components cropped from the screens
@@ -44,6 +47,8 @@ export type CaseStudyVisual =
       accents?: Swatch[];
       gradient?: [string, string];
       typeface: string;
+      /** Specimen line shown when there is no hierarchy */
+      sample?: string;
       hierarchy?: { style: string; weight: string; use: string }[];
       components: VisualImage[];
     }
@@ -169,5 +174,34 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       { label: 'Screens', value: 'Splash · Home · Discover · Play · Rewards · Profile' },
     ],
     sections: parseSections(playverraMd, PLAYVERRA_VISUALS),
+  },
+
+  'quant-masters': {
+    slug: 'quant-masters',
+    name: 'QUANT MASTERS',
+    title: 'Quant Masters',
+    tagline: 'Reimagining a competitive learning platform for students.',
+    intro:
+      'A complete platform redesign connecting learning, assessments, performance and interview preparation into one cohesive experience for students preparing for placements.',
+    cover: QM_THUMB,
+    coverVisual: QM_COVER,
+    thumb: QM_THUMB,
+    tags: 'Product Design / UX/UI / Design System',
+    motto: ['Practise', 'Analyse', 'Improve', 'Perform'],
+    closing: {
+      title: 'One connected journey.',
+      text: 'Practise → Test → Analyse → Improve → Prepare → Perform',
+    },
+    // Quant Blue — lifted for text on dark, the true brand blue on light
+    theme: { accent: '#7B8CFF', accentLight: '#3657FF', fill: '#3657FF' },
+    glance: QM_GLANCE,
+    meta: [
+      { label: 'Project', value: 'Quant Masters platform redesign' },
+      { label: 'Role', value: 'Senior UI/UX Designer', draft: true },
+      { label: 'Scope', value: 'Product design · UX/UI · Design system · Student portal · Admin portal · Landing page' },
+      { label: 'Platform', value: 'Web platform, desktop-first' },
+      { label: 'Screens', value: 'Dashboard · Practice · Test · Results · Analytics · Exams · Interviews · Notes' },
+    ],
+    sections: parseSections(quantMastersMd, QM_VISUALS),
   },
 };

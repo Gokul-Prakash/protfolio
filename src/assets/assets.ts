@@ -8,7 +8,6 @@ import whoAmIContainer from "./images/Who-Am-I/Container.png";
 import whoAmIContainer1 from "./images/Who-Am-I/Container-1.png";
 
 // A Glimpse of My Work
-import myWorkCocaCola from "./images/A-glimpse-of-my-work/Coca-Cola Foodmarks.png";
 import myWorkIPL from "./images/A-glimpse-of-my-work/IPL Interactive Game.png";
 import myWorkClassmate from "./images/A-glimpse-of-my-work/Classmate Digital Catalogue.png";
 import myWorkNextEd from "./images/A-glimpse-of-my-work/NextEd.png";
@@ -71,7 +70,6 @@ export const images = {
     container1: whoAmIContainer1,
   },
   myWork: {
-    cocaCola: myWorkCocaCola,
     ipl: myWorkIPL,
     classmate: myWorkClassmate,
     nextEd: myWorkNextEd,

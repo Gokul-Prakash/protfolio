@@ -8,7 +8,7 @@ import { fadeUp } from '../../utils/animations';
 import { SELECTED_WORK } from '../../utils/content';
 import { CASE_STUDIES } from '../../content/caseStudies';
 
-const CASE_CARDS = [CASE_STUDIES.octech, CASE_STUDIES.playverra];
+const CASE_CARDS = [CASE_STUDIES.octech, CASE_STUDIES.playverra, CASE_STUDIES['quant-masters']];
 
 // Cards with a live thumbnail instead of a still
 const CARD_MEDIA: Record<string, JSX.Element> = { playverra: <PlayverraThumb /> };

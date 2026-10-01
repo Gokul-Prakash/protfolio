@@ -43,7 +43,6 @@ export const SKILLS = [
 ];
 
 export const SELECTED_WORK = [
-  { id: 1, title: 'Coca-Cola Foodmarks', tags: ['Web', 'Campaign'], img: images.myWork.cocaCola },
   { id: 2, title: 'IPL Interactive Game', tags: ['Game', 'Interaction'], img: images.myWork.ipl },
   { id: 3, title: 'Classmate Digital Catalogue', tags: ['Design', 'Branding'], img: images.myWork.classmate },
   { id: 4, title: 'NextEd', tags: ['EdTech', 'Product'], img: images.myWork.nextEd },
