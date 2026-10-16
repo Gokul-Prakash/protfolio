@@ -1,19 +1,64 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import PageHero from '../ui/PageHero';
 import SectionHeading from '../ui/SectionHeading';
 import { fadeUp } from '../../utils/animations';
+import { PLAYGROUND, type PlaygroundMedia } from '../../content/playground';
 
-// Layout of the experiment grid (6-col): half = 3, third = 2, full = 6
-const TILES = [
-  { size: 'half', tall: true },
-  { size: 'half', tall: true },
-  { size: 'third' },
-  { size: 'third' },
-  { size: 'third' },
-  { size: 'full', tall: true },
-  { size: 'half' },
-  { size: 'half' },
-] as const;
+const DEFAULT_HOLD = 3000;
+
+// Media taking turns on one stage: all stacked, the current one faded in.
+// Labels along the bottom jump to a state; the active one fills over its hold.
+// Only runs while on screen, and every layer loads up front so a turn never
+// fades to an image that isn't there yet.
+const CycleStage = ({ media }: { media: PlaygroundMedia[] }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.4 });
+  const [index, setIndex] = useState(0);
+  const hold = media[index].hold ?? DEFAULT_HOLD;
+
+  useEffect(() => {
+    if (!inView) return;
+    const id = setTimeout(() => setIndex((i) => (i + 1) % media.length), hold);
+    return () => clearTimeout(id);
+  }, [index, hold, media.length, inView]);
+
+  return (
+    <div ref={ref} className="playground__card-cycle">
+      {media.map((m, i) => (
+        <div
+          key={m.src}
+          className={`playground__card-media playground__card-media--layer${i === index ? ' is-active' : ''}`}
+          aria-hidden={i !== index}
+        >
+          <img src={m.src} alt={m.alt} decoding="async" draggable={false} />
+        </div>
+      ))}
+      <div className="playground__card-states" role="tablist" aria-label="States">
+        {media.map((m, i) => (
+          <button
+            key={m.src}
+            type="button"
+            role="tab"
+            aria-selected={i === index}
+            className={`playground__card-state${i === index ? ' is-active' : ''}`}
+            onClick={() => setIndex(i)}
+          >
+            {m.label}
+            {i === index && inView && (
+              <span
+                key={index}
+                className="playground__card-timer"
+                style={{ animationDuration: `${hold}ms` }}
+                aria-hidden="true"
+              />
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Playground = () => {
   return (
@@ -28,19 +73,36 @@ const Playground = () => {
         />
 
         <div className="playground__grid">
-          {TILES.map((tile, i) => (
-            <motion.div
-              key={i}
-              className={`playground__card playground__card--${tile.size}`}
+          {PLAYGROUND.map((tile, i) => (
+            <motion.figure
+              key={tile.title}
+              className={`playground__card${tile.wide ? ' playground__card--wide' : ''}`}
+              style={{ '--cols': tile.span[0], '--rows': tile.span[1], '--ratio': tile.ratio } as React.CSSProperties}
               variants={fadeUp((i % 3) * 0.08, 32)}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
             >
-              <div className={`playground__card-thumb${'tall' in tile && tile.tall ? ' playground__card-thumb--tall' : ''}`}>
-                <span className="playground__card-soon">Coming soon</span>
+              <div
+                className={`playground__card-thumb playground__card-thumb--${tile.fit ?? 'contain'}${tile.dark ? ' playground__card-thumb--dark' : ''}`}
+              >
+                {tile.cycle ? (
+                  <CycleStage media={tile.media} />
+                ) : (
+                  tile.media.map((m) => (
+                    <div key={m.src} className="playground__card-media">
+                      <img src={m.src} alt={m.alt} loading="lazy" decoding="async" draggable={false} />
+                      {m.label && <span className="playground__card-label">{m.label}</span>}
+                    </div>
+                  ))
+                )}
               </div>
-            </motion.div>
+
+              <figcaption className="playground__card-row">
+                <span className="playground__card-title">{tile.title}</span>
+                <span className="playground__card-tags">{tile.tags}</span>
+              </figcaption>
+            </motion.figure>
           ))}
         </div>
       </section>
